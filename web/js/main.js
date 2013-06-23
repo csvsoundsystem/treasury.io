@@ -83,7 +83,7 @@ $(function() {
       });
   };
 
-  $.get('/web/table_schema/tables.json', function(table_schema) {
+  $.get('../table_schema/tables.json', function(table_schema) {
     initRedQuery(table_schema);
     bindHandlers();
   });
