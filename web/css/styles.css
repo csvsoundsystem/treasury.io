@@ -328,3 +328,7 @@ textarea:focus{
   -webkit-appearance: none;
   border-radius: 0;
 }*/
+
+#contact li {
+  list-style: square inside;
+}
