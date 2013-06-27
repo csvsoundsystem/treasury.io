@@ -77,7 +77,7 @@ $(function() {
           }else{
             document.getElementById("sql").value = sanitize_out(out);
           }
-          document.getElementById("download-json").setAttribute('href', query('https://box.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=', out));
+          document.getElementById("download-json").setAttribute('href', query('https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=', out));
           document.getElementById("download-csv").setAttribute('href', query('http://jsonadapter.herokuapp.com/?q=', out));
         },
       });
