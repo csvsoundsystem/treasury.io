@@ -321,6 +321,9 @@ textarea:focus{
 .code-container{
   width:100%;
 }
+#encoding-btns,#encoding-btns li{
+  display:inline;
+}
 
 /*#rqb {
   margin-bottom: 60px;
