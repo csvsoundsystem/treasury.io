@@ -136,28 +136,6 @@ h3 {
   font-size: 15px;
   letter-spacing: 1px;
 }
-.btn a{
-  font-family: "Open Sans", sans-serif;
-  font-weight: 800;
-  letter-spacing: 2px;
-  color: black;
-  text-transform: uppercase;
-  border: 3px solid;
-  padding: 0.5em 0.75em;
-  -moz-box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
-  -webkit-box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
-  box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
-  position: relative;
-  background: #fff;
-  text-align: center;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  display: block;
-}
 .btn{
   font-family: "Open Sans", sans-serif;
   font-weight: 800;
@@ -178,7 +156,9 @@ h3 {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  display: block;
+}
+.nav-item .btn {
+    display: block;
 }
 .btn:active a{
   background: #FFFFE0;
@@ -221,11 +201,12 @@ a:hover{
   cursor:default;
   text-decoration: none;
 }
-#logo li {
+li#logo{
   margin: 0;
   padding: 0;
   height:148px;
 }
+
 #logo img{
   background: white;
   border: 3px black solid;
