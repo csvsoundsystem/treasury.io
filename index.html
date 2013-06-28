@@ -129,14 +129,29 @@
               <ul>
                 <li>
                   <h3>Python</h3>
+                  <p>Install with pip.</p>
                   <div class="code-container">
-                    <script src="http://gist-it.appspot.com/github/csvsoundsystem/pytreasuryio/blob/master/treasuryio/query.py"></script>
+                    <pre><code>pip install treasuryio</code></pre>
+                  </div>
+                  <p>Alternatively, copy the <code>query</code> function from <a href="https://github.com/csvsoundsystem/pytreasuryio/blob/master/treasuryio/query.py">here</a>.</p>
+                  <p>Send SQL, and get a pandas DataFrame.</p>
+                  <div class="code-container">
+                    <pre><code>import treasuryio
+treasuryio.query('SELECT * FROM sqlite_master')</code></pre>
                   </div>
                 </li>
                 <li>
                   <h3>R</h3>
                   <div class="code-container">
-                    <script src="http://gist-it.appspot.com/github/csvsoundsystem/Rtreasury.io/blob/master/R/treasury.io.R"></script>
+                    <pre><code>library('devtools')
+install_github('Rtreasury.io', 'csvsoundsystem')
+library('Rtreasury.io')</code></pre>
+                  </div>
+                  <p>Alternatively, copy the <code>treasury.io</code> function from <a href="https://github.com/csvsoundsystem/Rtreasury.io/blob/master/R/treasury.io.R">here</a>.</p>
+                  <p>Send SQL, and get a data.frame.</p>
+                  <div class="code-container">
+                    <pre><code>library('Rtreasury.io')
+treasury.io('SELECT * FROM sqlite_master')</code></pre>
                   </div>
                 </li>
               </ul>
