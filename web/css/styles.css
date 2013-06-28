@@ -161,7 +161,7 @@ h3 {
 .nav-item .btn {
     display: block;
 }
-.btn:active {
+.nav-item.active .btn{
   background: #FFFFE0;
 }
 .nav-item{
