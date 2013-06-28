@@ -91,7 +91,7 @@ nav{
   z-index: 9999;
 
 }
-#navmenu ul li{
+#encoding-btns li, #navmenu ul li{
   margin: 10px 0px;
   list-style: none;
   position:relative;
