@@ -44,7 +44,15 @@
               <button id="query-refresher" disabled>Update query text...</button>
               <div id="query-string-wrapper">
                 <fieldset>
-                  <span>SQL Query | View as:* </span> <button data-encoding="false" class="btn active">Plain-text</button> <button data-encoding="true" class="btn">URL-Encoded</button>
+                  <span>SQL Query | View as:* </span>
+                  <ul id="encoding-btns">
+                    <li>
+                      <a href="#" data-encoding="false" class="btn active">Plain-text</a>
+                    </li>
+                    <li>
+                      <a data-encoding="true" class="btn">URL-Encoded</a>
+                    </li>
+                  </ul>
                   <div id="query-string">
                     <textarea id="sql">Select from the dropdown menu above...</textarea>
                   </div>

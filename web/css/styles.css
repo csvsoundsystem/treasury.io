@@ -91,7 +91,7 @@ nav{
   z-index: 9999;
 
 }
-#navmenu ul li{
+#encoding-btns li, #navmenu ul li{
   margin: 10px 0px;
   list-style: none;
   position:relative;
@@ -204,7 +204,7 @@ a:hover{
 }
 
 li#logo{
-  margin: 0;
+  margin: 0 0 15px 0 !important;
   padding: 0;
   height:148px;
 }
@@ -217,6 +217,7 @@ li#logo{
 }
 #logo a {
   padding: 0;
+  height: 148px;
 }
 
 code {
@@ -319,6 +320,9 @@ textarea:focus{
 }
 .code-container{
   width:100%;
+}
+#encoding-btns,#encoding-btns li{
+  display:inline;
 }
 
 /*#rqb {
