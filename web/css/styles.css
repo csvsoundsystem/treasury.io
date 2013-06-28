@@ -160,7 +160,7 @@ h3 {
 .nav-item .btn {
     display: block;
 }
-.btn:active a{
+.btn:active {
   background: #FFFFE0;
 }
 .nav-item{
@@ -201,6 +201,7 @@ a:hover{
   cursor:default;
   text-decoration: none;
 }
+
 li#logo{
   margin: 0;
   padding: 0;
