@@ -92,7 +92,7 @@ nav{
 
 }
 #navmenu ul li{
-  margin: 10px 0;
+  margin: 10px 0px;
   list-style: none;
   position:relative;
 }
@@ -136,7 +136,7 @@ h3 {
   font-size: 15px;
   letter-spacing: 1px;
 }
-.btn {
+.btn a{
   font-family: "Open Sans", sans-serif;
   font-weight: 800;
   letter-spacing: 2px;
@@ -156,6 +156,7 @@ h3 {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  display: block;
 }
 .btn:hover {
   background: #FFFFE0;
@@ -198,7 +199,7 @@ a:hover{
   cursor:default;
   text-decoration: none;
 }
-#logo {
+#logo li {
   margin: 0;
   padding: 0;
   height:148px;
@@ -207,6 +208,9 @@ a:hover{
   background: white;
   border: 3px black solid;
   width: 150px;
+  padding: 0;
+}
+#logo a {
   padding: 0;
 }
 
