@@ -158,7 +158,29 @@ h3 {
   user-select: none;
   display: block;
 }
-.btn:hover {
+.btn{
+  font-family: "Open Sans", sans-serif;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: black;
+  text-transform: uppercase;
+  border: 3px solid;
+  padding: 0.5em 0.75em;
+  -moz-box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
+  -webkit-box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
+  box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
+  position: relative;
+  background: #fff;
+  text-align: center;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  display: block;
+}
+.btn:active a{
   background: #FFFFE0;
 }
 .nav-item{
