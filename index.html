@@ -154,6 +154,29 @@ library('Rtreasury.io')</code></pre>
 treasury.io('SELECT * FROM sqlite_master')</code></pre>
                   </div>
                 </li>
+                <li>
+                  <h3>Google Docs</h3>
+                  <div class="code-container">
+                    <p>Paste this function into the script editor. (Or wait a bit; we've submitted it to the script gallery.)</p>
+                    <pre><code>function treasuryio(sql) {
+  var response = UrlFetchApp.fetch("https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=" + encodeURIComponent(sql));
+  var data = JSON.parse(response.getContentText());
+  
+  if (data.length == 0){
+    return [];
+  } else {
+    // Unfortunately, this is ordered arbitrarily and is not guaranteed to be consistant.
+    var keys = Object.keys(data[0]);
+    return [keys].concat(data.map(function(row){return keys.map(function(key){return row[key]})}))
+  }
+}</code></pre>
+                  </div>
+                  <p>Then use it like so</p>
+                  <div class="code-container">
+                    <pre><code>=treasuryio('SELECT * FROM t1 limit 10')</code></pre>
+                  </div>
+                  <p><a href="https://docs.google.com/spreadsheet/ccc?key=0Avjq7klTEotEdFpIeUR1alE0ai1WdGc0azU5MGNLVXc&usp=sharing">Here</a>'s an example.</p>
+                </li>
               </ul>
           </div>
           <div class="section" id="contact">
