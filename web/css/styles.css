@@ -170,6 +170,7 @@ h3 {
 a {
   text-decoration: none;
   color: #FFFFAE;
+  font-weight: bold;
 }
 a:hover{
   cursor:pointer;
@@ -348,4 +349,8 @@ textarea:focus{
 
 #contact li {
   list-style: square inside;
+}
+
+.tables a {
+  background-color: #333;
 }
