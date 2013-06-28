@@ -227,6 +227,10 @@ code {
   border: 1px solid #DFECF0;
   background-color: #0CF;
   border-radius: 3px;
+  max-width:100%;
+  overflow-x:auto;
+  display:inline-block;
+  line-height:15px;
   font-family: Courier, monospace;
 }
 form {
