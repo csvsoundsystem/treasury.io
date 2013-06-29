@@ -207,6 +207,11 @@ a:hover{
   cursor:hand;
   text-decoration: underline;
 }
+.section h2 a:hover{
+  text-decoration: underline;
+  background-color:transparent;
+  color:#fff;
+}
 #query-refresher{
   margin:10px 0;
 
