@@ -102,13 +102,14 @@ $(function() {
           }else{
             document.getElementById("sql").value = sanitize_out(out);
           }
-          loadJsonBtnHref(out);
+          loadJsonBtnHref(sanitize_out(out));
         },
       });
   };
 
   function loadJsonBtnHref(q_string){
     var query = api_endpoint + q_string;
+    console.log(query)
     document.getElementById("download-json").setAttribute('href', query);
   };
 
