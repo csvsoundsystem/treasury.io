@@ -390,6 +390,9 @@ textarea:focus{
 }
 
 @media screen and (max-width: 640px) {
+  body{
+    margin:10px;
+  }
   #title, #navmenu {
     position: inherit;
   }
@@ -408,8 +411,5 @@ textarea:focus{
   }
   .btn-group .btn{
     margin-bottom:10px;
-  }
-  .bullet{
-    left:-18px;
   }
 }
