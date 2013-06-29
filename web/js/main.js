@@ -50,8 +50,7 @@ $(function() {
       $download_csv_btn.click(function(){
         if(!$(this).hasClass('disabled')){
           var q = $sql_query_textarea.val();
-          var ajax_img = '<img src="web/images/ajax-loader.gif"/>';
-          $(this).html('Fetching... ' + ajax_img);
+          setDownloadBtn('fetch');
           convertJSONtoCSV(q);
         };
       });
@@ -103,11 +102,27 @@ $(function() {
       });
   };
 
+  function setDownloadBtn(state){
+    if (state == 'fetch'){
+      var ajax_img = '<img src="web/images/ajax-loader.gif"/>';
+      $(this).html('Fetching... ' + ajax_img);
+    }else{
+      $download_csv_btn.html('Download .csv');
+    }
+  }
+
   function convertJSONtoCSV(query){
     fetchJSON(query).done(function(json){
-      $download_csv_btn.html('Download .csv')
+      setDownloadBtn('reset');
       var csv = dsv.csv.format(json);
       window.location.href = "data:text/csv," + encodeURIComponent(csv);
+    }).fail(function(err){
+      setDownloadBtn('reset');
+      if (err.status == 404){
+        alert('404 Error. Please recheck your query and make sure everything is spelled correctly.')
+      }else{
+        console.log(err.status + ' error: ' + err.statusText)
+      }
     });
   };
 

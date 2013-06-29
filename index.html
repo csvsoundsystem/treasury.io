@@ -52,15 +52,6 @@
                     <input type="radio" name="encoding" value="false" checked>Plain-text
                     <input type="radio" name="encoding" value="true">URL-Encoded
                   </span>
-<!-- 
-                  <ul id="encoding-btns">
-                    <li>
-                      <a href="#" data-encoding="false" class="btn active">Plain-text</a>
-                    </li>
-                    <li>
-                      <a data-encoding="true" class="btn">URL-Encoded</a>
-                    </li>
- -->                  </ul>
                   <div id="query-string">
                     <textarea id="sql">Select from the dropdown menu above...</textarea>
                   </div>
@@ -109,7 +100,7 @@
             <h2><a href="#tables"><span class="bullet">$</span> <span class="internal-link">Tables</span></a></h2>
             <p>
               This API provides eight tables. You can access them with the short names in parantheses.
-              Click "preview" to download the first ten rows of the table as CSV, and click "full" to 
+              Click "preview" to download the first ten rows of the table as CSV, and click "full" to
               download the full table as CSV.
             </p>
             <ul class="tables">
@@ -169,7 +160,7 @@ treasury.io('SELECT * FROM sqlite_master')</code></pre>
                     <pre><code>function treasuryio(sql) {
   var response = UrlFetchApp.fetch("https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=" + encodeURIComponent(sql));
   var data = JSON.parse(response.getContentText());
-  
+
   if (data.length == 0){
     return [];
   } else {

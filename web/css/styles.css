@@ -362,6 +362,7 @@ footer {
 }
 footer p {
   margin-top: 20px;
+  line-height: 2em;
 }
 
 textarea {
@@ -386,4 +387,19 @@ textarea:focus{
 
 #contact li {
   list-style: square inside;
+}
+
+@media screen and (max-width: 640px) {
+  #title, #navmenu {
+    position: inherit;
+  }
+  #title {
+    text-align: center;
+  }
+  #subhead {
+    display: none;
+  }
+  #section-wrapper {
+    margin-left: 0;
+  }
 }
