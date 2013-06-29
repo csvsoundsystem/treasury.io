@@ -13,7 +13,7 @@
                 {
                     "label": "Date",
                     "name": "date",
-                    "type": "STRING",
+                    "type": "DATE",
                     "size": 10
                 },
                 {
@@ -104,7 +104,7 @@
                 {
                     "label": "Date",
                     "name": "date",
-                    "type": "STRING",
+                    "type": "DATE",
                     "size": 10
                 },
                 {
@@ -208,7 +208,7 @@
                 {
                     "label": "Date",
                     "name": "date",
-                    "type": "STRING",
+                    "type": "DATE",
                     "size": 10
                 },
                 {
@@ -311,7 +311,7 @@
                 {
                     "label": "Date",
                     "name": "date",
-                    "type": "STRING",
+                    "type": "DATE",
                     "size": 10
                 },
                 {
@@ -408,7 +408,7 @@
                 {
                     "label": "Date",
                     "name": "date",
-                    "type": "STRING",
+                    "type": "DATE",
                     "size": 10
                 },
                 {
@@ -505,7 +505,7 @@
                 {
                     "label": "Date",
                     "name": "date",
-                    "type": "STRING",
+                    "type": "DATE",
                     "size": 10
                 },
                 {
@@ -596,7 +596,7 @@
                 {
                     "label": "Date",
                     "name": "date",
-                    "type": "STRING",
+                    "type": "DATE",
                     "size": 10
                 },
                 {
@@ -687,7 +687,7 @@
                 {
                     "label": "Date",
                     "name": "date",
-                    "type": "STRING",
+                    "type": "DATE",
                     "size": 10
                 },
                 {
@@ -779,6 +779,32 @@
                 {
                     "name": "<>",
                     "label": "is not",
+                    "cardinality": "ONE"
+                }
+            ]
+        },
+        {
+            "name": "DATE",
+            "editor": "TEXT",
+            "operators": [
+                {
+                    "name": "=",
+                    "label": "is",
+                    "cardinality": "ONE"
+                },
+                {
+                    "name": "<>",
+                    "label": "is not",
+                    "cardinality": "ONE"
+                },
+                {
+                    "name": "<",
+                    "label": "is before",
+                    "cardinality": "ONE"
+                },
+                {
+                    "name": ">",
+                    "label": "is after",
                     "cardinality": "ONE"
                 }
             ]
