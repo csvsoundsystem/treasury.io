@@ -168,7 +168,21 @@ h3 {
 a {
   text-decoration: none;
   color: #FFFFAE;
-  font-weight: bold;
+}
+
+.section a{
+  text-decoration: underline;
+}
+.section a:hover{
+  background-color: #FFF;
+  color: #000;
+  text-decoration: none;
+}
+.section h2 a, .btn-group a {
+  text-decoration: none;
+}
+.btn-group a:hover {
+  text-decoration: underline;
 }
 a:hover{
   cursor:pointer;
@@ -328,27 +342,6 @@ textarea:focus{
   display:inline;
 }
 
-/*#rqb {
-  margin-bottom: 60px;
-}*/
-
-/*input, select {
-  background: white;
-  padding:  5px !important;
-  border: none;
-  -webkit-font-smoothing: antialiased;
-  color: black;
-  font-weight: bold;
-  outline: none;
-  margin-bottom:  0.875rem;
-  -webkit-appearance: none;
-  border-radius: 0;
-}*/
-
 #contact li {
   list-style: square inside;
-}
-
-.tables a {
-  background-color: #333;
 }
