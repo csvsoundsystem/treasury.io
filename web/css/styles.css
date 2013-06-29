@@ -110,7 +110,7 @@ nav{
 h2{
   position:relative;
   font-weight:bold;
-  margin: 20px 0;
+  margin: 40px 0;
   font-size: 30px;
   letter-spacing: 2px;
 }
@@ -128,12 +128,12 @@ h2 a:hover .bullet{
   display:block;
 }
 h3 {
-  font-size: 15px;
+  font-size: 25px;
   letter-spacing: 1px;
   position:relative;
   font-weight:normal;
   text-decoration: underline;
-  margin: 20px 0 5px 0;
+  margin: 35px 0 15px 0;
 }
 .btn{
   font-family: "Open Sans", sans-serif;
