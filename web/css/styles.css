@@ -91,10 +91,8 @@ nav{
   z-index: 9999;
 
 }
-#encoding-btns li, #navmenu ul li{
-  margin: 10px 0px;
-  list-style: none;
-  position:relative;
+#query-encoding-options{
+  margin-left:10px;
 }
 #navmenu ul li a{
   color:black;

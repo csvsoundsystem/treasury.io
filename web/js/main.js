@@ -1,5 +1,4 @@
 $(function() {
-  var ENCODING = false;
   var $query_refresher = $('#query-refresher');
   function bindHandlers(){
       $('#navmenu').scrollSpy()
@@ -14,26 +13,16 @@ $(function() {
           scrollThere(that, e);
       });
 
-      $('#query-string-wrapper .btn').click(function(){
-
-         if ($(this).hasClass('active')){
-          console.log('already active')
+      $("#query-encoding-options input[name='encoding']").change(function(){
+        var query_text = $("#sql").val();
+        var encoding = $(this).val();
+        if(encoding == 'true'){
+           var encoded_text = encodeURI(query_text);
+           $("#sql").val(encoded_text);
          }else{
-           $('#query-string-wrapper .btn').removeClass('active');
-           $(this).addClass('active');
-
-           var query_text = $("#sql").val();
-           ENCODING = $(this).data('encoding');
-
-           if (ENCODING == true){
-             var encoded_text = encodeURI(query_text);
-             $("#sql").val(encoded_text);
-           }else{
-             var unencoded_text = decodeURI(query_text);
-             $("#sql").val(unencoded_text);
-           }
+           var unencoded_text = decodeURI(query_text);
+           $("#sql").val(unencoded_text);
          }
-
       });
 
       $('#query').on('keydown', '.gwt-TextBox', function(){

@@ -46,7 +46,12 @@
               <button id="query-refresher" disabled>Update query text...</button>
               <div id="query-string-wrapper">
                 <fieldset>
-                  <span>SQL Query | View as:* </span>
+                  <span>SQL Query, view as:* </span>
+                  <span id="query-encoding-options">
+                    <input type="radio" name="encoding" value="false" checked>Plain-text
+                    <input type="radio" name="encoding" value="true">URL-Encoded
+                  </span>
+<!-- 
                   <ul id="encoding-btns">
                     <li>
                       <a href="#" data-encoding="false" class="btn active">Plain-text</a>
@@ -54,7 +59,7 @@
                     <li>
                       <a data-encoding="true" class="btn">URL-Encoded</a>
                     </li>
-                  </ul>
+ -->                  </ul>
                   <div id="query-string">
                     <textarea id="sql">Select from the dropdown menu above...</textarea>
                   </div>
@@ -197,6 +202,6 @@ treasury.io('SELECT * FROM sqlite_master')</code></pre>
       <p>Made lovingly by <a href="http://csvsoundsystem.com" target="_blank" class="highlight-link">csv soundsystem</a> in fulfillment of a Code Sprint grant from <a href="http://www.mozillaopennews.org/" target="_blank"  class="highlight-link">knight-mozilla OpenNews</a>.</p><p><a href="http://dansinker.com/post/49856260511/opennews-code-sprints-do-some-spring-cleaning-on-data" target="_blank">Huh?</a></p>
     </footer>
     <script src="web/js/main.js"></script>
-    <script>$('#navmenu').scrollspy();  </script>
+    <script>  </script>
 </body>
 </html>
