@@ -140,6 +140,7 @@
                     <pre><code>import treasuryio
 treasuryio.query('SELECT * FROM sqlite_master')</code></pre>
                   </div>
+                  <p>This package lives <a href="https://github.com/csvsoundsystem/pytreasuryio" target="_blank">here</a>.</p>
                 </li>
                 <li>
                   <h3>R</h3>
@@ -153,6 +154,22 @@ library('Rtreasury.io')</code></pre>
                   <div class="code-container">
                     <pre><code>library('Rtreasury.io')
 treasury.io('SELECT * FROM sqlite_master')</code></pre>
+                  </div>
+                  <p>This package lives <a href="https://github.com/csvsoundsystem/Rtreasury.io" target="_blank">here</a>.</p>
+                </li>
+                <li>
+                  <h3>Node.js</h3>
+                  <p>Install with npm</p>
+                  <div class="code-container">
+                    <pre><code>npm install treasuryiojs</code></pre>
+                  </div>
+                  <p>Send SQL, and get a csv representation of the data.</p>
+                  <div class="code-container">
+                    <pre><code>var treasuryio = require('treasuryio')
+treasuryio('SELECT * FROM t1 LIMIT 10;', function(response){
+    console.log(response);
+});</code></pre>
+                  <p>This module lives <a href="https://github.com/csvsoundsystem/treasuryiojs" target="_blank">here</a>.</p>
                   </div>
                 </li>
                 <li>
