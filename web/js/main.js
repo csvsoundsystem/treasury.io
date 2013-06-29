@@ -63,6 +63,11 @@ $(function() {
         }
       });
 
+      $sql_query_textarea.keyup(function(){
+        var q_string = $sql_query_textarea.val();
+        loadJsonBtnHref(q_string)
+      });
+
   };
   function scrollThere(that, e){
     e.preventDefault();
@@ -91,14 +96,20 @@ $(function() {
           }
 
           query = function(base, out) { return base + encodeURI(sanitize_out(out)); }
+
           if (encoding == 'true'){
             document.getElementById("sql").value = encodeURI(sanitize_out(out));
           }else{
             document.getElementById("sql").value = sanitize_out(out);
           }
-          document.getElementById("download-json").setAttribute('href', query(api_endpoint, out));
+          loadJsonBtnHref(out);
         },
       });
+  };
+
+  function loadJsonBtnHref(q_string){
+    var query = api_endpoint + q_string;
+    document.getElementById("download-json").setAttribute('href', query);
   };
 
   function setDownloadBtn(state){
