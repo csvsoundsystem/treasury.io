@@ -48,10 +48,20 @@ $(function() {
 
       /* DOWNLOAD AS CSV BUTTON BEHAVIOR */
       $download_csv_btn.click(function(){
-        var q = $sql_query_textarea.val();
-        var ajax_img = '<img src="web/images/ajax-loader.gif"/>';
-        $(this).html('Fetching... ' + ajax_img);
-        convertJSONtoCSV(q);
+        if(!$(this).hasClass('disabled')){
+          var q = $sql_query_textarea.val();
+          var ajax_img = '<img src="web/images/ajax-loader.gif"/>';
+          $(this).html('Fetching... ' + ajax_img);
+          convertJSONtoCSV(q);
+        };
+      });
+
+      $download_json_btn.click(function(){
+        if(!$(this).hasClass('disabled')){
+          return true
+        }else{
+          return false
+        }
       });
 
   };
@@ -65,6 +75,8 @@ $(function() {
       RedQueryBuilderFactory.create({
           meta : table_schema,
           onSqlChange : function(sql, args) {
+              $('#builder-btns .btn').removeClass('disabled');
+
               $query_refresher[0].disabled = true;
               var out = sql + '\r\n';
               for (var i = 0; i < args.length; i++) {
