@@ -362,6 +362,7 @@ footer {
 }
 footer p {
   margin-top: 20px;
+  line-height: 2em;
 }
 
 textarea {
