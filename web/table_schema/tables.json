@@ -675,7 +675,7 @@
             "fks": []
         },
         {
-            "labe": "Income Tax Refunds Issued",
+            "label": "Income Tax Refunds Issued",
             "name": "t6",
             "columns": [
                 {
