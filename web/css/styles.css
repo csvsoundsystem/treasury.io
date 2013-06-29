@@ -35,7 +35,6 @@
 #title{
   overflow: hidden;
   filter: glow(color=black,strength=5);
-  /*-webkit-text-stroke: 3px black;*/
   z-index: 5;
   width: 100%;
   display: block;
@@ -100,7 +99,6 @@ nav{
 #section-wrapper{
   margin-top:120px;
   margin-left:240px;
-  /*margin-top: 330px;*/
   font-family: "Open Sans", Helvetica, sans-serif;
 }
 .section{
@@ -125,7 +123,6 @@ h2 a:hover{
 .bullet{
   position:absolute;
   left:-25px;
-  /*display:none;*/
 }
 h2 a:hover .bullet{
   display:block;
