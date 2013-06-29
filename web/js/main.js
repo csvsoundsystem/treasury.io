@@ -1,4 +1,5 @@
 $(function() {
+  var encoding = false;
   var $query_refresher = $('#query-refresher');
   function bindHandlers(){
       $('#navmenu').scrollSpy()
@@ -15,7 +16,7 @@ $(function() {
 
       $("#query-encoding-options input[name='encoding']").change(function(){
         var query_text = $("#sql").val();
-        var encoding = $(this).val();
+        encoding = $(this).val();
         if(encoding == 'true'){
            var encoded_text = encodeURI(query_text);
            $("#sql").val(encoded_text);
@@ -61,7 +62,7 @@ $(function() {
           }
 
           query = function(base, out) { return base + encodeURI(sanitize_out(out)); }
-          if (ENCODING == true){
+          if (encoding == true){
             document.getElementById("sql").value = encodeURI(sanitize_out(out));
           }else{
             document.getElementById("sql").value = sanitize_out(out);
