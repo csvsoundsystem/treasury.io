@@ -92,7 +92,7 @@
             "fks": []
         },
         {
-            "label": "Deposits",
+            "label": "Deposits and Withdrawals",
             "name": "t2",
             "columns": [
                 {
@@ -196,7 +196,7 @@
             "fks": []
         },
         {
-            "label": "Withdrawals",
+            "label": "Public Debt Transactions",
             "name": "t3a",
             "columns": [
                 {
@@ -299,7 +299,7 @@
             "fks": []
         },
         {
-            "label": "Public Debt Transactions",
+            "label": "Adjustment of Public Debt Transactions",
             "name": "t3b",
             "columns": [
                 {
