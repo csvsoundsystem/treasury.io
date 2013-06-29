@@ -113,16 +113,16 @@ $(function() {
 
   function convertJSONtoCSV(query){
     fetchJSON(query).done(function(json){
-      setDownloadBtn('reset');
       var csv = dsv.csv.format(json);
       window.location.href = "data:text/csv," + encodeURIComponent(csv);
     }).fail(function(err){
-      setDownloadBtn('reset');
       if (err.status == 404){
         alert('404 Error. Please recheck your query and make sure everything is spelled correctly.')
       }else{
-        console.log(err.status + ' error: ' + err.statusText)
-      }
+        alert(err.status + ' ' + JSON.stringify(err.responseJSON))
+      };
+    }).always(function(){
+      setDownloadBtn('reset');
     });
   };
 
