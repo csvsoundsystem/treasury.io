@@ -227,11 +227,11 @@ a:hover{
 
 }
 .btn-group .btn {
-  margin-left:20px;
+  margin-left:0 !important;
   display:inline-block;
 }
 .btn-group .btn:first-child{
-  margin-left:0 !important;
+  margin-right: 20px !important;
 }
 #download-csv{
   width:140px;
@@ -390,6 +390,9 @@ textarea:focus{
 }
 
 @media screen and (max-width: 640px) {
+  body{
+    margin:10px;
+  }
   #title, #navmenu {
     position: inherit;
   }
@@ -401,5 +404,12 @@ textarea:focus{
   }
   #section-wrapper {
     margin-left: 0;
+  }
+  #logo .btn{
+    width: 156px;
+    margin: 0 auto;
+  }
+  .btn-group .btn{
+    margin-bottom:10px;
   }
 }

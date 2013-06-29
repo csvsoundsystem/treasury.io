@@ -41,8 +41,20 @@
                     "size": 10
                 },
                 {
+                    "label": "Weekday",
+                    "name": "weekday",
+                    "type": "STRING",
+                    "size": 10
+                },
+                {
                     "label": "Account",
                     "name": "account",
+                    "type": "STRING",
+                    "size": 10
+                },
+                {
+                    "label": "Raw Account",
+                    "name": "account_raw",
                     "type": "STRING",
                     "size": 10
                 },
@@ -81,7 +93,7 @@
         },
         {
             "label": "Deposits",
-            "name": "t2a",
+            "name": "t2",
             "columns": [
                 {
                     "label": "Table",
@@ -120,9 +132,21 @@
                     "size": 10
                 },
                 {
+                    "label": "Weekday",
+                    "name": "weekday",
+                    "type": "NUMERIC",
+                    "size": 10
+                },
+                {
                     "label": "Account",
                     "name": "account",
-                    "type": "NUMERIC",
+                    "type": "STRING",
+                    "size": 10
+                },
+                {
+                    "label": "Raw Account",
+                    "name": "account_raw",
+                    "type": "STRING",
                     "size": 10
                 },
                 {
@@ -206,9 +230,15 @@
                     "size": 10
                 },
                 {
-                    "label": "Weekday",
+                    "label": "Day",
                     "name": "day",
                     "type": "NUMERIC",
+                    "size": 10
+                },
+                {
+                    "label": "Weekday",
+                    "name": "weekday",
+                    "type": "STRING",
                     "size": 10
                 },
                 {
@@ -232,6 +262,12 @@
                 {
                     "label": "Item",
                     "name": "item",
+                    "type": "STRING",
+                    "size": 10
+                },
+                {
+                    "label": "Raw Item",
+                    "name": "item_raw",
                     "type": "STRING",
                     "size": 10
                 },
@@ -297,8 +333,14 @@
                     "size": 10
                 },
                 {
-                    "label": "Weekday",
+                    "label": "Day",
                     "name": "day",
+                    "type": "STRING",
+                    "size": 10
+                },
+                {
+                    "label": "Weekday",
+                    "name": "weekday",
                     "type": "STRING",
                     "size": 10
                 },
@@ -388,8 +430,14 @@
                     "size": 10
                 },
                 {
-                    "label": "Weekday",
+                    "label": "Day",
                     "name": "day",
+                    "type": "NUMERIC",
+                    "size": 10
+                },
+                {
+                    "label": "Weekday",
+                    "name": "weekday",
                     "type": "STRING",
                     "size": 10
                 },
@@ -402,6 +450,12 @@
                 {
                     "label": "Item",
                     "name": "item",
+                    "type": "STRING",
+                    "size": 10
+                },
+                {
+                    "label": "Raw Item",
+                    "name": "item_raw",
                     "type": "STRING",
                     "size": 10
                 },
@@ -473,8 +527,14 @@
                     "size": 10
                 },
                 {
-                    "label": "Weekday",
+                    "label": "Day",
                     "name": "day",
+                    "type": "STRING",
+                    "size": 10
+                },
+                {
+                    "label": "Weekday",
+                    "name": "weekday",
                     "type": "STRING",
                     "size": 10
                 },
@@ -487,6 +547,12 @@
                 {
                     "label": "Classification",
                     "name": "classification",
+                    "type": "STRING",
+                    "size": 10
+                },
+                {
+                    "label": "Raw Classification",
+                    "name": "classification_raw",
                     "type": "STRING",
                     "size": 10
                 },
@@ -556,6 +622,12 @@
                     "name": "day",
                     "type": "STRING",
                     "size": 10
+                }, 
+                {
+                    "label": "Weekday",
+                    "name": "weekday",
+                    "type": "STRING",
+                    "size": 10
                 },
                 {
                     "label": "Type",
@@ -603,7 +675,7 @@
             "fks": []
         },
         {
-            "labe": "Income Tax Refunds Issued",
+            "label": "Income Tax Refunds Issued",
             "name": "t6",
             "columns": [
                 {
@@ -643,6 +715,12 @@
                     "size": 10
                 },
                 {
+                    "label": "Weekday",
+                    "name": "weekday",
+                    "type": "STRING",
+                    "size": 10
+                },
+                {
                     "label": "Type",
                     "name": "type",
                     "type": "NUMERIC",
@@ -651,6 +729,12 @@
                 {
                     "label": "Classification",
                     "name": "classification",
+                    "type": "STRING",
+                    "size": 10
+                },
+                {
+                    "label": "Raw Classification",
+                    "name": "classification_raw",
                     "type": "STRING",
                     "size": 10
                 },
