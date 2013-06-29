@@ -92,7 +92,6 @@ $(function() {
 
           query = function(base, out) { return base + encodeURI(sanitize_out(out)); }
           if (encoding == 'true'){
-            console.log(encodeURI(sanitize_out(out)))
             document.getElementById("sql").value = encodeURI(sanitize_out(out));
           }else{
             document.getElementById("sql").value = sanitize_out(out);
