@@ -1,5 +1,5 @@
 $(function() {
-  var encoding = false,
+  var encoding = 'false',
       api_endpoint = 'https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=',
       $query_refresher = $('#query-refresher'),
       $download_csv_btn = $('#download-csv'),
@@ -80,7 +80,8 @@ $(function() {
           }
 
           query = function(base, out) { return base + encodeURI(sanitize_out(out)); }
-          if (encoding == true){
+          if (encoding == 'true'){
+            console.log(encodeURI(sanitize_out(out)))
             document.getElementById("sql").value = encodeURI(sanitize_out(out));
           }else{
             document.getElementById("sql").value = sanitize_out(out);
