@@ -85,10 +85,12 @@ $(function() {
           fetchJSON(q).done(function(results){
             setDownloadBtn('reset', $download_browser_btn, before_text);
             trackQuery('browser', results.length)
-            $('#results').html('')
+            $('#results').html('<img src="web/images/ajax-loader.gif"/>')
+            $('#results-container').show()
             if (results.length === 0) {
               $('#results').html('No results found')
             } else {
+              $('#results').html('')
               $('#results').append('<thead></thead><tbody></tbody>')
               var columnNames = Object.keys(results[0])
               $('#results thead').append(columnNames.map(function(columnName){return '<th>' + columnName + '</th>'}).join(''))

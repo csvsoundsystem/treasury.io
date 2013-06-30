@@ -64,7 +64,7 @@
                 </fieldset>
               </div>
             <div id="builder-btns" class="btn-group">
-              <a class="btn disabled piwik_ignore" id="download-browser" href="#" style="display: none;">View</a>
+              <a class="btn disabled piwik_ignore" id="download-browser" href="#">View</a>
               <a class="btn disabled piwik_ignore" id="download-json" target="_blank" href="#">Download JSON</a>
               <a class="btn disabled piwik_ignore download-as-csv-btn" id="download-csv" href="#" data-query-link="">Download CSV</a>
             </div>
@@ -72,8 +72,10 @@
                 <p>Note: If using "is before" or "is after" for "Date" field, make sure your dates is in YYYY-MM-DD format (<a href="" target="_blank">ISO-8601</a>).</p>
                 <p>*All queries are URL-encoded when you select "View JSON" or "Download .CSV." Use these buttons as a shortcut when accessing the API programatically or for testing.</p>
             </div>
-        <table id="results"></table>
         </div>
+      </div>
+      <div id="results-container" class="section" style="display: none;">
+        <table id="results"></table>
       </div>
           <div class="section" id="about">
             <h2><a href="#about"><span class="bullet">$</span> <span class="internal-link">About</span></a></h2>

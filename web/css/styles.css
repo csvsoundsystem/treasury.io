@@ -289,7 +289,7 @@ form {
 }
 
 
-#builder {
+#builder, #results {
   background: rgba(255,255,255,.5);
   padding: 20px;
   color: #000;
