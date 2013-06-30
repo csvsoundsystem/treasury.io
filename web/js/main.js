@@ -12,12 +12,14 @@ $(function() {
       /* NAV MENU BEHAVIOR */
       $('#navmenu').scrollSpy()
 
-      $('#navmenu ul li a').on('click', function(e) {
+      function scroll(e) {
           var that = this;
           scrollThere(that, e);
-      });
+      }
+      /* $('#navmenu ul li a').click(scroll); */
+      $('#navmenu ul li a').mousedown(scroll);
 
-      $('h2 a').on('click', function(e) {
+      $('h2 a').click(function(e) {
           var that = this;
           scrollThere(that, e);
       });
