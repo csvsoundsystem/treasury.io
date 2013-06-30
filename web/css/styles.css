@@ -287,12 +287,16 @@ code {
 form {
   padding: 20px;
 }
-
-
 #builder, #results {
   background: rgba(255,255,255,.5);
   padding: 20px;
   color: #000;
+}
+#results thead tr, #results tbody tr:nth-child(odd) {
+  background-color: rgba(255,255,255,.5);
+}
+#results thead tr, #results tbody tr:nth-child(even) {
+  background-color: white;
 }
 #query-string {
   margin-top:3px;

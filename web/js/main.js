@@ -93,7 +93,7 @@ $(function() {
               $('#results').html('')
               $('#results').append('<thead></thead><tbody></tbody>')
               var columnNames = Object.keys(results[0])
-              $('#results thead').append(columnNames.map(function(columnName){return '<th>' + columnName + '</th>'}).join(''))
+              $('#results thead').append('<tr>' + columnNames.map(function(columnName){return '<th>' + columnName + '</th>'}).join('') + '</tr>')
               $('#results tbody').html(results.map(function(row){
                 return '<tr>' + columnNames.map(function(columnName){
                   return '<td>' + row[columnName] + '</td>'
