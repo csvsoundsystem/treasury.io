@@ -182,21 +182,14 @@ h3 {
   -webkit-box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
   box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
 }
-.section pre a:hover{
+/*.section pre a:hover{
   background-color: transparent;
 }
-a code{
-  color: #0092D6;
-  text-decoration: none;
-}
-.section a:hover code{
-  text-decoration: underline;
-}
+*/
 a {
   text-decoration: none;
   color: #FFFFAE;
 }
-
 .section a{
   text-decoration: underline;
 }
@@ -205,6 +198,14 @@ a {
   color: #000;
   text-decoration: none;
 }
+.section pre a, .section pre a code{
+  color: #0092D6 !important;
+  text-decoration: none;
+}
+.section pre a:hover{
+  text-decoration: underline;
+}
+
 .section h2 a, .btn-group a {
   text-decoration: none;
 }
@@ -272,23 +273,21 @@ li#logo{
   padding: 0;
   height: 148px;
 }
-
+pre, code.inline-code{
+  padding: 5px;
+  background-color: #F8F8F8;
+  border: 1px solid #747474;
+}
+code.inline-code{
+  padding: 2px !important;
+}
 code {
-  color: #505050;
-  margin: 0 2px;
-  padding: 1px 4px;
-  border: 1px solid #707070;
-  background-color: #fff;
-  border-radius: 3px;
-  max-width:100%;
-  overflow-x:auto;
-  display:inline-block;
-  line-height:15px;
-  font-family: Courier, monospace;
+  font-family: 'Courier', monospace;
 }
 form {
   padding: 20px;
 }
+
 
 #builder {
   background: rgba(255,255,255,.5);

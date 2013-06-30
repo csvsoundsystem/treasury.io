@@ -13,9 +13,13 @@
     <script src="web/js/thirdparty/jquery.scrollTo-min.js"></script>
     <!-- RED QUERY -->
     <script src="web/RedQueryBuilder/RedQueryBuilder.nocache.js"></script>
-    <link href="web/RedQueryBuilder/gwt/dark/dark.css" rel="stylesheet" type="text/css" />
+    <link href="web/RedQueryBuilder/gwt/dark/dark.css" rel="stylesheet" type="text/css">
     <script src="web/RedQueryBuilder/RedQueryBuilderFactory.nocache.js"></script>
     <!-- end red query -->
+    <!-- SYNTAX HIGHLIGHTING -->
+    <link href="web/css/thirdparty/rainbow.github.css" rel="stylesheet" type="text/css">
+    <script src="web/js/thirdparty/rainbow-custom.min.js"></script>
+    <!-- end syntax highlighting -->
     <link href="web/css/reset.css" rel='stylesheet' type='text/css'/>
     <link href="web/css/styles.css" rel='stylesheet' type='text/css'/>
 </head>
@@ -107,14 +111,14 @@
               download the full table as CSV.
             </p>
             <ul class="tables">
-                <li>I. Operating Cash Balance <code>t1</code> (<a href="http://jsonadapter.herokuapp.com/?q=SELECT%20*%20FROM%20t1%20LIMIT%2010;" target="_blank">preview</a>, <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_i.csv" target="_blank">full</a>)</li>
-              <li>II. Deposits and Withdrawals <code>t2</code> (<a href="http://jsonadapter.herokuapp.com/?q=SELECT%20*%20FROM%20t2%20LIMIT%2010;" target="_blank">preview</a>, <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_ii.csv" target="_blank">full</a>)</li>
-              <li>IIIa. Public Debt Transactions <code>t3a</code> (<a href="http://jsonadapter.herokuapp.com/?q=SELECT%20*%20FROM%20t3a%20LIMIT%2010;" target="_blank">preview</a>, <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_iii_a.csv" target="_blank">full</a>)</li>
-              <li>IIIb. Adjustment of Public Dept Transactions to Cash Basis <code>t3b</code> (<a href="http://jsonadapter.herokuapp.com/?q=SELECT%20*%20FROM%20t3b%20LIMIT%2010;" target="_blank">preview</a> <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_iii_b.csv" target="_blank">full</a>)</li>
-              <li>IIIc. Debt Subject to Limit <code>t3c</code> (<a href="http://jsonadapter.herokuapp.com/?q=SELECT%20*%20FROM%20t3c%20LIMIT%2010;" target="_blank">preview</a>, <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_iii_c.csv" target="_blank">full</a>)</li>
-              <li>IV. Federal Tax Deposits <code>t4</code> (<a href="http://jsonadapter.herokuapp.com/?q=SELECT%20*%20FROM%20t4%20LIMIT%2010;" target="_blank">preview</a>, <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_iv.csv" target="_blank">full</a>)</li>
-              <li>V. Short-term Cash Investments <code>t5</code> (<a href="http://jsonadapter.herokuapp.com/?q=SELECT%20*%20FROM%20t5%20LIMIT%2010;" target="_blank">preview</a>, <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_v.csv" target="_blank">full</a>)</li>
-              <li>VI. Incom Tax Refunds Issued <code>t6</code> (<a href="http://jsonadapter.herokuapp.com/?q=SELECT%20*%20FROM%20t6%20LIMIT%2010;" target="_blank">preview</a>, <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_vi.csv" target="_blank">full</a>)</li>
+                <li>I. Operating Cash Balance <code class="inline-code">t1</code> (<a href="http://jsonadapter.herokuapp.com/?q=SELECT%20*%20FROM%20t1%20LIMIT%2010;" target="_blank">preview</a>, <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_i.csv" target="_blank">full</a>)</li>
+              <li>II. Deposits and Withdrawals <code class="inline-code">t2</code> (<a href="http://jsonadapter.herokuapp.com/?q=SELECT%20*%20FROM%20t2%20LIMIT%2010;" target="_blank">preview</a>, <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_ii.csv" target="_blank">full</a>)</li>
+              <li>IIIa. Public Debt Transactions <code class="inline-code">t3a</code> (<a href="http://jsonadapter.herokuapp.com/?q=SELECT%20*%20FROM%20t3a%20LIMIT%2010;" target="_blank">preview</a>, <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_iii_a.csv" target="_blank">full</a>)</li>
+              <li>IIIb. Adjustment of Public Dept Transactions to Cash Basis <code class="inline-code">t3b</code> (<a href="http://jsonadapter.herokuapp.com/?q=SELECT%20*%20FROM%20t3b%20LIMIT%2010;" target="_blank">preview</a> <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_iii_b.csv" target="_blank">full</a>)</li>
+              <li>IIIc. Debt Subject to Limit <code class="inline-code">t3c</code> (<a href="http://jsonadapter.herokuapp.com/?q=SELECT%20*%20FROM%20t3c%20LIMIT%2010;" target="_blank">preview</a>, <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_iii_c.csv" target="_blank">full</a>)</li>
+              <li>IV. Federal Tax Deposits <code class="inline-code">t4</code> (<a href="http://jsonadapter.herokuapp.com/?q=SELECT%20*%20FROM%20t4%20LIMIT%2010;" target="_blank">preview</a>, <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_iv.csv" target="_blank">full</a>)</li>
+              <li>V. Short-term Cash Investments <code class="inline-code">t5</code> (<a href="http://jsonadapter.herokuapp.com/?q=SELECT%20*%20FROM%20t5%20LIMIT%2010;" target="_blank">preview</a>, <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_v.csv" target="_blank">full</a>)</li>
+              <li>VI. Incom Tax Refunds Issued <code class="inline-code">t6</code> (<a href="http://jsonadapter.herokuapp.com/?q=SELECT%20*%20FROM%20t6%20LIMIT%2010;" target="_blank">preview</a>, <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_vi.csv" target="_blank">full</a>)</li>
             </ul>
             <p>You can also download the <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/treasury_data.db" target="_blank">full SQLite3 database</a>, with all of the tables.</p>
           </div>
@@ -122,8 +126,8 @@
               <h2><a href="#usage"><span class="bullet">$</span> <span class="internal-link">Usage</span></a></h2>
               <p>The eight tables are stored in one SQLite database. Query it from a URL like this:</p>
               <pre><code>https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=YOUR_QUERY</code></pre>
-              <p>where <code>YOUR_QUERY</code> is a URL-encoded SQL command. For example, you can see the database schema like so.</p>
-              <pre><a target="_blank" href='https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20"name","sql"%20FROM%20sqlite_master'><code>https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20"name","sql"%20FROM%20sqlite_master</code></a></pre>
+              <p>where <code class="inline-code">YOUR_QUERY</code> is a URL-encoded SQL command. For example, you can see the database schema like so.</p>
+              <pre><a target="_blank" href='https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20"name","sql"%20FROM%20sqlite_master'><code>https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT "name","sql" FROM sqlite_master</code></a></pre>
               <h3>Host it yourself</h3>
               <p>If you want to install the database locally, follow the instructions on <a href="http://github.com/csvsoundsystem/fms_parser" target="_blank">the GitHub page</a></p>
           </div>
@@ -134,12 +138,12 @@
                   <h3>Python</h3>
                   <p>Install with pip.</p>
                   <div class="code-container">
-                    <pre><code>pip install treasuryio</code></pre>
+                    <pre><code data-language="shell">pip install treasuryio</code></pre>
                   </div>
-                  <p>Alternatively, copy the <code>query</code> function from <a href="https://github.com/csvsoundsystem/pytreasuryio/blob/master/treasuryio/query.py" target="_blank">here</a>.</p>
+                  <p>Alternatively, copy the <code class="inline-code">query</code> function from <a href="https://github.com/csvsoundsystem/pytreasuryio/blob/master/treasuryio/query.py" target="_blank">here</a>.</p>
                   <p>Send SQL, and get a pandas DataFrame.</p>
                   <div class="code-container">
-                    <pre><code>import treasuryio
+                    <pre><code data-language="python">import treasuryio
 treasuryio.query('SELECT * FROM sqlite_master')</code></pre>
                   </div>
                   <p>This package lives <a href="https://github.com/csvsoundsystem/pytreasuryio" target="_blank">here</a>.</p>
@@ -147,14 +151,14 @@ treasuryio.query('SELECT * FROM sqlite_master')</code></pre>
                 <li>
                   <h3>R</h3>
                   <div class="code-container">
-                    <pre><code>library('devtools')
+                    <pre><code data-language="r">library('devtools')
 install_github('Rtreasury.io', 'csvsoundsystem')
 library('Rtreasury.io')</code></pre>
                   </div>
-                  <p>Alternatively, copy the <code>treasury.io</code> function from <a href="https://github.com/csvsoundsystem/Rtreasury.io/blob/master/R/treasury.io.R" target="_blank">here</a>.</p>
+                  <p>Alternatively, copy the <code class="inline-code">treasury.io</code> function from <a href="https://github.com/csvsoundsystem/Rtreasury.io/blob/master/R/treasury.io.R" target="_blank">here</a>.</p>
                   <p>Send SQL, and get a data.frame.</p>
                   <div class="code-container">
-                    <pre><code>library('Rtreasury.io')
+                    <pre><code data-language="r">library('Rtreasury.io')
 treasury.io('SELECT * FROM sqlite_master')</code></pre>
                   </div>
                   <p>This package lives <a href="https://github.com/csvsoundsystem/Rtreasury.io" target="_blank">here</a>.</p>
@@ -163,11 +167,11 @@ treasury.io('SELECT * FROM sqlite_master')</code></pre>
                   <h3>Node.js</h3>
                   <p>Install with npm</p>
                   <div class="code-container">
-                    <pre><code>npm install treasuryiojs</code></pre>
+                    <pre><code data-language="shell">npm install treasuryiojs</code></pre>
                   </div>
                   <p>Send SQL, and get a csv representation of the data.</p>
                   <div class="code-container">
-                    <pre><code>var treasuryio = require('treasuryio')
+                    <pre><code data-language="javascript">var treasuryio = require('treasuryio')
 treasuryio('SELECT * FROM t1 LIMIT 10;', function(response){
     console.log(response);
 });</code></pre>
@@ -178,7 +182,7 @@ treasuryio('SELECT * FROM t1 LIMIT 10;', function(response){
                   <h3>Google Docs</h3>
                   <div class="code-container">
                     <p>Paste this function into the script editor. (Or wait a bit; we've submitted it to the script gallery.)</p>
-                    <pre><code>function treasuryio(sql) {
+                    <pre><code data-language="javascript">function treasuryio(sql) {
   var response = UrlFetchApp.fetch("https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=" + encodeURIComponent(sql));
   var data = JSON.parse(response.getContentText());
 
@@ -193,7 +197,7 @@ treasuryio('SELECT * FROM t1 LIMIT 10;', function(response){
                   </div>
                   <p>Then use it like so</p>
                   <div class="code-container">
-                    <pre><code>=treasuryio("SELECT * FROM t1 limit 10")</code></pre>
+                    <pre><code data-language="javascript">=treasuryio("SELECT * FROM t1 limit 10")</code></pre>
                   </div>
                   <p><a href="https://docs.google.com/spreadsheet/ccc?key=0Avjq7klTEotEdFpIeUR1alE0ai1WdGc0azU5MGNLVXc&usp=sharing" target="_blank">Here's</a> an example.</p>
                 </li>
