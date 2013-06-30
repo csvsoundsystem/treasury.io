@@ -4,7 +4,8 @@ $(function() {
       $query_refresher = $('#query-refresher'),
       $download_csv_btn = $('#download-csv'),
       $download_json_btn = $('#download-json'),
-      $sql_query_textarea = $('#sql');
+      $sql_query_textarea = $('#sql'),
+      $any_download_as_csv_btn = $('.download-as-csv-btn');
 
   function bindHandlers(){
       /* NAV MENU BEHAVIOR */
@@ -47,14 +48,19 @@ $(function() {
       });
 
       /* DOWNLOAD AS CSV BUTTON BEHAVIOR */
-      $download_csv_btn.click(function(){
+      $any_download_as_csv_btn.click(function(e){
+        if($(this).attr('href') == '#'){
+          e.preventDefault();
+        };
         if(!$(this).hasClass('disabled')){
-          var q = $sql_query_textarea.val();
-          setDownloadBtn('fetch');
-          convertJSONtoCSV(q);
+          var q = $(this).attr('data-query-link');
+          var before_text = $(this).html();
+          setDownloadBtn('fetch', $(this));
+          convertJSONtoCSV(q, $(this), before_text);
         };
       });
 
+      // Disable button if it has a disable class
       $download_json_btn.click(function(){
         if(!$(this).hasClass('disabled')){
           return true
@@ -65,14 +71,13 @@ $(function() {
 
       $sql_query_textarea.keyup(function(){
         var q_string = $sql_query_textarea.val();
-        loadJsonBtnHref(q_string)
+        loadBtnAttrsWithQueryLink(q_string)
       });
 
   };
   function scrollThere(that, e){
     e.preventDefault();
     target = that.hash;
-    console.log(that.hash);
     $.scrollTo(target, 300, {offset:-10});
   }
   function initRedQuery(table_schema){
@@ -102,44 +107,44 @@ $(function() {
           }else{
             document.getElementById("sql").value = sanitize_out(out);
           }
-          loadJsonBtnHref(sanitize_out(out));
+          loadBtnAttrsWithQueryLink(sanitize_out(out));
         },
       });
   };
 
-  function loadJsonBtnHref(q_string){
+  function loadBtnAttrsWithQueryLink(q_string){
     var query = api_endpoint + q_string;
-    console.log(query)
-    document.getElementById("download-json").setAttribute('href', query);
+    $download_json_btn.attr('href', query);
+    $download_csv_btn.attr('data-query-link', query);
   };
 
-  function setDownloadBtn(state){
+  function setDownloadBtn(state, $this, before_text){
     if (state == 'fetch'){
       var ajax_img = '<img src="web/images/ajax-loader.gif"/>';
-      $(this).html('Fetching... ' + ajax_img);
+      $this.html('Fetching... ' + ajax_img).addClass('disabled');
     }else{
-      $download_csv_btn.html('Download .csv');
+      $this.html(before_text).removeClass('disabled');
     }
   }
 
-  function convertJSONtoCSV(query){
+  function convertJSONtoCSV(query, $this, before_text){
     fetchJSON(query).done(function(json){
+      setDownloadBtn('reset', $this, before_text);
       var csv = dsv.csv.format(json);
       window.location.href = "data:text/csv," + encodeURIComponent(csv);
     }).fail(function(err){
+      setDownloadBtn('reset', $this, before_text);
       if (err.status == 404){
         alert('404 Error. Please recheck your query and make sure everything is spelled correctly.')
       }else{
         alert(err.status + ' ' + JSON.stringify(err.responseJSON))
       };
-    }).always(function(){
-      setDownloadBtn('reset');
-    });
+    })
   };
 
   function fetchJSON(query){
     return $.ajax({
-      url: api_endpoint + query
+      url: query
     });
   };
 

@@ -193,10 +193,13 @@ a {
 .section a{
   text-decoration: underline;
 }
-.section a:hover{
+.section a:hover, .section a.disabled{
   background-color: #FFF;
   color: #000;
   text-decoration: none;
+}
+.section a.disabled:hover{
+  cursor: default !important;
 }
 .section pre a, .section pre a code{
   color: #0092D6 !important;
@@ -236,7 +239,7 @@ a:hover{
 #download-csv{
   width:140px;
 }
-#download-csv img{
+.download-as-csv-btn img{
   position: relative;
   top: 3px;
 }
