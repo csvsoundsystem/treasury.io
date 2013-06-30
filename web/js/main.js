@@ -12,16 +12,16 @@ $(function() {
       /* NAV MENU BEHAVIOR */
       $('#navmenu').scrollSpy()
 
-      function scroll(e) {
+      $('#navmenu ul li a').mousedown(function(e) {
           var that = this;
           scrollThere(that, e);
-      }
-      /* $('#navmenu ul li a').click(scroll); */
-      $('#navmenu ul li a').mousedown(scroll);
+          return false;
+      });
 
-      $('h2 a').click(function(e) {
+      $('h2 a').mousedown(function(e) {
           var that = this;
           scrollThere(that, e);
+          return false;
       });
 
       /* QUERY BOX BEHAVIOR */
@@ -51,7 +51,7 @@ $(function() {
       });
 
       /* DOWNLOAD AS CSV BUTTON BEHAVIOR */
-      $any_download_as_csv_btn.click(function(e){
+      $any_download_as_csv_btn.mousedown(function(e){
         if($(this).attr('href') == '#'){
           e.preventDefault();
         };
@@ -62,19 +62,18 @@ $(function() {
           setDownloadBtn('fetch', $(this));
           convertJSONtoCSV(q, $(this), before_text);
         };
+        return false;
       });
 
       // Disable button if it has a disable class
-      $download_json_btn.click(function(){
+      $download_json_btn.mousedown(function(e){
         if(!$(this).hasClass('disabled')){
           trackQuery('json')
-          return true
-        }else{
-          return false
         }
-      });
+        return false
+      })
 
-      $download_browser_btn.click(function(){
+      $download_browser_btn.mousedown(function(){
         if(!$(this).hasClass('disabled')){
           var q = $('#download-csv').attr('data-query-link');
           var before_text = $(this).html()
@@ -103,10 +102,8 @@ $(function() {
               alert(err.status + ' ' + JSON.stringify(err.responseJSON))
             };
           })
-          return true
-        }else{
-          return false
         }
+        return false
       });
 
       $sql_query_textarea.keyup(function(){
@@ -208,6 +205,5 @@ $(function() {
     initRedQuery(table_schema);
     bindHandlers();
   });
-
 
 });
