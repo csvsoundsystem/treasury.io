@@ -219,5 +219,23 @@ treasuryio('SELECT * FROM t1 LIMIT 10;', function(response){
       <p>Made lovingly by <a href="http://csvsoundsystem.com" target="_blank" class="highlight-link">csv soundsystem</a> with help from <a href="http://www.mozillaopennews.org/" target="_blank"  class="highlight-link">knight-mozilla OpenNews</a>.</p><p><a href="http://dansinker.com/post/49856260511/opennews-code-sprints-do-some-spring-cleaning-on-data" target="_blank">Huh?</a></p>
     </footer>
     <script src="web/js/main.js"></script>
+    <!-- Piwik -->
+    <script type="text/javascript">
+      var _paq = _paq || [];
+      _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+      _paq.push(["setCookieDomain", "*.treasury.io"]);
+      _paq.push(["setDomains", ["*.treasury.io"]]);
+      _paq.push(["trackPageView"]);
+      _paq.push(["enableLinkTracking"]);
+
+      (function() {
+        var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.thomaslevine.com/";
+        _paq.push(["setTrackerUrl", u+"piwik.php"]);
+        _paq.push(["setSiteId", "21"]);
+        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <!-- End Piwik Code -->
 </body>
 </html>
