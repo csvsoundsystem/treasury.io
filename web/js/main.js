@@ -67,9 +67,13 @@ $(function() {
 
       // Disable button if it has a disable class
       $download_json_btn.mousedown(function(e){
+        e.preventDefault()
         if(!$(this).hasClass('disabled')){
           trackQuery('json')
         }
+        setTimeout( /* sorry */ function(){
+          window.open(e.target.href, '_blank')
+        }, 500)
         return false
       })
 
