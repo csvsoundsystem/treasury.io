@@ -13,7 +13,11 @@ $(function() {
       $('#navmenu').scrollSpy()
 
       $('#navmenu ul li a').mousedown(function(e) {
-          var that = this;
+          if ($(that).id() == 'logo'){
+            var that = $('#navmenu a[href="#query"]')[0]
+          } else {
+            var that = this;
+          }
           scrollThere(that, e);
           return false;
       });
