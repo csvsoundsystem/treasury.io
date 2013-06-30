@@ -53,6 +53,7 @@ $(function() {
           e.preventDefault();
         };
         if(!$(this).hasClass('disabled')){
+          trackQuery()
           var q = $(this).attr('data-query-link');
           var before_text = $(this).html();
           setDownloadBtn('fetch', $(this));
@@ -63,6 +64,7 @@ $(function() {
       // Disable button if it has a disable class
       $download_json_btn.click(function(){
         if(!$(this).hasClass('disabled')){
+          trackQuery()
           return true
         }else{
           return false
@@ -75,6 +77,23 @@ $(function() {
       });
 
   };
+
+  function trackQuery(result_count){
+    if (typeof(result_count) == 'undefined') {
+      var result_count = false;
+    }
+
+    // Track
+    if (encoding == 'true'){
+      var url = decodeURI($('#sql').val())
+    }else{
+      var url = $('#sql').val()
+    }
+    var sql = url.replace('https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=', '')
+    console.log(sql)
+    _paq.push(['trackSiteSearch', q, /* category */ false, result_count]);
+  }
+
   function scrollThere(that, e){
     e.preventDefault();
     target = that.hash;
