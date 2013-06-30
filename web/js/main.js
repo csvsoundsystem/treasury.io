@@ -2,6 +2,7 @@ $(function() {
   var encoding = 'false',
       api_endpoint = 'https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=',
       $query_refresher = $('#query-refresher'),
+      $download_browser_btn = $('#download-browser'),
       $download_csv_btn = $('#download-csv'),
       $download_json_btn = $('#download-json'),
       $sql_query_textarea = $('#sql'),
@@ -65,6 +66,41 @@ $(function() {
       $download_json_btn.click(function(){
         if(!$(this).hasClass('disabled')){
           trackQuery('json')
+          return true
+        }else{
+          return false
+        }
+      });
+
+      $download_browser_btn.click(function(){
+        if(!$(this).hasClass('disabled')){
+          var q = $('#download-csv').attr('data-query-link');
+          var before_text = $(this).html()
+          setDownloadBtn('fetch', $(this));
+          fetchJSON(q).done(function(results){
+            setDownloadBtn('reset', $download_browser_btn, before_text);
+            trackQuery('browser', results.length)
+            $('#results').html('')
+            if (results.length === 0) {
+              $('#results').html('No results found')
+            } else {
+              $('#results').append('<thead></thead><tbody></tbody>')
+              var columnNames = Object.keys(results[0])
+              $('#results thead').append(columnNames.map(function(columnName){return '<th>' + columnName + '</th>'}).join(''))
+              $('#results tbody').html(results.map(function(row){
+                return '<tr>' + columnNames.map(function(columnName){
+                  return '<td>' + row[columnName] + '</td>'
+                }).join('') + '</tr>'
+              }).join(''))
+            }
+          }).fail(function(err){
+            setDownloadBtn('reset', $(this), before_text);
+            if (err.status == 404){
+              alert('404 Error. Please recheck your query and make sure everything is spelled correctly.')
+            }else{
+              alert(err.status + ' ' + JSON.stringify(err.responseJSON))
+            };
+          })
           return true
         }else{
           return false
