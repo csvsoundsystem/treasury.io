@@ -414,4 +414,10 @@ textarea:focus{
   .btn-group .btn{
     margin-bottom:10px;
   }
+  #logo {
+    display: none;
+  }
+  #title {
+    padding-left: 0;
+  }
 }
