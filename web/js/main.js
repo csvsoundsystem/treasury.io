@@ -13,7 +13,7 @@ $(function() {
       $('#navmenu').scrollSpy()
 
       $('#navmenu ul li a').mousedown(function(e) {
-          if ($(that).id() == 'logo'){
+          if ($(that).attr('id') == 'logo'){
             var that = $('#navmenu a[href="#query"]')[0]
           } else {
             var that = this;
