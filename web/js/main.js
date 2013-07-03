@@ -137,7 +137,7 @@ $(function() {
   function scrollThere(that, e){
     e.preventDefault();
     target = that.hash;
-    $.scrollTo(target, 300, {offset:-10});
+    $.scrollTo(target, 300);
   }
   function initRedQuery(table_schema){
       RedQueryBuilderFactory.create({
