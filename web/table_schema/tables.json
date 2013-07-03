@@ -53,37 +53,37 @@
                     "size": 10
                 },
                 {
-                    "label": "Raw Account",
+                    "label": "Account raw",
                     "name": "account_raw",
                     "type": "STRING",
                     "size": 10
                 },
                 {
-                    "label": "Is Total?",
+                    "label": "Is total?",
                     "name": "is_total",
-                    "type": "STRING",
+                    "type": "NUMERIC",
                     "size": 10
                 },
                 {
-                    "label": "Close Today",
+                    "label": "Close today",
                     "name": "close_today",
                     "type": "NUMERIC",
                     "size": 10
                 },
                 {
-                    "label": "Open Today",
+                    "label": "Open today",
                     "name": "open_today",
                     "type": "NUMERIC",
                     "size": 10
                 },
                 {
-                    "label": "Open Month",
+                    "label": "Open month",
                     "name": "open_mo",
                     "type": "NUMERIC",
                     "size": 10
                 },
                 {
-                    "label": "Open Year",
+                    "label": "Open year",
                     "name": "open_fy",
                     "type": "NUMERIC",
                     "size": 10
@@ -108,7 +108,7 @@
                     "size": 10
                 },
                 {
-                    "label": "Year-Month",
+                    "label": "Year-month",
                     "name": "year_month",
                     "type": "STRING",
                     "size": 10
@@ -134,18 +134,12 @@
                 {
                     "label": "Weekday",
                     "name": "weekday",
-                    "type": "NUMERIC",
+                    "type": "STRING",
                     "size": 10
                 },
                 {
                     "label": "Account",
                     "name": "account",
-                    "type": "STRING",
-                    "size": 10
-                },
-                {
-                    "label": "Raw Account",
-                    "name": "account_raw",
                     "type": "STRING",
                     "size": 10
                 },
@@ -156,21 +150,33 @@
                     "size": 10
                 },
                 {
-                    "label": "Subtype",
-                    "name": "subtype",
-                    "type": "STRING",
-                    "size": 10
-                },
-                {
                     "label": "Item",
                     "name": "item",
                     "type": "STRING",
                     "size": 10
                 },
                 {
-                    "label": "Is Total?",
-                    "name": "is_total",
+                    "label": "Item raw",
+                    "name": "item_raw",
                     "type": "STRING",
+                    "size": 10
+                },
+                {
+                    "label": "Subitem",
+                    "name": "subitem",
+                    "type": "STRING",
+                    "size": 10
+                },
+                {
+                    "label": "Subitem raw",
+                    "name": "subitem_raw",
+                    "type": "STRING",
+                    "size": 10
+                },
+                {
+                    "label": "Is total?",
+                    "name": "is_total",
+                    "type": "NUMERIC",
                     "size": 10
                 },
                 {
@@ -180,13 +186,13 @@
                     "size": 10
                 },
                 {
-                    "label": "Month-To-Date",
+                    "label": "Month-to-date",
                     "name": "mtd",
                     "type": "NUMERIC",
                     "size": 10
                 },
                 {
-                    "label": "Year-To-Date",
+                    "label": "Fiscal-year-to-date",
                     "name": "fytd",
                     "type": "NUMERIC",
                     "size": 10
@@ -212,7 +218,7 @@
                     "size": 10
                 },
                 {
-                    "label": "Year-Month",
+                    "label": "Year-month",
                     "name": "year_month",
                     "type": "STRING",
                     "size": 10
@@ -254,27 +260,33 @@
                     "size": 10
                 },
                 {
-                    "label": "Subtype",
-                    "name": "subtype",
-                    "type": "STRING",
-                    "size": 10
-                },
-                {
                     "label": "Item",
                     "name": "item",
                     "type": "STRING",
                     "size": 10
                 },
                 {
-                    "label": "Raw Item",
+                    "label": "Item raw",
                     "name": "item_raw",
+                    "type": "STRING",
+                    "size": 10
+                },
+                {
+                    "label": "Subitem",
+                    "name": "subitem",
+                    "type": "STRING",
+                    "size": 10
+                },
+                {
+                    "label": "Subitem raw",
+                    "name": "subitem_raw",
                     "type": "STRING",
                     "size": 10
                 },
                 {
                     "label": "Is total",
                     "name": "is_total",
-                    "type": "STRING",
+                    "type": "NUMERIC",
                     "size": 10
                 },
                 {
@@ -315,7 +327,7 @@
                     "size": 10
                 },
                 {
-                    "label": "Year-Month",
+                    "label": "Year-month",
                     "name": "year_month",
                     "type": "STRING",
                     "size": 10
@@ -335,18 +347,12 @@
                 {
                     "label": "Day",
                     "name": "day",
-                    "type": "STRING",
+                    "type": "NUMERIC",
                     "size": 10
                 },
                 {
                     "label": "Weekday",
                     "name": "weekday",
-                    "type": "STRING",
-                    "size": 10
-                },
-                {
-                    "label": "Surtype",
-                    "name": "surtype",
                     "type": "STRING",
                     "size": 10
                 },
@@ -357,21 +363,33 @@
                     "size": 10
                 },
                 {
-                    "label": "Subtype",
-                    "name": "subtype",
-                    "type": "STRING",
-                    "size": 10
-                },
-                {
                     "label": "Item",
                     "name": "item",
                     "type": "STRING",
                     "size": 10
                 },
                 {
+                    "label": "Item raw",
+                    "name": "item_raw",
+                    "type": "STRING",
+                    "size": 10
+                },
+                {
+                    "label": "Subitem",
+                    "name": "subtype",
+                    "type": "STRING",
+                    "size": 10
+                },
+                {
+                    "label": "Subitem raw",
+                    "name": "subitem_raw",
+                    "type": "STRING",
+                    "size": 10
+                },
+                {
                     "label": "Is total",
                     "name": "is_total",
-                    "type": "STRING",
+                    "type": "NUMERIC",
                     "size": 10
                 },
                 {
@@ -412,7 +430,7 @@
                     "size": 10
                 },
                 {
-                    "label": "Year-Month",
+                    "label": "Year-month",
                     "name": "year_month",
                     "type": "STRING",
                     "size": 10
@@ -442,19 +460,13 @@
                     "size": 10
                 },
                 {
-                    "label": "Type",
-                    "name": "type",
-                    "type": "NUMERIC",
-                    "size": 10
-                },
-                {
                     "label": "Item",
                     "name": "item",
                     "type": "STRING",
                     "size": 10
                 },
                 {
-                    "label": "Raw Item",
+                    "label": "Item raw",
                     "name": "item_raw",
                     "type": "STRING",
                     "size": 10
@@ -509,8 +521,8 @@
                     "size": 10
                 },
                 {
-                    "label": "Year-Month",
-                    "name": "total",
+                    "label": "Year-month",
+                    "name": "year_month",
                     "type": "STRING",
                     "size": 10
                 },
@@ -529,7 +541,7 @@
                 {
                     "label": "Day",
                     "name": "day",
-                    "type": "STRING",
+                    "type": "NUMERIC",
                     "size": 10
                 },
                 {
@@ -551,7 +563,7 @@
                     "size": 10
                 },
                 {
-                    "label": "Raw Classification",
+                    "label": "Classification raw",
                     "name": "classification_raw",
                     "type": "STRING",
                     "size": 10
@@ -600,7 +612,7 @@
                     "size": 10
                 },
                 {
-                    "label": "Year-Month",
+                    "label": "Year-month",
                     "name": "year_month",
                     "type": "NUMERIC",
                     "size": 10
@@ -620,7 +632,7 @@
                 {
                     "label": "Day",
                     "name": "day",
-                    "type": "STRING",
+                    "type": "NUMERIC",
                     "size": 10
                 }, 
                 {
@@ -648,19 +660,19 @@
                     "size": 10
                 },
                 {
-                    "label": "Depositary Type A",
+                    "label": "Depositary type A",
                     "name": "depositary_type_a",
                     "type": "NUMERIC",
                     "size": 10
                 },
                 {
-                    "label": "Depositary Type B",
+                    "label": "Depositary type B",
                     "name": "depositary_type_b",
                     "type": "NUMERIC",
                     "size": 10
                 },
                 {
-                    "label": "Depositary Type C",
+                    "label": "Depositary type C",
                     "name": "depositary_type_c",
                     "type": "NUMERIC",
                     "size": 10
@@ -691,7 +703,7 @@
                     "size": 10
                 },
                 {
-                    "label": "Year-Month",
+                    "label": "Year-month",
                     "name": "year_month",
                     "type": "STRING",
                     "size": 10
@@ -711,7 +723,7 @@
                 {
                     "label": "Day",
                     "name": "day",
-                    "type": "STRING",
+                    "type": "NUMERIC",
                     "size": 10
                 },
                 {
@@ -723,7 +735,7 @@
                 {
                     "label": "Type",
                     "name": "type",
-                    "type": "NUMERIC",
+                    "type": "STRING",
                     "size": 10
                 },
                 {
@@ -733,7 +745,7 @@
                     "size": 10
                 },
                 {
-                    "label": "Raw Classification",
+                    "label": "Classification raw",
                     "name": "classification_raw",
                     "type": "STRING",
                     "size": 10
@@ -751,13 +763,13 @@
                     "size": 10
                 },
                 {
-                    "label": "Month-to-day",
+                    "label": "Month-to-date",
                     "name": "mtd",
                     "type": "NUMERIC",
                     "size": 10
                 },
                 {
-                    "label": "Fiscal-year-to-day",
+                    "label": "Fiscal-year-to-date",
                     "name": "fytd",
                     "type": "NUMERIC",
                     "size": 10
