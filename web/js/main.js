@@ -170,7 +170,7 @@ $(function() {
           }
           out = out.replace('?', arg)
         }
-        sanitize_out = function(out) { return out.replace(/\"x0\"\.?/g, '').replace(/\n/g,'%20'); }
+        sanitize_out = function(out) { return out.replace(/\"x0\"\.?/g, ''); }
 
         query = function(base, out) { return base + encodeURI(sanitize_out(out)); }
 
@@ -184,8 +184,14 @@ $(function() {
     });
   };
 
+  function sanitizeForBtns(q_string){
+    return q_string.replace(/\n/g,'%20').replace(/%20%20/g,'%20') // Convert line breaks to spaces, avoid double spaces
+  };
+
   function loadBtnAttrsWithQueryLink(q_string){
-    var query = api_endpoint + q_string;
+    var q_string_sanitized = sanitizeForBtns(q_string);
+    var query = api_endpoint + q_string_sanitized;
+    console.log(query)
     $download_json_btn.attr('href', query);
     $download_csv_btn.attr('data-query-link', query);
   };
