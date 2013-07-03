@@ -13,7 +13,12 @@
 p strong{
   font-weight:bold;
 }
-.container-fluid {
+#container-fluid{
+  position: absolute;
+  width: 209px;
+  top: 10px;
+}
+/*.container-fluid {
   padding-right: 20px;
   padding-left: 20px;
   *zoom: 1;
@@ -28,10 +33,10 @@ p strong{
 .container-fluid:after {
   clear: both;
 }
-
+*/
 #hero {
   font-family: "Droid Sans", Helvetica, sans-serif;
-  position:relative;
+  /*position:relative;*/
   z-index:9999;
 }
 #title{
@@ -39,20 +44,21 @@ p strong{
   filter: glow(color=black,strength=5);
   z-index: 5;
   display: block;
-  position: fixed;
-  top: 10px;
+  position: relative;
+  /*top: 10px;*/
   left: 3px;
   letter-spacing: 1px;
   font-size: 30px;
   font-weight: 800;
   text-shadow: 5px 5px #000, 4px 4px #000, 3px 3px #000, 2px 2px #000, 1px 1px #000, -1px -1px 0 #000, -2px -2px 0 #000,  1px -1px 0 #000;
   text-align: left;
-  padding: 20px 5px 20px 10px;
+  padding: 20px 5px 7px 10px;
+  width:200px;
 }
 #subhead {
-  position: fixed;
-  top: 75px;
-  left: 23px;
+  position: relative;
+  top: 8px;
+  left: 11px;
   text-align: center;
   font-size: 11px;
 }
@@ -85,10 +91,11 @@ p strong{
 }
 
 nav{
-  position: fixed;
+  position: relative;
   left: 33px;
-  top:110px;
+  top: 32px;
   z-index: 9999;
+  width:162px;
 
 }
 #query-encoding-options{
@@ -238,6 +245,7 @@ a:hover{
   margin-left:0 !important;
   display:inline-block;
   margin-right: 20px;
+  margin-bottom:10px;
 }
 #download-csv{
   width:140px;
@@ -459,8 +467,17 @@ textarea:focus{
 }
 
 @media screen and (max-width: 640px) {
+  #container-fluid{
+    position: relative;
+  }
+  #container-fluid, nav{
+    width:auto;
+    top: auto;
+    left: auto;
+  }
   #container-fluid, #container-solid{
     margin:10px;
+    min-width: 200px;
   }
   #container-fluid{
     margin-top:40px;
@@ -470,6 +487,7 @@ textarea:focus{
   }
   #title {
     text-align: center;
+    margin: 0 auto;
   }
   #subhead {
     display: none;

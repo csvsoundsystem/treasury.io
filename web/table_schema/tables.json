@@ -87,6 +87,12 @@
                     "name": "open_fy",
                     "type": "NUMERIC",
                     "size": 10
+                },
+                {
+                    "label": "Url",
+                    "name": "url",
+                    "type": "STRING",
+                    "size": 10
                 }
             ],
             "fks": []
@@ -195,6 +201,12 @@
                     "label": "Fiscal-year-to-date",
                     "name": "fytd",
                     "type": "NUMERIC",
+                    "size": 10
+                },
+                {
+                    "label": "Url",
+                    "name": "url",
+                    "type": "STRING",
                     "size": 10
                 }
 
@@ -306,6 +318,12 @@
                     "name": "fytd",
                     "type": "NUMERIC",
                     "size": 10
+                },
+                {
+                    "label": "Url",
+                    "name": "url",
+                    "type": "STRING",
+                    "size": 10
                 }
             ],
             "fks": []
@@ -409,6 +427,12 @@
                     "name": "fytd",
                     "type": "NUMERIC",
                     "size": 10
+                },
+                {
+                    "label": "Url",
+                    "name": "url",
+                    "type": "STRING",
+                    "size": 10
                 }
             ],
             "fks": []
@@ -499,6 +523,12 @@
                     "label": "Open fiscal-year",
                     "name": "open_fy",
                     "type": "NUMERIC",
+                    "size": 10
+                },
+                {
+                    "label": "Url",
+                    "name": "url",
+                    "type": "STRING",
                     "size": 10
                 }
             ],
@@ -591,6 +621,12 @@
                     "name": "fytd",
                     "type": "NUMERIC",
                     "size": 10
+                },
+                {
+                    "label": "Url",
+                    "name": "url",
+                    "type": "STRING",
+                    "size": 10
                 }
             ],
             "fks": []
@@ -682,6 +718,12 @@
                     "name": "total",
                     "type": "NUMERIC",
                     "size": 10
+                },
+                {
+                    "label": "Url",
+                    "name": "url",
+                    "type": "STRING",
+                    "size": 10
                 }
             ],
             "fks": []
@@ -772,6 +814,12 @@
                     "label": "Fiscal-year-to-date",
                     "name": "fytd",
                     "type": "NUMERIC",
+                    "size": 10
+                },
+                {
+                    "label": "Url",
+                    "name": "url",
+                    "type": "STRING",
                     "size": 10
                 }
             ],
