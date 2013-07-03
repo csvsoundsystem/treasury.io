@@ -22,6 +22,10 @@ $(function() {
           return false;
       });
 
+      $('#navmenu ul li a').click(function(e){
+        e.preventDefault();
+      });
+
       $('h2 a').mousedown(function(e) {
           var that = this;
           scrollThere(that, e);
@@ -166,6 +170,7 @@ $(function() {
 
   function scrollThere(that, e){
     e.preventDefault();
+    e.stopPropagation();
     target = that.hash;
     $.scrollTo(target, 300);
   }
