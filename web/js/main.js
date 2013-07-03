@@ -73,8 +73,9 @@ $(function() {
       $download_json_btn.click(function(e){
         if(!$(this).hasClass('disabled')){
           trackQuery('json');
-        };
-        return false
+        }else{
+          return false
+        }
       })
 
       $download_browser_btn.mousedown(function(){
