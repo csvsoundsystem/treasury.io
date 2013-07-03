@@ -59,18 +59,19 @@
                     <input type="radio" name="encoding" value="true">URL-Encoded
                   </span>
                   <div id="query-string">
-                    <textarea id="sql">Select from the dropdown menu above...</textarea>
+                    <textarea id="sql">Select from the dropdown menu above or type your own query...</textarea>
                   </div>
                 </fieldset>
               </div>
             <div id="builder-btns" class="btn-group">
-              <a class="btn disabled piwik_ignore" id="download-browser" href="#" style="display: none;">View</a>
+              <a class="btn disabled piwik_ignore" id="download-browser" href="#">Preview query**</a>
               <a class="btn disabled piwik_ignore" id="download-json" target="_blank" href="#">View JSON</a>
               <a class="btn disabled piwik_ignore download-as-csv-btn" id="download-csv" href="#" data-query-link="">Download CSV</a>
             </div>
             <div id="query-asterisk-field">
                 <p>Note: If using "is before" or "is after" for "Date" field, make sure your dates is in YYYY-MM-DD format (<a href="" target="_blank">ISO-8601</a>).</p>
-                <p>*All queries are URL-encoded when you select "View JSON" or "Download .CSV." Use these buttons as a shortcut when accessing the API programatically or for testing.</p>
+                <p>* All queries are URL-encoded when you select "View JSON" or "Download .CSV." Use these buttons as a shortcut when accessing the API programatically or for testing.</p>
+                <p>** This will put <code class="inline-code">LIMIT 10</code> on the end of your query, so refrain from adding your own <code class="inline-code">LIMIT</code>.</p>
             </div>
         </div>
       </div>

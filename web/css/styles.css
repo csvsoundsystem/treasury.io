@@ -238,7 +238,7 @@ a:hover{
 #download-csv{
   width:140px;
 }
-.download-as-csv-btn img{
+#builder-btns .btn img{
   position: relative;
   top: 3px;
 }

@@ -75,15 +75,17 @@ $(function() {
           trackQuery('json');
         }else{
           return false
-        }
-      })
+        };
+      });
 
+      /* PREVIEW IN BROWSER BUTTON */
       $download_browser_btn.mousedown(function(){
+        var $that = $(this);
         if(!$(this).hasClass('disabled')){
           var q = $('#download-csv').attr('data-query-link');
-          var before_text = $(this).html()
-          setDownloadBtn('fetch', $(this));
-          fetchJSON(q).done(function(results){
+          var before_text = $that.html()
+          setDownloadBtn('fetch', $that);
+          fetchJSON(q + ' LIMIT 10').done(function(results){
             setDownloadBtn('reset', $download_browser_btn, before_text);
             trackQuery('browser', results.length)
             $('#results').html('<img src="web/images/ajax-loader.gif"/>')
@@ -102,15 +104,16 @@ $(function() {
               }).join(''))
             }
           }).fail(function(err){
-            setDownloadBtn('reset', $(this), before_text);
+            setDownloadBtn('reset', $that, before_text);
             if (err.status == 404){
               alert('404 Error. Please recheck your query and make sure everything is spelled correctly.')
             }else{
               alert(err.status + ' ' + JSON.stringify(err.responseJSON))
             };
           })
-        }
-        return false
+        }else{
+          return false
+        };
       });
 
       $sql_query_textarea.keyup(function(){
