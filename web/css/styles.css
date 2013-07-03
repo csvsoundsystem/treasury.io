@@ -212,6 +212,9 @@ a {
 .section h2 a, .btn-group a {
   text-decoration: none;
 }
+.section p{
+  margin-bottom: 10px;
+}
 .btn-group a:hover {
   text-decoration: underline;
 }
@@ -416,8 +419,18 @@ textarea:focus{
 #encoding-btns,#encoding-btns li{
   display:inline;
 }
+#contact ul{
+  margin-bottom:10px;
+}
+#the-robot ul{
+  margin-left: 10px;
+}
+#the-robot ul ul li{
+  list-style: disc inside;
 
-#contact li {
+}
+#the-robot li,#contact li {
+  margin-left: 10px;
   list-style: square inside;
 }
 

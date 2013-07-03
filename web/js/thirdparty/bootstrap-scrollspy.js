@@ -47,7 +47,7 @@
           if (id != '#contact'){
             return $(id).offset().top
           }else{
-            return $(id).offset().top - 500
+            return $(id).offset().top - 275
           };
         })
       }
