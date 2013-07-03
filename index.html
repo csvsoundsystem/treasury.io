@@ -118,7 +118,7 @@
               <pre><code>https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=YOUR_QUERY</code></pre>
               <p>where <code class="inline-code">YOUR_QUERY</code> is a URL-encoded SQL command. This query will show the ten most recent withdrawals.</p>
               <pre><a target="_blank" href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT * FROM t2 WHERE type = 'withdrawal' ORDER BY date DESC LIMIT 10"><code>https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT * FROM t2 WHERE type = 'withdrawal' ORDER BY date DESC LIMIT 10</code></a></pre>
-              <p>Note: We're submitting a plain-text query string because the browser is doing the <a href="http://www.w3schools.com/tags/ref_urlencode.asp" target="_blank">URL-encoding</a> here. The <a href="#libraries" class="smooth-scroll">libraries</a> we've written either do that for you or expect it a URL-encoded query.</p>
+              <p>Note: We're submitting a plain-text query string because the browser is doing the <a href="http://www.w3schools.com/tags/ref_urlencode.asp" target="_blank">URL-encoding</a> here. The <a href="#libraries" class="smooth-scroll">libraries</a> we've written either do that for you or expect it a URL-encoded query, as shown in the examples.</p>
               <p>We also have a sub-domain that you can access nicely from the browser with, <code class="inline-code">http://api.treasury.io/?q=</code>, but we're working on making the redirect play nicer with the various libraries.</p>
               <h3>Host it yourself</h3>
               <p>If you want to install the database locally, follow the instructions on <a href="http://github.com/csvsoundsystem/federal-treasury-api" target="_blank">the GitHub page</a></p>
