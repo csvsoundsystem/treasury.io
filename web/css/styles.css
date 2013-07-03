@@ -417,6 +417,14 @@ textarea:focus{
   overflow: hidden;
 }
 
+.placeholder-textfield{
+  color:black;
+}
+ 
+.placeholder-textfield-active { 
+  color: #303030; 
+}
+
 @media screen and (max-width: 640px) {
   body{
     margin:10px;

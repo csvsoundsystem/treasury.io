@@ -123,8 +123,31 @@ $(function() {
       });
 
       $sql_query_textarea.autogrow();
+      makeTextfieldsPlaceholderable();
 
   };
+
+  function makeTextfieldsPlaceholderable(){
+    /* Clears textfields from helper text on click */
+    /* https://gist.github.com/mhkeller/5827111    */
+    var $textfield = $('.placeholder-textfield');
+ 
+    $textfield.focus(function(srcc){
+        if ($(this).val() == $(this)[0].title){
+            $(this).removeClass("placeholder-textfield-active");
+            $(this).val("");
+        }
+    });
+ 
+    $textfield.blur(function(){
+        if ($(this).val() == ""){
+            $(this).addClass("placeholder-textfield-active");
+            $(this).val($(this)[0].title);
+        }
+    });
+ 
+    $textfield.blur();
+  }
 
   function trackQuery(fileFormat, resultCount){
     if (typeof(resultCount) == 'undefined') {
@@ -191,7 +214,6 @@ $(function() {
   function loadBtnAttrsWithQueryLink(q_string){
     var q_string_sanitized = sanitizeForBtns(q_string);
     var query = api_endpoint + q_string_sanitized;
-    console.log(query)
     $download_json_btn.attr('href', query);
     $download_csv_btn.attr('data-query-link', query);
   };
