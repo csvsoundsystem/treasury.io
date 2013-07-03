@@ -43,7 +43,12 @@
         })
 
         this.offsets = $.map(this.targets, function (id) {
-          return $(id).offset().top
+          /* Sorry */
+          if (id != '#contact'){
+            return $(id).offset().top
+          }else{
+            return $(id).offset().top - 275
+          };
         })
       }
 

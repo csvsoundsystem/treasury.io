@@ -10,6 +10,7 @@
     <script src="web/js/thirdparty/dsv.min.js"></script>
     <script src="web/js/thirdparty/jquery.formalize.min.js"></script>
     <script src="web/js/thirdparty/bootstrap-scrollspy.js"></script>
+    <script src="web/js/thirdparty/jquery.autogrow-textarea.js"></script>
     <script src="web/js/thirdparty/jquery.scrollTo-min.js"></script>
     <!-- RED QUERY -->
     <script src="web/RedQueryBuilder/RedQueryBuilder.nocache.js"></script>
@@ -23,7 +24,7 @@
     <link href="web/css/reset.css" rel='stylesheet' type='text/css'/>
     <link href="web/css/styles.css" rel='stylesheet' type='text/css'/>
 </head>
-<body class="bluedots" data-spy="scroll" data-target="#navmenu" data-offset="80">
+<body class="bluedots">
   <!--[if lt IE 9]>
       <p class="chromeframe" style="margin: 40px auto 0; width: 600px; font-size: 24px; line-height: 1.4em;">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
     <![endif]-->
@@ -37,9 +38,10 @@
                 <li class="nav-item" id="logo"><a class="btn" href="#hero"><img src="web/images/flag.png"></a></li>
                 <li class="nav-item active"><a class="btn" href="#query">Query</a></li>
                 <li class="nav-item"><a class="btn" href="#about">About</a></li>
-                <li class="nav-item"><a class="btn" href="#tables">Tables</a></li>
+                <li class="nav-item"><a class="btn" href="#documentation">The Docs</a></li>
                 <li class="nav-item"><a class="btn" href="#usage">Usage</a></li>
                 <li class="nav-item"><a class="btn" href="#examples">Examples</a></li>
+                <li class="nav-item"><a class="btn" href="#the-robot">The Robot</a></li>
                 <li class="nav-item"><a class="btn" href="#contact">Contact</a></li>
             <ul>
         </nav>
@@ -47,7 +49,7 @@
     <div id="container-solid">
         <div id="section-wrapper">
           <div id="query" class="section">
-            <h2><a href="query"><span class="bullet">$</span> <span class="internal-link">Query builder</span></a></h2>
+            <h2><a href="#query"><span class="bullet">$</span> <span class="internal-link">Query builder</span></a></h2>
             <div id="builder">
               <div id="rqb">&nbsp;</div>
               <button id="query-refresher" disabled>Update query text...</button>
@@ -59,68 +61,57 @@
                     <input type="radio" name="encoding" value="true">URL-Encoded
                   </span>
                   <div id="query-string">
-                    <textarea id="sql">Select from the dropdown menu above...</textarea>
+                    <textarea id="sql" class="placeholder-textfield" title="Select from the dropdown menu above or type your own query..."></textarea>
                   </div>
                 </fieldset>
               </div>
             <div id="builder-btns" class="btn-group">
-              <a class="btn disabled" id="download-json" target="_blank" href="#">View JSON</a>
-              <a class="btn disabled download-as-csv-btn" id="download-csv" href="#" data-query-link="">Download .csv</a>
+              <div id="builder-btns-overlay"></div>
+              <span class="btn disabled piwik_ignore" id="download-browser">Preview query**</span>
+              <a class="btn disabled piwik_ignore" id="download-json" target="_blank" href="#">View JSON</a>
+              <span class="btn disabled piwik_ignore download-as-csv-btn" id="download-csv" data-query-link="">Download CSV</span>
             </div>
             <div id="query-asterisk-field">
                 <p>Note: If using "is before" or "is after" for "Date" field, make sure your dates is in YYYY-MM-DD format (<a href="" target="_blank">ISO-8601</a>).</p>
-                <p>*All queries are URL-encoded when you select "View JSON" or "Download .CSV." Use these buttons as a shortcut when accessing the API programatically or for testing.</p>
+                <p>* All queries are URL-encoded when you select "View JSON" or "Download .CSV." Use these buttons as a shortcut when accessing the API programatically or for testing.</p>
+                <p>** This will put <code class="inline-code">LIMIT 10</code> on the end of your query, so refrain from adding your own <code class="inline-code">LIMIT</code>.</p>
             </div>
+        </div>
       </div>
+      <div id="results-container" class="section" style="display: none;">
+        <table id="results" cellspacing="5"></table>
       </div>
           <div class="section" id="about">
             <h2><a href="#about"><span class="bullet">$</span> <span class="internal-link">About</span></a></h2>
             <!-- Copied from http://www.bdatafest.computationalreporting.com/projects/fms-symphony -->
             <h3>The data</h3>
-            <p>
-              Every day at 4pm, the United States Treasury sends out an email
-              summarizing the cash spending and borrowing of the Federal
-              government&em;all the money Uncle Sam took in that day from taxpayers,
-              how he spent it, on what, and how much debt he took out to make it happen.
-              At a time of record fiscal deficits and continual debates over spending,
-              taxation, and the debt, this daily accounting of our government's main
-              checking account is an essential data point that the public should have
-              ready access to.
-            </p>
+            <p>Every day at 4pm, the United States Treasury <a href="http://www.fms.treas.gov/dts/index.html" target="_blank">publishes data tables</a> summarizing the cash spending, deposits, and borrowing of the Federal government. These files catalog all the money taken in that day from taxes, the programs, and how much debt he took out to make it happen. It comes from a section of the U.S. Treasury called the <a href="http://www.fms.treas.gov/index.html" target="_blank">Financial Management Service</a></p>
+            <p>At a time of record fiscal deficits and continual debates over spending, taxation, and the debt, this daily accounting of our government's main checking account is an essential data point that the public should have ready access to.</p>
             <h3>Original data format</h3>
-            <p>
-              The Treasury told us in response to a Freedom of Information Act Request that
-              it does not store this data in any format other than inconsistent, poorly-structured
-              text files that don't lend themselves to programmatic analysis.
-              So we set out to liberate this dataset by scraping and parsing eight years' worth of Daily Treasury Statements.
-            </p>
+            <p>The Treasury told us in response to a Freedom of Information Act Request that it does not store this data in any format other than inconsistently structured text files that don't lend themselves to programmatic analysis.</p>
             <h3>New data format</h3>
-            <p>
-              We have created the first-ever electronically searchable database of the Federal government's daily cash spending and borrowing.
-              It updates daily, and we allow the public to easily query it.
-              The data can be exported in various formats and loaded into various systems.
-              We want to make it easy for people may build tools that
-              search, explore, and visualize how the government spends their tax dollars.
-            </p>
+            <p>We have created the first-ever electronically-searchable database of the Federal government's daily cash spending and borrowing. It updates daily and the data can be exported in various formats and loaded into various systems.</p>
+            <p>We want to make it easy for people to search, explore, and visualize how the government spends their tax dollars.</p>
           </div>
-          <div class="section" id="tables">
-            <h2><a href="#tables"><span class="bullet">$</span> <span class="internal-link">Tables</span></a></h2>
-            <p>
-              This API provides eight tables. You can access them with the short names in parantheses.
+          <div class="section" id="documentation">
+            <h2><a href="#documentation"><span class="bullet">$</span> <span class="internal-link">Documentation</span></a></h2>
+            <p>We created a <a href="https://github.com/csvsoundsystem/federal-treasury-api/wiki/Treasury.io-Data-Dictionary" target="_blank">fully-documented data dictionary</a> that details the structure of these tables as well as descriptions of many programs and classifications. If you're the kind to prefer your data dictionaries in hard-copies, <a href="https://github.com/csvsoundsystem/federal-treasury-api/blob/master/documentation/Data_Dictionary.doc?raw=true" target="_blank">here's the full documentation as a printable Word document</a>.</p>
+            <p>The data is complicated, however, and we recommend that you reach out to the <a href="http://www.fms.treas.gov/dts/contacts.html" target="_blank">Financial Management Service at the U.S. Treasury</a> directly.
+            <p><strong>Always query responsibly.</strong></p>
+            <p>This API provides eight tables. You can access them with the short names in parentheses.
               Click "preview" to download the first ten rows of the table as CSV, and click "full" to
-              download the full table as CSV.
-            </p>
+              download the full table as CSV.</p>
             <ul class="tables">
-                <li>I. Operating Cash Balance <code class="inline-code">t1</code> (<a class="download-as-csv-btn" href="#" data-query-link="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20*%20FROM%20t1%20LIMIT%2010;" target="_blank">preview</a>, <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_i.csv" target="_blank">full</a>)</li>
-              <li>II. Deposits and Withdrawals <code class="inline-code">t2</code> (<a class="download-as-csv-btn" href="#" data-query-link="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20*%20FROM%20t2%20LIMIT%2010;" target="_blank">preview</a>, <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_ii.csv" target="_blank">full</a>)</li>
-              <li>IIIa. Public Debt Transactions <code class="inline-code">t3a</code> (<a class="download-as-csv-btn" href="#" data-query-link="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20*%20FROM%20t3a%20LIMIT%2010;" target="_blank">preview</a>, <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_iii_a.csv" target="_blank">full</a>)</li>
-              <li>IIIb. Adjustment of Public Dept Transactions to Cash Basis <code class="inline-code">t3b</code> (<a class="download-as-csv-btn" href="#" data-query-link="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20*%20FROM%20t3b%20LIMIT%2010;" target="_blank">preview</a> <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_iii_b.csv" target="_blank">full</a>)</li>
-              <li>IIIc. Debt Subject to Limit <code class="inline-code">t3c</code> (<a class="download-as-csv-btn" href="#" data-query-link="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20*%20FROM%20t3c%20LIMIT%2010;" target="_blank">preview</a>, <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_iii_c.csv" target="_blank">full</a>)</li>
-              <li>IV. Federal Tax Deposits <code class="inline-code">t4</code> (<a class="download-as-csv-btn" href="#" data-query-link="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20*%20FROM%20t4%20LIMIT%2010;" target="_blank">preview</a>, <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_iv.csv" target="_blank">full</a>)</li>
-              <li>V. Short-term Cash Investments <code class="inline-code">t5</code> (<a class="download-as-csv-btn" href="#" data-query-link="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20*%20FROM%20t5%20LIMIT%2010;" target="_blank">preview</a>, <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_v.csv" target="_blank">full</a>)</li>
-              <li>VI. Incom Tax Refunds Issued <code class="inline-code">t6</code> (<a class="download-as-csv-btn" href="#" data-query-link="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20*%20FROM%20t6%20LIMIT%2010;" target="_blank">preview</a>, <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_vi.csv" target="_blank">full</a>)</li>
+                <li>I. Operating Cash Balance <code class="inline-code">t1</code> (<a class="piwik_download download-as-csv-btn" href="#" data-query-link="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20*%20FROM%20t1%20LIMIT%2010;" target="_blank">preview</a>, <a class="piwik_download" href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_i.csv" target="_blank">full</a>)</li>
+              <li>II. Deposits and Withdrawals <code class="inline-code">t2</code> (<a class="piwik_download download-as-csv-btn" href="#" data-query-link="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20*%20FROM%20t2%20LIMIT%2010;" target="_blank">preview</a>, <a class="piwik_download" href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_ii.csv" target="_blank">full</a>)</li>
+              <li>IIIa. Public Debt Transactions <code class="inline-code">t3a</code> (<a class="piwik_download download-as-csv-btn" href="#" data-query-link="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20*%20FROM%20t3a%20LIMIT%2010;" target="_blank">preview</a>, <a class="piwik_download" href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_iii_a.csv" target="_blank">full</a>)</li>
+              <li>IIIb. Adjustment of Public Dept Transactions to Cash Basis <code class="inline-code">t3b</code> (<a class="piwik_download download-as-csv-btn" href="#" data-query-link="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20*%20FROM%20t3b%20LIMIT%2010;" target="_blank">preview</a> <a class="piwik_download" href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_iii_b.csv" target="_blank">full</a>)</li>
+              <li>IIIc. Debt Subject to Limit <code class="inline-code">t3c</code> (<a class="piwik_download download-as-csv-btn" href="#" data-query-link="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20*%20FROM%20t3c%20LIMIT%2010;" target="_blank">preview</a>, <a class="piwik_download" href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_iii_c.csv" target="_blank">full</a>)</li>
+              <li>IV. Federal Tax Deposits <code class="inline-code">t4</code> (<a class="piwik_download download-as-csv-btn" href="#" data-query-link="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20*%20FROM%20t4%20LIMIT%2010;" target="_blank">preview</a>, <a class="piwik_download" href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_iv.csv" target="_blank">full</a>)</li>
+              <li>V. Short-term Cash Investments <code class="inline-code">t5</code> (<a class="piwik_download download-as-csv-btn" href="#" data-query-link="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20*%20FROM%20t5%20LIMIT%2010;" target="_blank">preview</a>, <a class="piwik_download" href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_v.csv" target="_blank">full</a>)</li>
+              <li>VI. Income Tax Refunds Issued <code class="inline-code">t6</code> (<a class="download-as-csv-btn" href="#" data-query-link="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20*%20FROM%20t6%20LIMIT%2010;" target="_blank">preview</a>, <a class="piwik_download" href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_vi.csv" target="_blank">full</a>)</li>
             </ul>
-            <p>You can also download the <a href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/treasury_data.db" target="_blank">full SQLite3 database</a>, with all of the tables.</p>
+            <p>You can also download the <a class="piwik_download" href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/treasury_data.db" target="_blank">full SQLite3 database</a>, with all of the tables. It's about 50mb in total.</p>
           </div>
           <div class="section" id="usage">
               <h2><a href="#usage"><span class="bullet">$</span> <span class="internal-link">Usage</span></a></h2>
@@ -129,7 +120,7 @@
               <p>where <code class="inline-code">YOUR_QUERY</code> is a URL-encoded SQL command. For example, you can see the database schema like so.</p>
               <pre><a target="_blank" href='https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20"name","sql"%20FROM%20sqlite_master'><code>https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT "name","sql" FROM sqlite_master</code></a></pre>
               <h3>Host it yourself</h3>
-              <p>If you want to install the database locally, follow the instructions on <a href="http://github.com/csvsoundsystem/fms_parser" target="_blank">the GitHub page</a></p>
+              <p>If you want to install the database locally, follow the instructions on <a href="http://github.com/csvsoundsystem/federal-treasury-api" target="_blank">the GitHub page</a></p>
           </div>
           <div class="section" id="examples">
               <h2><a href="#examples"><span class="bullet">$</span> <span class="internal-link">Examples</span></a></h2>
@@ -203,21 +194,57 @@ treasuryio('SELECT * FROM t1 LIMIT 10;', function(response){
                 </li>
               </ul>
           </div>
+          <div class="section" id="the-robot">
+              <h2><a href="#the-robot"><span class="bullet">$</span> <span class="internal-link">The Robot</span></a></h2>
+              <p>The twitter account <a href="http://www.twitter.com/treasuryio" target="_blank">@TreasuryIO</a> is a python Twitter bot we made that tweets out daily analyses of the data.</p>
+              <p>It runs SQL queries on the database and then turns the results into tweetable messages. You can make your own bot by using <a href="https://github.com/csvsoundsystem/pytreasuryio" target="_blank">our PyTreasuryIO package on GitHub</a>, which includes instructions on how to make your own bot based on a SQL query of your choosing. The example bot calculates the total outstanding federal debt.</p>
+              <p>Some sample tweets the bot makes:</p>
+              <ul>
+                <li>The distance to the debt ceiling.</li>
+                <li>Notifications of income from taxes.</li>
+                <li>How much the money spent on different programs like:</li>
+                  <ul>
+                    <li>Food Stamps</li>
+                    <li>Veterans Affairs Benefits Programs</li>
+                    <li>Medicare</li>
+                  </ul>
+              </ul>
+          </div>
           <div class="section" id="contact">
               <h2><a href="#contact"><span class="bullet">$</span> <span class="internal-link">Contact</span></a></h2>
               <p>For help with accessing the API or running it yourself, contact us via any of these means.</p>
               <ul>
-                <li>Email the <a href="https://groups.google.com/forum/#!forum/federal-treasury-api" target="_blank">Google Group</a></li>
-                <li>Submit an issue <a href="https://github.com/csvsoundsystem/fms_parser/issues/" target="_blank">on GitHub</a></li>
-                <li><a href="https://twitter.com/csvsoundsystem" target="_blank">Tweet at us</a></li>
+                <li>Email the <a href="http://groups.google.com/forum/#!forum/federal-treasury-api" target="_blank">Google Group</a></li>
+                <li>Submit an issue <a href="http://github.com/csvsoundsystem/federal-treasury-api/issues/" target="_blank">on GitHub</a></li>
+                <li>Tweet at us, we're <a href="http://twitter.com/treasuryio" target="_blank">@Treasuryio</a>.</li>
               </ul>
-              <p>You should also contact us if you've done something cool with the API because we'd love to hear about it.</p>
+              <p>You should also <a href="mailto:csvsoundsytem@gmail.com">contact us</a> if you've done something cool with the API because we'd love to hear about it.</p>
           </div>
         </div>
     </div>
     <footer>
-      <p>Made lovingly by <a href="http://csvsoundsystem.com" target="_blank" class="highlight-link">csv soundsystem</a> with help from <a href="http://www.mozillaopennews.org/" target="_blank"  class="highlight-link">knight-mozilla OpenNews</a>.</p><p><a href="http://dansinker.com/post/49856260511/opennews-code-sprints-do-some-spring-cleaning-on-data" target="_blank">Huh?</a></p>
+      <p>Made lovingly by <a href="http://csvsoundsystem.com" target="_blank" class="highlight-link">csv soundsystem</a> with help from <a href="http://www.mozillaopennews.org/" target="_blank"  class="highlight-link">knight-mozilla OpenNews</a>. <a href="http://dansinker.com/post/49856260511/opennews-code-sprints-do-some-spring-cleaning-on-data" target="_blank">Huh?</a></p>
+      <p>By <a href="http://www.twitter.com/brianabelson" target="_blank">Brian Abelson</a>, <a href="http://www.twitter.com/jbialer" target="_blank">Jake Bialer</a>, <a href="http://www.twitter.com/bjdewilde" target="_blank">Burton DeWilde</a>, <a href="http://www.twitter.com/mhkeller" target="_blank">Michael Keller</a>, <a href="http://www.twitter.com/thomaslevine" target="_blank">Thomas Levine</a> &amp; <a href="http://www.twitter.com/cezary" target="_blank">Cezary Podkul</a>. With an assist from <a href="http://www.twitter.com/ag_dubs" target="_blank">Ashley Williams</a>.</p>
+      <p></p>
     </footer>
     <script src="web/js/main.js"></script>
+    <!-- Piwik -->
+    <script type="text/javascript">
+      var _paq = _paq || [];
+      _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+      _paq.push(["setCookieDomain", "*.treasury.io"]);
+      _paq.push(["setDomains", ["*.treasury.io"]]);
+      _paq.push(["trackPageView"]);
+      _paq.push(["enableLinkTracking"]);
+
+      (function() {
+        var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.thomaslevine.com/";
+        _paq.push(["setTrackerUrl", u+"piwik.php"]);
+        _paq.push(["setSiteId", "21"]);
+        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <!-- End Piwik Code -->
 </body>
 </html>

@@ -10,7 +10,9 @@
 ::-moz-selection {
   background: #98ebb5; /* Firefox */
 }
-
+p strong{
+  font-weight:bold;
+}
 .container-fluid {
   padding-right: 20px;
   padding-left: 20px;
@@ -28,7 +30,7 @@
 }
 
 #hero {
-  font-family: "Open Sans", Helvetica, sans-serif;
+  font-family: "Droid Sans", Helvetica, sans-serif;
   position:relative;
   z-index:9999;
 }
@@ -36,7 +38,6 @@
   overflow: hidden;
   filter: glow(color=black,strength=5);
   z-index: 5;
-  width: 100%;
   display: block;
   position: fixed;
   top: 10px;
@@ -46,7 +47,7 @@
   font-weight: 800;
   text-shadow: 5px 5px #000, 4px 4px #000, 3px 3px #000, 2px 2px #000, 1px 1px #000, -1px -1px 0 #000, -2px -2px 0 #000,  1px -1px 0 #000;
   text-align: left;
-  padding: 20px 0 20px 10px;
+  padding: 20px 5px 20px 10px;
 }
 #subhead {
   position: fixed;
@@ -56,7 +57,7 @@
   font-size: 11px;
 }
 #subtitle {
-  font-family: "Open Sans", Helvetica, sans-serif;
+  font-family: "Droid Sans", Helvetica, sans-serif;
   color: white;
   z-index: 1;
   position: absolute;
@@ -70,7 +71,7 @@
 }
 
 #subsubtitle {
-  font-family: "Open Sans", Helvetica, sans-serif;
+  font-family: "Droid Sans", Helvetica, sans-serif;
   color: black;
   z-index: 1;
   position: absolute;
@@ -85,7 +86,7 @@
 
 nav{
   position: fixed;
-  left: 40px;
+  left: 33px;
   top:110px;
   z-index: 9999;
 
@@ -99,7 +100,7 @@ nav{
 #section-wrapper{
   margin-top:120px;
   margin-left:240px;
-  font-family: "Open Sans", Helvetica, sans-serif;
+  font-family: "Droid Sans", Helvetica, sans-serif;
 }
 .section{
   width:85%;
@@ -113,6 +114,7 @@ h2{
   margin: 40px 0;
   font-size: 30px;
   letter-spacing: 2px;
+  padding-top:10px;
 }
 h2 a {
   color:white;
@@ -135,7 +137,7 @@ h3 {
   margin: 35px 0 15px 0;
 }
 .btn{
-  font-family: "Open Sans", sans-serif;
+  font-family: "Droid Sans", sans-serif;
   font-weight: 800;
   letter-spacing: 2px;
   color: black;
@@ -159,7 +161,7 @@ h3 {
     display: block;
 }
 .nav-item.active .btn{
-  background: #FFFFE0;
+  background: #FFFFBD;
 }
 .nav-item{
   display: block;
@@ -212,6 +214,9 @@ a {
 .section h2 a, .btn-group a {
   text-decoration: none;
 }
+.section p{
+  margin-bottom: 10px;
+}
 .btn-group a:hover {
   text-decoration: underline;
 }
@@ -232,16 +237,22 @@ a:hover{
 .btn-group .btn {
   margin-left:0 !important;
   display:inline-block;
-}
-.btn-group .btn:first-child{
-  margin-right: 20px !important;
+  margin-right: 20px;
 }
 #download-csv{
   width:140px;
 }
-.download-as-csv-btn img{
+#builder-btns{
+  position:relative;
+}
+#builder-btns .btn img{
   position: relative;
   top: 3px;
+}
+.btn:hover{
+  cursor: pointer;
+  cursor: hand;
+  text-decoration: underline;
 }
 .btn:active {
   -moz-box-shadow: 0px 0px 0px 0px;
@@ -290,12 +301,36 @@ code {
 form {
   padding: 20px;
 }
-
-
-#builder {
+#builder, #results {
   background: rgba(255,255,255,.5);
   padding: 20px;
   color: #000;
+}
+#results-container table{
+  border-spacing: 0;
+  text-align:left;
+  font-size: 12px;
+}
+#results thead{
+  border-spacing-bottom: 4px;
+}
+#results thead tr{
+  font-weight:bold;
+}
+#results tbody tr:nth-child(odd) {
+  background-color: rgb(193, 228, 242);
+  background-color: rgba(255,255,255,.5);
+}
+#results tbody tr:nth-child(even) {
+  background-color: white;
+}
+#results td, #results thead th{
+  padding:6px;
+  line-height: 15px;
+  vertical-align: middle;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
 }
 #query-string {
   margin-top:3px;
@@ -356,15 +391,15 @@ fieldset legend {
 }
 
 footer {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Droid Sans", sans-serif;
   background: black;
   color: white;
-  padding:20px 20px 35px 20px;
+  padding: 10px 10px 20px 30px;
   margin-top: 100px;
 }
 footer p {
-  margin-top: 20px;
-  line-height: 2em;
+  line-height: 45px;
+  font-size: 13px;
 }
 
 textarea {
@@ -386,13 +421,45 @@ textarea:focus{
 #encoding-btns,#encoding-btns li{
   display:inline;
 }
+#contact ul{
+  margin-bottom:10px;
+}
+#the-robot ul{
+  margin-left: 10px;
+}
+#the-robot ul ul li{
+  list-style: disc inside;
 
-#contact li {
+}
+#the-robot li,#contact li {
+  margin-left: 10px;
   list-style: square inside;
 }
 
+#sql{
+  overflow: hidden;
+}
+
+.placeholder-textfield{
+  color:black;
+}
+ 
+.placeholder-textfield-active { 
+  color: #303030; 
+}
+
+#builder-btns-overlay{
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  background-color:transparent;
+  z-index:9999;
+}
+
 @media screen and (max-width: 640px) {
-  body{
+  #container-fluid, #container-solid{
     margin:10px;
   }
   #title, #navmenu {
@@ -413,5 +480,8 @@ textarea:focus{
   }
   .btn-group .btn{
     margin-bottom:10px;
+  }
+  #title {
+    padding-left: 0;
   }
 }
