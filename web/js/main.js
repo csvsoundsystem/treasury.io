@@ -144,35 +144,34 @@ $(function() {
     $.scrollTo(target, 300);
   }
   function initRedQuery(table_schema){
-      RedQueryBuilderFactory.create({
-          meta : table_schema,
-          onSqlChange : function(sql, args) {
-              $('#builder-btns .btn').removeClass('disabled');
+    RedQueryBuilderFactory.create({
+      meta : table_schema,
+      onSqlChange : function(sql, args) {
+        $('#builder-btns .btn').removeClass('disabled');
 
-              $query_refresher[0].disabled = true;
-              var out = sql + '\r\n';
-              for (var i = 0; i < args.length; i++) {
-                var arg = args[i];
-                if(isNaN(arg)){
-                  arg = "'" + arg + "'"
-                }else{
-                  arg = Number(arg);
-                }
-                out = out.replace('?', arg)
-              }
-              sanitize_out = function(out) { return out.replace(/\"x0\"\.?/g, '');
-          }
-
-          query = function(base, out) { return base + encodeURI(sanitize_out(out)); }
-
-          if (encoding == 'true'){
-            document.getElementById("sql").value = encodeURI(sanitize_out(out));
+        $query_refresher[0].disabled = true;
+        var out = sql + '\r\n';
+        for (var i = 0; i < args.length; i++) {
+          var arg = args[i];
+          if(isNaN(arg)){
+            arg = "'" + arg + "'"
           }else{
-            document.getElementById("sql").value = sanitize_out(out);
+            arg = Number(arg);
           }
-          loadBtnAttrsWithQueryLink(sanitize_out(out));
-        },
-      });
+          out = out.replace('?', arg)
+        }
+        sanitize_out = function(out) { return out.replace(/\"x0\"\.?/g, ''); }
+
+        query = function(base, out) { return base + encodeURI(sanitize_out(out)); }
+
+        if (encoding == 'true'){
+          document.getElementById("sql").value = encodeURI(sanitize_out(out));
+        }else{
+          document.getElementById("sql").value = sanitize_out(out);
+        }
+        loadBtnAttrsWithQueryLink(sanitize_out(out));
+      }
+    });
   };
 
   function loadBtnAttrsWithQueryLink(q_string){
