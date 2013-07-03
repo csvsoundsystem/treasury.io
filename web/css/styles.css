@@ -398,8 +398,8 @@ footer {
   margin-top: 100px;
 }
 footer p {
-  margin-top: 20px;
-  line-height: 2em;
+  line-height: 45px;
+  font-size: 13px;
 }
 
 textarea {
@@ -459,7 +459,7 @@ textarea:focus{
 }
 
 @media screen and (max-width: 640px) {
-  body{
+  #container-fluid, #container-solid{
     margin:10px;
   }
   #title, #navmenu {
