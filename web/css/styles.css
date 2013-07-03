@@ -238,6 +238,7 @@ a:hover{
   margin-left:0 !important;
   display:inline-block;
   margin-right: 20px;
+  margin-bottom: 10px;
 }
 #download-csv{
   width:140px;
