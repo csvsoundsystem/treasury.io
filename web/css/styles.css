@@ -237,9 +237,17 @@ a:hover{
 #download-csv{
   width:140px;
 }
+#builder-btns{
+  position:relative;
+}
 #builder-btns .btn img{
   position: relative;
   top: 3px;
+}
+.btn:hover{
+  cursor: pointer;
+  cursor: hand;
+  text-decoration: underline;
 }
 .btn:active {
   -moz-box-shadow: 0px 0px 0px 0px;
@@ -423,6 +431,16 @@ textarea:focus{
  
 .placeholder-textfield-active { 
   color: #303030; 
+}
+
+#builder-btns-overlay{
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  background-color:transparent;
+  z-index:9999;
 }
 
 @media screen and (max-width: 640px) {

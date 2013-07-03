@@ -70,7 +70,7 @@ $(function() {
       });
 
       // Disable button if it has a disable class
-      $download_json_btn.click(function(e){
+      $download_json_btn.mousedown(function(e){
         if(!$(this).hasClass('disabled')){
           trackQuery('json');
         }else{
@@ -174,6 +174,7 @@ $(function() {
     var $builder_btns = $('#builder-btns .btn')
     if($builder_btns.hasClass('disabled')){
       $builder_btns.removeClass('disabled');
+      $('#builder-btns-overlay').css('z-index',0);
     };
   }
   function initRedQuery(table_schema){
