@@ -38,7 +38,7 @@
                 <li class="nav-item" id="logo"><a class="btn" href="#hero"><img src="web/images/flag.png"></a></li>
                 <li class="nav-item active"><a class="btn" href="#query">Query</a></li>
                 <li class="nav-item"><a class="btn" href="#about">About</a></li>
-                <li class="nav-item"><a class="btn" href="#tables">Tables</a></li>
+                <li class="nav-item"><a class="btn" href="#documentation">The Docs</a></li>
                 <li class="nav-item"><a class="btn" href="#usage">Usage</a></li>
                 <li class="nav-item"><a class="btn" href="#examples">Examples</a></li>
                 <li class="nav-item"><a class="btn" href="#the-robot">The Robot</a></li>
@@ -85,36 +85,22 @@
             <h2><a href="#about"><span class="bullet">$</span> <span class="internal-link">About</span></a></h2>
             <!-- Copied from http://www.bdatafest.computationalreporting.com/projects/fms-symphony -->
             <h3>The data</h3>
-            <p>
-              Every day at 4pm, the United States Treasury sends out an email summarizing the cash spending, deposits, and borrowing of the Federal government. It catalogs all the money taken in that day from taxes, the programs, and how much debt he took out to make it happen.
-              At a time of record fiscal deficits and continual debates over spending,
-              taxation, and the debt, this daily accounting of our government's main
-              checking account is an essential data point that the public should have
-              ready access to.
-            </p>
+            <p>Every day at 4pm, the United States Treasury <a href="http://www.fms.treas.gov/dts/index.html" target="_blank">publishes data tables</a> summarizing the cash spending, deposits, and borrowing of the Federal government. These files catalog all the money taken in that day from taxes, the programs, and how much debt he took out to make it happen. It comes from a section of the U.S. Treasury called the <a href="http://www.fms.treas.gov/index.html" target="_blank">Financial Management Service</a></p>
+            <p>At a time of record fiscal deficits and continual debates over spending, taxation, and the debt, this daily accounting of our government's main checking account is an essential data point that the public should have ready access to.</p>
             <h3>Original data format</h3>
-            <p>
-              The Treasury told us in response to a Freedom of Information Act Request that
-              it does not store this data in any format other than inconsistent, poorly-structured
-              text files that don't lend themselves to programmatic analysis.
-              So we set out to liberate this dataset by scraping and parsing eight years' worth of Daily Treasury Statements.
-            </p>
+            <p>The Treasury told us in response to a Freedom of Information Act Request that it does not store this data in any format other than inconsistently structured text files that don't lend themselves to programmatic analysis.</p>
             <h3>New data format</h3>
-            <p>
-              We have created the first-ever electronically searchable database of the Federal government's daily cash spending and borrowing.
-              It updates daily, and we allow the public to easily query it.
-              The data can be exported in various formats and loaded into various systems.
-              We want to make it easy for people may build tools that
-              search, explore, and visualize how the government spends their tax dollars.
+            <p>We have created the first-ever electronically-searchable database of the Federal government's daily cash spending and borrowing. It updates daily and the data can be exported in various formats and loaded into various systems.</p>
+            <p>We want to make it easy for people may build tools that search, explore, and visualize how the government spends their tax dollars.</p>
             </p>
           </div>
-          <div class="section" id="tables">
-            <h2><a href="#tables"><span class="bullet">$</span> <span class="internal-link">Tables</span></a></h2>
-            <p>
-              This API provides eight tables. You can access them with the short names in parantheses.
+          <div class="section" id="documentation">
+            <h2><a href="#documentation"><span class="bullet">$</span> <span class="internal-link">Documentation</span></a></h2>
+            <p>We created a <a href="https://github.com/csvsoundsystem/federal-treasury-api/wiki/TREASURY.IO-Data-Dictionary" target="_blank">fully-documented data dictionary</a> that details the structure of these tables as well as descriptions of many programs and classifications. The data is complicated, however, and we recommend that you reach out to the <a href="http://www.fms.treas.gov/dts/contacts.html" target="_blank">Financial Management Service at the U.S. Treasury</a> directly.
+            <p><strong>Always query responsibly.</strong></p>
+            <p>This API provides eight tables. You can access them with the short names in parentheses.
               Click "preview" to download the first ten rows of the table as CSV, and click "full" to
-              download the full table as CSV.
-            </p>
+              download the full table as CSV.</p>
             <ul class="tables">
                 <li>I. Operating Cash Balance <code class="inline-code">t1</code> (<a class="piwik_download download-as-csv-btn" href="#" data-query-link="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20*%20FROM%20t1%20LIMIT%2010;" target="_blank">preview</a>, <a class="piwik_download" href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_i.csv" target="_blank">full</a>)</li>
               <li>II. Deposits and Withdrawals <code class="inline-code">t2</code> (<a class="piwik_download download-as-csv-btn" href="#" data-query-link="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20*%20FROM%20t2%20LIMIT%2010;" target="_blank">preview</a>, <a class="piwik_download" href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_ii.csv" target="_blank">full</a>)</li>
@@ -123,7 +109,7 @@
               <li>IIIc. Debt Subject to Limit <code class="inline-code">t3c</code> (<a class="piwik_download download-as-csv-btn" href="#" data-query-link="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20*%20FROM%20t3c%20LIMIT%2010;" target="_blank">preview</a>, <a class="piwik_download" href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_iii_c.csv" target="_blank">full</a>)</li>
               <li>IV. Federal Tax Deposits <code class="inline-code">t4</code> (<a class="piwik_download download-as-csv-btn" href="#" data-query-link="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20*%20FROM%20t4%20LIMIT%2010;" target="_blank">preview</a>, <a class="piwik_download" href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_iv.csv" target="_blank">full</a>)</li>
               <li>V. Short-term Cash Investments <code class="inline-code">t5</code> (<a class="piwik_download download-as-csv-btn" href="#" data-query-link="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20*%20FROM%20t5%20LIMIT%2010;" target="_blank">preview</a>, <a class="piwik_download" href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_v.csv" target="_blank">full</a>)</li>
-              <li>VI. Incom Tax Refunds Issued <code class="inline-code">t6</code> (<a class="download-as-csv-btn" href="#" data-query-link="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20*%20FROM%20t6%20LIMIT%2010;" target="_blank">preview</a>, <a class="piwik_download" href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_vi.csv" target="_blank">full</a>)</li>
+              <li>VI. Income Tax Refunds Issued <code class="inline-code">t6</code> (<a class="download-as-csv-btn" href="#" data-query-link="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20*%20FROM%20t6%20LIMIT%2010;" target="_blank">preview</a>, <a class="piwik_download" href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/lifetime_csv/table_vi.csv" target="_blank">full</a>)</li>
             </ul>
             <p>You can also download the <a class="piwik_download" href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/http/treasury_data.db" target="_blank">full SQLite3 database</a>, with all of the tables.</p>
           </div>
