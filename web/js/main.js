@@ -117,9 +117,12 @@ $(function() {
       });
 
       $sql_query_textarea.keyup(function(){
+        enableBuilderBtns();
         var q_string = $sql_query_textarea.val();
         loadBtnAttrsWithQueryLink(q_string)
       });
+
+      $sql_query_textarea.autogrow();
 
   };
 
@@ -143,11 +146,18 @@ $(function() {
     target = that.hash;
     $.scrollTo(target, 300);
   }
+
+  function enableBuilderBtns(){
+    var $builder_btns = $('#builder-btns .btn')
+    if($builder_btns.hasClass('disabled')){
+      $builder_btns.removeClass('disabled');
+    };
+  }
   function initRedQuery(table_schema){
     RedQueryBuilderFactory.create({
       meta : table_schema,
       onSqlChange : function(sql, args) {
-        $('#builder-btns .btn').removeClass('disabled');
+        enableBuilderBtns();
 
         $query_refresher[0].disabled = true;
         var out = sql + '\r\n';
@@ -160,7 +170,7 @@ $(function() {
           }
           out = out.replace('?', arg)
         }
-        sanitize_out = function(out) { return out.replace(/\"x0\"\.?/g, ''); }
+        sanitize_out = function(out) { return out.replace(/\"x0\"\.?/g, '').replace(/\n/g,'%20'); }
 
         query = function(base, out) { return base + encodeURI(sanitize_out(out)); }
 

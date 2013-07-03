@@ -294,11 +294,31 @@ form {
   padding: 20px;
   color: #000;
 }
-#results thead tr, #results tbody tr:nth-child(odd) {
+#results-container table{
+  border-spacing: 0;
+  text-align:left;
+  font-size: 12px;
+}
+#results thead{
+  border-spacing-bottom: 4px;
+}
+#results thead tr{
+  font-weight:bold;
+}
+#results tbody tr:nth-child(odd) {
+  background-color: rgb(193, 228, 242);
   background-color: rgba(255,255,255,.5);
 }
-#results thead tr, #results tbody tr:nth-child(even) {
+#results tbody tr:nth-child(even) {
   background-color: white;
+}
+#results td, #results thead th{
+  padding:6px;
+  line-height: 15px;
+  vertical-align: middle;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
 }
 #query-string {
   margin-top:3px;
@@ -392,6 +412,10 @@ textarea:focus{
 
 #contact li {
   list-style: square inside;
+}
+
+#sql{
+  overflow: hidden;
 }
 
 @media screen and (max-width: 640px) {
