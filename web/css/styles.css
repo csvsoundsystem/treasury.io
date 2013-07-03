@@ -462,6 +462,9 @@ textarea:focus{
   #container-fluid, #container-solid{
     margin:10px;
   }
+  #container-fluid{
+    margin-top:15px;
+  }
   #title, #navmenu {
     position: inherit;
   }
