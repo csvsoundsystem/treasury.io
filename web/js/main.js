@@ -135,6 +135,20 @@ $(function() {
       $sql_query_textarea.autogrow();
       makeTextfieldsPlaceholderable();
 
+      /* SHOW HIDE TABLE */
+      $('.show-hide-table').click(function(){
+        var state = $(this).data('state');
+        if (state == 'hide'){
+          $('#results').hide();
+          $(this).data('state','show');
+          $(this).html('Show table')
+        }else{
+          $('#results').show();
+          $(this).html('Hide table')
+          $(this).data('state','hide');
+        }
+      });
+
   };
 
   function makeTextfieldsPlaceholderable(){

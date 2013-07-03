@@ -458,6 +458,11 @@ textarea:focus{
   background-color:transparent;
   z-index:9999;
 }
+.show-hide-table:hover{
+  cursor:pointer;
+  cursor:hand;
+  text-decoration: underline;
+}
 
 @media screen and (max-width: 640px) {
   #container-fluid, #container-solid{
