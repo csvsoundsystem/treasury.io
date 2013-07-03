@@ -70,10 +70,10 @@ $(function() {
       });
 
       // Disable button if it has a disable class
-      $download_json_btn.mousedown(function(e){
+      $download_json_btn.click(function(e){
         if(!$(this).hasClass('disabled')){
-          trackQuery('json')
-        }
+          trackQuery('json');
+        };
         return false
       })
 

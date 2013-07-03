@@ -28,7 +28,7 @@
 }
 
 #hero {
-  font-family: "Open Sans", Helvetica, sans-serif;
+  font-family: "Droid Sans", Helvetica, sans-serif;
   position:relative;
   z-index:9999;
 }
@@ -56,7 +56,7 @@
   font-size: 11px;
 }
 #subtitle {
-  font-family: "Open Sans", Helvetica, sans-serif;
+  font-family: "Droid Sans", Helvetica, sans-serif;
   color: white;
   z-index: 1;
   position: absolute;
@@ -70,7 +70,7 @@
 }
 
 #subsubtitle {
-  font-family: "Open Sans", Helvetica, sans-serif;
+  font-family: "Droid Sans", Helvetica, sans-serif;
   color: black;
   z-index: 1;
   position: absolute;
@@ -99,7 +99,7 @@ nav{
 #section-wrapper{
   margin-top:120px;
   margin-left:240px;
-  font-family: "Open Sans", Helvetica, sans-serif;
+  font-family: "Droid Sans", Helvetica, sans-serif;
 }
 .section{
   width:85%;
@@ -135,7 +135,7 @@ h3 {
   margin: 35px 0 15px 0;
 }
 .btn{
-  font-family: "Open Sans", sans-serif;
+  font-family: "Droid Sans", sans-serif;
   font-weight: 800;
   letter-spacing: 2px;
   color: black;
@@ -159,7 +159,7 @@ h3 {
     display: block;
 }
 .nav-item.active .btn{
-  background: #AAAA90;
+  background: #FFFFC5;
 }
 .nav-item{
   display: block;
@@ -232,6 +232,7 @@ a:hover{
 .btn-group .btn {
   margin-left:0 !important;
   display:inline-block;
+  margin-right: 20px;
 }
 #download-csv{
   width:140px;
@@ -357,7 +358,7 @@ fieldset legend {
 }
 
 footer {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Droid Sans", sans-serif;
   background: black;
   color: white;
   padding:20px 20px 35px 20px;
