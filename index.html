@@ -39,7 +39,7 @@
                 <li class="nav-item"><a class="btn" href="#about">About</a></li>
                 <li class="nav-item"><a class="btn" href="#documentation">The Docs</a></li>
                 <li class="nav-item"><a class="btn" href="#usage">Usage</a></li>
-                <li class="nav-item"><a class="btn" href="#examples">Examples</a></li>
+                <li class="nav-item"><a class="btn" href="#libraries">Libraries</a></li>
                 <li class="nav-item"><a class="btn" href="#the-robot">The Robot</a></li>
                 <li class="nav-item"><a class="btn" href="#contact">Contact</a></li>
             <ul>
@@ -114,15 +114,17 @@
           </div>
           <div class="section" id="usage">
               <h2><a href="#usage"><span class="bullet">$</span> <span class="internal-link">Usage</span></a></h2>
-              <p>The eight tables are stored in one SQLite database. Query it from a URL like this:</p>
-              <pre><code>https://api.treasury.io/?q=YOUR_QUERY</code></pre>
-              <p>where <code class="inline-code">YOUR_QUERY</code> is a URL-encoded SQL command. For example, you can see the database schema like so.</p>
-              <pre><a target="_blank" href='https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT%20"name","sql"%20FROM%20sqlite_master'><code>https://api.treasury.io/?q=SELECT "name","sql" FROM sqlite_master</code></a></pre>
+              <p>The eight tables are stored in one SQLite database. To get the data back as JSON, query it from a URL like this:</p>
+              <pre><code>https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=YOUR_QUERY</code></pre>
+              <p>where <code class="inline-code">YOUR_QUERY</code> is a URL-encoded SQL command. This query will show the ten most recent withdrawals.</p>
+              <pre><a target="_blank" href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT * FROM t2 WHERE type = 'withdrawal' ORDER BY date DESC LIMIT 10"><code>https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT * FROM t2 WHERE type = 'withdrawal' ORDER BY date DESC LIMIT 10</code></a></pre>
+              <p>Note: We're submitting a plain-text query string because the browser is doing the <a href="http://www.w3schools.com/tags/ref_urlencode.asp" target="_blank">URL-encoding</a> here. The <a href="#libraries" class="smooth-scroll">libraries</a> we've written either do that for you or expect it a URL-encoded query.</p>
+              <p>We also have a sub-domain that you can access nicely from the browser with, <code class="inline-code">http://api.treasury.io/?q=</code>, but we're working on making the redirect play nicer with the various libraries.</p>
               <h3>Host it yourself</h3>
               <p>If you want to install the database locally, follow the instructions on <a href="http://github.com/csvsoundsystem/federal-treasury-api" target="_blank">the GitHub page</a></p>
           </div>
-          <div class="section" id="examples">
-              <h2><a href="#examples"><span class="bullet">$</span> <span class="internal-link">Examples</span></a></h2>
+          <div class="section" id="libraries">
+              <h2><a href="#libraries"><span class="bullet">$</span> <span class="internal-link">Libraries</span></a></h2>
               <ul>
                 <li>
                   <h3>Python</h3>
@@ -173,7 +175,7 @@ treasuryio('SELECT * FROM t1 LIMIT 10;', function(response){
                   <div class="code-container">
                     <p>Paste this function into the script editor. (Or wait a bit; we've submitted it to the script gallery.)</p>
                     <pre><code data-language="javascript">function treasuryio(sql) {
-  var response = UrlFetchApp.fetch("https://api.treasury.io/?q=" + encodeURIComponent(sql));
+  var response = UrlFetchApp.fetch("https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=" + encodeURIComponent(sql));
   var data = JSON.parse(response.getContentText());
 
   if (data.length == 0){

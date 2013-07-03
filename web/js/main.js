@@ -32,6 +32,12 @@ $(function() {
           return false;
       });
 
+      $('.smooth-scroll').click(function(e){
+          var that = this;
+          scrollThere(that, e);
+          return false;
+      });
+
       /* QUERY BOX BEHAVIOR */
       /* QUERY ENCODING */
       $("#query-encoding-options input[name='encoding']").change(function(){
