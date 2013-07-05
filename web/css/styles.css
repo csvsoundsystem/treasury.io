@@ -302,15 +302,23 @@ code {
 form {
   padding: 20px;
 }
-#builder, #results {
+#builder, #results-table-container {
   background: rgba(255,255,255,.5);
   padding: 20px;
   color: #000;
+}
+#results-table-holder{
+  width:100%;
+  overflow-x:scroll;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
 }
 #results-container table{
   border-spacing: 0;
   text-align:left;
   font-size: 12px;
+
 }
 #results thead{
   border-spacing-bottom: 4px;
