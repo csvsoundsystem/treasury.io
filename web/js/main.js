@@ -143,12 +143,12 @@ $(function() {
       $('.show-hide-table').click(function(){
         var state = $(this).data('state');
         if (state == 'hide'){
-          $('#results').hide();
+          $('#results-table-container').hide();
           $(this).data('state','show');
-          $(this).html('Show table')
+          $(this).html('Show preview table')
         }else{
-          $('#results').show();
-          $(this).html('Hide table')
+          $('#results-table-container').show();
+          $(this).html('Hide preview table')
           $(this).data('state','hide');
         }
       });
