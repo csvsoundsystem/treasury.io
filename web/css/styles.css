@@ -341,6 +341,14 @@ form {
      -moz-box-sizing: border-box;
           box-sizing: border-box;
 }
+#results a{
+  color: #000;
+  padding:2px;
+}
+#results a:hover{
+  background-color: #000;
+  color: #fff;
+}
 #query-string {
   margin-top:3px;
   display: block;

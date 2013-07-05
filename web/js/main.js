@@ -109,7 +109,11 @@ $(function() {
               $('#results thead').append('<tr>' + columnNames.map(function(columnName){return '<th>' + columnName + '</th>'}).join('') + '</tr>')
               $('#results tbody').html(results.map(function(row){
                 return '<tr>' + columnNames.map(function(columnName){
-                  return '<td>' + row[columnName] + '</td>'
+                  if (columnName == 'url') {
+                    return '<td><a href="' + row[columnName] + '" target="_blank">Source</td>'
+                  } else { 
+                    return '<td>' + row[columnName] + '</td>'
+                  }
                 }).join('') + '</tr>'
               }).join(''))
             }
