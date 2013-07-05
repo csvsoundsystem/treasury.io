@@ -110,7 +110,7 @@ $(function() {
               $('#results tbody').html(results.map(function(row){
                 return '<tr>' + columnNames.map(function(columnName){
                   if (columnName == 'url') {
-                    return '<td><a href="' + row[columnName] + '">' + row[columnName].replace('https://www.fms.treas.gov/fmsweb/viewDTSFiles?', '...') + '</td>'
+                    return '<td><a href="' + row[columnName] + '" target="_blank">Source</td>'
                   } else { 
                     return '<td>' + row[columnName] + '</td>'
                   }
