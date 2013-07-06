@@ -192,6 +192,29 @@ treasuryio('SELECT * FROM t1 LIMIT 10;', function(response){
                   </div>
                 </li>
                 <li>
+                  <h3>JavaScript</h3>
+                  <p>There isn't a separate library for JavaScript, you can just call it through jQuery's <code class="inline-code">$.ajax()</code>.</p>
+                  <p>Include jQuery :</p>
+                  <div class="code-container">
+                    <pre><code data-language="shell"><script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script></code></pre>
+                  </div>
+                  <p>Create a function <code class="inline-code">treasuryIo()</code> that holds the API endpoint and accepts a query string. Pass it a query and get the JSON response.</p>
+                  <div class="code-container">
+                    <pre><code data-language="javascript">function treasuryIo(query){
+  return $.ajax({
+    url: 'https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q='+query
+  })
+}
+
+treasuryIo('SELECT * FROM t1 LIMIT 10')
+  .done(function(response){
+    console.log(response);
+  }).fail(function(err){
+    console.log(err)
+  });</code></pre>
+                  </div>
+                </li>
+                <li>
                   <h3>Google Docs</h3>
                   <div class="code-container">
                     <p>Paste this function into the script editor. (Or wait a bit; we've submitted it to the script gallery.)</p>
