@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>U.S. Treasury API</title>
+    <title>Treasury IO: An API for the U.S. Treasury</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="icon" type="image/png" href="web/favicon.png">
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -22,8 +22,6 @@
     <!-- end syntax highlighting -->
     <link href="web/css/reset.css" rel='stylesheet' type='text/css'/>
     <link href="web/css/styles.css" rel='stylesheet' type='text/css'/>
-
-    <title>treasury.io</title>
 
     <!-- Facebook
     https://developers.facebook.com/docs/opengraph/creating-object-types/
@@ -196,7 +194,7 @@ treasuryio('SELECT * FROM t1 LIMIT 10;', function(response){
                   <p>There isn't a separate library for JavaScript, you can just call it through jQuery's <code class="inline-code">$.ajax()</code>.</p>
                   <p>Include jQuery :</p>
                   <div class="code-container">
-                    <pre><code data-language="shell"><script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script></code></pre>
+                    <pre><code data-language="html">&lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"&gt;</script></code></pre>
                   </div>
                   <p>Create a function <code class="inline-code">treasuryIo()</code> that holds the API endpoint and accepts a query string. Pass it a query and get the JSON response.</p>
                   <div class="code-container">
