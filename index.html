@@ -183,7 +183,7 @@ treasuryio('SELECT * FROM sqlite_master')</code></pre>
                   <p>Send SQL, and get a csv representation of the data.</p>
                   <div class="code-container">
                     <pre><code data-language="javascript">var treasuryio = require('treasuryio')
-treasuryio('SELECT * FROM t1 LIMIT 10;', function(response){
+treasuryio('SELECT * FROM t1 LIMIT 10', function(response){
     console.log(response);
 });</code></pre>
                   <p>This module lives <a href="https://github.com/csvsoundsystem/treasuryiojs" target="_blank">here</a>.</p>
