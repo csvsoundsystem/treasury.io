@@ -203,11 +203,11 @@ a {
 .section a.disabled:hover{
   cursor: default !important;
 }
-.section pre a, .section pre a code{
+.section pre a, .section pre a code,code.inline-code a{
   color: #0092D6 !important;
   text-decoration: none;
 }
-.section pre a:hover{
+.section pre a:hover,code.inline-code a:hover{
   text-decoration: underline;
 }
 
@@ -460,9 +460,9 @@ textarea:focus{
 .placeholder-textfield{
   color:black;
 }
- 
-.placeholder-textfield-active { 
-  color: #303030; 
+
+.placeholder-textfield-active {
+  color: #303030;
 }
 
 #builder-btns-overlay{
