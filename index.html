@@ -108,7 +108,7 @@
             <h3>Original data format</h3>
             <p>The Treasury told us in response to a Freedom of Information Act Request that it does not store this data in any format other than inconsistently structured text files that don't lend themselves to programmatic analysis.</p>
             <h3>New data format</h3>
-            <p>We have created the first-ever electronically-searchable database of the Federal government's daily cash spending and borrowing. It updates daily and the data can be exported in various formats and loaded into various systems.</p>
+            <p>We have created the first-ever electronically-searchable database of the Federal government's daily cash spending and borrowing. It updates daily and the data can be exported in various formats and loaded into a variety of systems. It is also free to use.</p>
             <p>We want to make it easy for people to search, explore, and visualize how the government spends their tax dollars.</p>
           </div>
           <div class="section" id="documentation">
@@ -135,7 +135,7 @@
           </div>
           <div class="section" id="usage">
               <h2><a href="#usage"><span class="bullet">$</span> <span class="internal-link">Usage</span></a></h2>
-              <p>The eight tables are stored in one SQLite database. To get the data back as JSON, query it from a URL like this:</p>
+              <p>The eight tables are stored in one SQLite database and the API. To get the data back as JSON, query it from a URL like this:</p>
               <pre><code>https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=YOUR_QUERY</code></pre>
               <p>where <code class="inline-code">YOUR_QUERY</code> is a URL-encoded SQL command. This query will show the ten most recent withdrawals.</p>
               <pre><a target="_blank" href="https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT * FROM t2 WHERE type = 'withdrawal' ORDER BY date DESC LIMIT 10"><code>https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=SELECT * FROM t2 WHERE type = 'withdrawal' ORDER BY date DESC LIMIT 10</code></a></pre>
