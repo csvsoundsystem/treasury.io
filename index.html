@@ -197,6 +197,26 @@ treasuryio('SELECT * FROM t1 LIMIT 10', 'csv', function(response){
                   </div>
                 </li>
                 <li>
+                  <h3>Browser JavaScript</h3>
+                  <p>
+                    The JavaScript library also works in the browser. Download 
+                    <a href="https://raw.github.com/csvsoundsystem/treasuryiojs/master/test/jquery-2.0.2.min.js">jquery</a>,
+                    <a href="https://raw.github.com/csvsoundsystem/treasuryiojs/master/test/dsv.min.js">dsv</a>, and
+                    <a href="https://raw.github.com/csvsoundsystem/treasuryiojs/master/treasuryio.js">treasuryio.js</a>,
+                    then run something like this.
+                  </p>
+                  <div class="code-container">
+                    <pre><code data-language="html">&lt;script src="jquery-2.0.2.min.js"&gt;&lt;/script&gt;
+&lt;script src="dsv.min.js"&gt;&lt;/script&gt;
+&lt;script src="treasuryio.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+    treasuryio('SELECT * FROM t1 LIMIT 10', 'json', function(text) {
+      console.log(text)
+    })
+&lt;/script&gt;</code></pre>
+                  </div>
+                </li>
+                <li>
                   <h3>Ruby</h3>
                   <p>Install the gem</p>
                   <div class="code-container">
@@ -207,43 +227,6 @@ treasuryio('SELECT * FROM t1 LIMIT 10', 'csv', function(response){
                     <pre><code data-language="javascript">require 'treasuryio'
 puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
                   <p>This module lives <a href="https://github.com/csv/treasuryiorb" target="_blank">here</a>.</p>
-                  </div>
-                </li>
-                <li>
-                  <h3>JavaScript</h3>
-                  <p>There isn't a separate library for JavaScript (if you want one, <a href="http://www.twitter.com/treasuryio" target="_blank">let us know</a>), you can just call it through jQuery's <code class="inline-code">$.ajax()</code>.</p>
-                  <p>Include jQuery :</p>
-                  <div class="code-container">
-                    <pre><code data-language="html">&lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"&gt;&lt;/script&gt;</code></pre>
-                  </div>
-                  <p>Create a function <code class="inline-code">treasuryIo()</code> that holds the API endpoint and accepts a query string. Pass it a query and get the JSON response.</p>
-                  <div class="code-container">
-                    <pre><code data-language="javascript">function treasuryIo(query){
-  return $.ajax({
-    url: 'https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q='+query
-  })
-}
-treasuryIo('SELECT * FROM t1 LIMIT 10')
-  .done(function(response){
-    console.log(response);
-  }).fail(function(err){
-    console.log(err)
-  });</code></pre>
-                  </div>
-                  <p>If you want a CSV response instead of JSON, you can include the <code class="inline-code"><a href="https://github.com/mbostock/dsv" target="_blank">dsv.js</a></code> library, which is the CSV parser and formatter from <code class="inline-code"><a href="http://d3js.org/" target="_blank">d3.js</a></code>.</p>
-                  <div class="code-container">
-                    <pre><code data-language="html">&lt;script src="js/thirdparty/dsv.min.js"&gt;&lt;/script&gt;</code></pre>
-                  </div>
-
-                  <p>Then, when you call <code class="inline-code">treasuryIo()</code>, convert into a CSV like so :</p>
-                  <div class="code-container">
-                    <pre><code data-language="javascript">treasuryIo('SELECT * FROM t1 LIMIT 10')
-  .done(function(response){
-    var csv_response = dsv.csv.format(response);
-    console.log(csv_response);
-  }).fail(function(err){
-    console.log(err)
-  });</code></pre>
                   </div>
                 </li>
                 <li>
