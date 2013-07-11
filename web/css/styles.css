@@ -211,6 +211,9 @@ a {
 .section pre a:hover,code.inline-code a:hover{
   text-decoration: underline;
 }
+.section pre {
+  overflow:auto;
+}
 
 .section h2 a, .btn-group a {
   text-decoration: none;
