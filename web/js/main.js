@@ -131,8 +131,12 @@ $(function() {
       });
 
       $sql_query_textarea.keyup(function(){
-        enableBuilderBtns();
         var q_string = $sql_query_textarea.val();
+        if (q_string.length > 0 ){
+          enableBuilderBtns();
+        }else{
+          disableBuilderBtns();
+        }
         loadBtnAttrsWithQueryLink(q_string)
       });
 
@@ -204,6 +208,14 @@ $(function() {
     if($builder_btns.hasClass('disabled')){
       $builder_btns.removeClass('disabled');
       $('#builder-btns-overlay').css('z-index',0);
+    };
+  }
+
+  function disableBuilderBtns(){
+    var $builder_btns = $('#builder-btns .btn')
+    if(!$builder_btns.hasClass('disabled')){
+      $builder_btns.addClass('disabled');
+      $('#builder-btns-overlay').css('z-index',9999);
     };
   }
   function initRedQuery(table_schema){
