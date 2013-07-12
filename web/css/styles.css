@@ -446,8 +446,11 @@ textarea:focus{
 #contact ul{
   margin-bottom:10px;
 }
-#the-robot ul{
+#the-robot > ul{
   margin-left: 10px;
+}
+#the-robot ul ul{
+  margin-left: 15px;
 }
 #the-robot ul ul li{
   list-style: disc inside;
