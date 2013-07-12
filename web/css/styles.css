@@ -415,13 +415,18 @@ footer {
   font-family: "Droid Sans", sans-serif;
   background: black;
   color: white;
-  padding: 10px 10px 20px 30px;
+  padding: 24px 10px 20px 30px;
   margin-top: 100px;
   padding-left: 240px;
 }
 footer p {
-  line-height: 45px;
   font-size: 13px;
+  line-height: 24px;
+  margin-top: 14px;
+}
+
+footer p:first-child {
+  margin-top: 0;
 }
 
 textarea {
