@@ -1,7 +1,7 @@
 {
     "tables": [
         {
-            "label": "Operating Cash Balance",
+            "label": "t1: Operating Cash Balance",
             "name": "t1",
             "columns": [
                 {
@@ -98,7 +98,7 @@
             "fks": []
         },
         {
-            "label": "Deposits and Withdrawals",
+            "label": "t2: Deposits and Withdrawals",
             "name": "t2",
             "columns": [
                 {
@@ -214,7 +214,7 @@
             "fks": []
         },
         {
-            "label": "Public Debt Transactions",
+            "label": "t3a: Public Debt Transactions",
             "name": "t3a",
             "columns": [
                 {
@@ -329,7 +329,7 @@
             "fks": []
         },
         {
-            "label": "Adjustment of Public Debt Transactions",
+            "label": "t3b: Adjustment of Public Debt Transactions",
             "name": "t3b",
             "columns": [
                 {
@@ -438,7 +438,7 @@
             "fks": []
         },
         {
-            "label": "Debt Subject to Limit",
+            "label": "t3c: Debt Subject to Limit",
             "name": "t3c",
             "columns": [
                 {
@@ -535,7 +535,7 @@
             "fks": []
         },
         {
-            "label": "Federal Tax Deposits",
+            "label": "t4: Federal Tax Deposits",
             "name": "t4",
             "columns": [
                 {
@@ -632,7 +632,7 @@
             "fks": []
         },
         {
-            "label": "Short-Term Cash Investments",
+            "label": "t5: Short-Term Cash Investments",
             "name": "t5",
             "columns": [
                 {
@@ -729,7 +729,7 @@
             "fks": []
         },
         {
-            "label": "Income Tax Refunds Issued",
+            "label": "t6: Income Tax Refunds Issued",
             "name": "t6",
             "columns": [
                 {
