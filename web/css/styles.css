@@ -389,8 +389,8 @@ form {
 }
 #query-asterisk-field p{
   font-size: 10px;
-  /*letter-spacing: 1px;*/
   line-height:16px;
+  margin-bottom:0 !important;
 }
 fieldset legend {
   display: none;
