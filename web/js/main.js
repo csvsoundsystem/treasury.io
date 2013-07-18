@@ -1,14 +1,19 @@
 $(function() {
-  var encoding = 'false',
-      api_endpoint = 'https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=',
-      $query_refresher = $('#query-refresher'),
-      $download_browser_btn = $('#download-browser'),
-      $download_csv_btn = $('#download-csv'),
-      $download_json_btn = $('#download-json'),
-      $sql_query_textarea = $('#sql'),
-      $any_download_as_csv_btn = $('.download-as-csv-btn'),
-      $chart_builder_input_text = $('.chart-builder-input-text'),
-      $chart_builder_view = $('.chart-builder-submit .btn');
+      var encoding               = 'false',
+      api_endpoint               = 'https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=',
+      $query_refresher           = $('#query-refresher'),
+      $download_browser_btn      = $('#download-browser'),
+      $download_csv_btn          = $('#download-csv'),
+      $download_json_btn         = $('#download-json'),
+      $sql_query_textarea        = $('#sql'),
+      $any_download_as_csv_btn   = $('.download-as-csv-btn'),
+      $chart_builder_input_text  = $('.chart-builder-input-text'),
+      $chart_builder_view        = $('.chart-builder-submit .btn'),
+      $chart_builder_series_data = $('#cb-series-col'),
+      $chart_builder_x_data      = $('#cb-x-col'),
+      $chart_builder_y_data      = $('#cb-y-col'),
+      $chart_container           = $('#chart-container');
+      $chart_canvas              = $('#chart-canvas');
 
   function bindHandlers(){
       /* NAV MENU BEHAVIOR */
@@ -165,9 +170,26 @@ $(function() {
       });
 
       $chart_builder_view.mousedown(function(e){
-        console.log('here')
+        constructDynamicHighchartObject();
       });
 
+  };
+
+  function constructDynamicHighchartObject(){
+    var chart_settings = {
+      query_url: $download_json_btn.attr('href'),
+      chart_type: $('input:radio[name=chart-type]:checked').val(),
+      series: $chart_builder_series_data.val(),
+      x: $chart_builder_x_data.val(),
+      y: $chart_builder_y_data.val()
+    };
+
+    console.log(chart_settings)
+
+    $chart_canvas.dynamicHighchart(chart_settings, function(response){
+      console.log(reponse)
+      $chart_container.show();
+    });
   };
 
   function validateChartBuilder(){

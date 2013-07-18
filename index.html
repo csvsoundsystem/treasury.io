@@ -16,6 +16,7 @@
     <script src="web/js/thirdparty/miso.ds.deps.ie.0.4.1.js"></script>
     <script src="web/js/thirdparty/highcharts.js"></script>
     <script src="web/js/thirdparty/jquery.dynamic-highchart.js"></script>
+    <link href="web/css/jquery.dynamic-highchart.css" rel='stylesheet' type='text/css'/>
     <!-- end chart builder -->
 
     <!-- RED QUERY BUILDER -->
@@ -107,8 +108,8 @@
                 </div>
                 <div class="chart-builder-option-box">
                   <p class="chart-builder-option-box-title">The chart's x-axis holds...</p>
-                  <input type="radio" name="chart-type" value="false" checked> <span class="radio-btn-text"><span class="radio-btn-fixed-width">Dates</span> (line graph)</span><br/>
-                  <input type="radio" name="chart-type" value="true"> <span class="radio-btn-text"><span class="radio-btn-fixed-width">Categories</span> (bar graph)</span>
+                  <input type="radio" name="chart-type" value="datetime" checked> <span class="radio-btn-text"><span class="radio-btn-fixed-width">Dates</span> (line graph)</span><br/>
+                  <input type="radio" name="chart-type" value="categorical"> <span class="radio-btn-text"><span class="radio-btn-fixed-width">Categories</span> (bar graph)</span>
                 </div>
                 <div class="chart-builder-submit">
                   <div class="btn disabled">View chart</div>
@@ -121,6 +122,12 @@
                 <p>** This will put <code class="inline-code">LIMIT 10</code> on the end of your query, so best not to add your own <code class="inline-code">LIMIT</code>.</p>
             </div>
         </div>
+      </div>
+      <div id="chart-container" class="section" style="display: none;">
+        <div class="show-hide-chart" data-state="hide">Hide chart</div>
+        <div id="chart-canvas"></div>
+        <div id="hover-templ"></div>
+
       </div>
       <div id="results-container" class="section" style="display: none;">
         <div class="show-hide-table" data-state="hide">Hide preview table</div>
