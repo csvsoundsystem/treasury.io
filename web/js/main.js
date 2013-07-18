@@ -7,7 +7,8 @@ $(function() {
       $download_json_btn = $('#download-json'),
       $sql_query_textarea = $('#sql'),
       $any_download_as_csv_btn = $('.download-as-csv-btn'),
-      $chart_builder_input_text = $('.chart-builder-input-text');
+      $chart_builder_input_text = $('.chart-builder-input-text'),
+      $chart_builder_view = $('.chart-builder-submit .btn');
 
   function bindHandlers(){
       /* NAV MENU BEHAVIOR */
@@ -163,6 +164,10 @@ $(function() {
         validateChartBuilder();
       });
 
+      $chart_builder_view.mousedown(function(e){
+        console.log('here')
+      });
+
   };
 
   function validateChartBuilder(){
@@ -188,11 +193,11 @@ $(function() {
   };
 
   function disableChartViewBtn(){
-    $('.chart-builder-submit .btn').addClass('disabled');
+    $chart_builder_view.addClass('disabled');
   };
 
   function enableChartViewBtn(){
-    $('.chart-builder-submit .btn').removeClass('disabled');
+    $chart_builder_view.removeClass('disabled');
   };
 
   function makeTextfieldsPlaceholderable(){

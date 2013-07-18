@@ -562,6 +562,13 @@ textarea:focus{
   /*box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;*/
 
 }
+.chart-builder-submit .btn:active{
+  top: 2px;
+  left: 2px;
+/*  -webkit-box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px;
+  -moz-box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px;
+*/  box-shadow: 0 0 0;
+}
 .chart-builder-submit .btn.disabled:active{
   top: 0;
   left: 0;
