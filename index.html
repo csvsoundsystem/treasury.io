@@ -100,9 +100,9 @@
                 <div class="chart-builder-title">Chart options</div>
                 <div class="chart-builder-option-box">
                   <p class="chart-builder-option-box-title">Which fields hold the...</p>
-                  <input id="cb-series-col" type="text" class="placeholder-textfield" title="Series names">
-                  <input id="cb-x-col" type="text" class="placeholder-textfield" title="X-axis">
-                  <input id="cb-y-col" type="text" class="placeholder-textfield" title="Y-axis">
+                  <input id="cb-series-col" type="text" class="placeholder-textfield chart-builder-input-text" title="Series names ">
+                  <input id="cb-x-col" type="text" class="placeholder-textfield chart-builder-input-text" title="X-axis data ">
+                  <input id="cb-y-col" type="text" class="placeholder-textfield chart-builder-input-text" title="Y-axis data ">
                   <span class="clearfix"></span>
                 </div>
                 <div class="chart-builder-option-box">
@@ -110,7 +110,9 @@
                   <input type="radio" name="chart-type" value="false" checked> <span class="radio-btn-text"><span class="radio-btn-fixed-width">Dates</span> (line graph)</span><br/>
                   <input type="radio" name="chart-type" value="true"> <span class="radio-btn-text"><span class="radio-btn-fixed-width">Categories</span> (bar graph)</span>
                 </div>
-
+                <div class="chart-builder-submit">
+                  <div class="btn disabled">View chart</div>
+                </div>
               </div>
             </div>
             <div id="query-asterisk-field">

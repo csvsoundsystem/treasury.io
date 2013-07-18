@@ -201,6 +201,7 @@ h3 {
   -webkit-box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
   box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
 }
+
 /*.section pre a:hover{
   background-color: transparent;
 }
@@ -516,7 +517,7 @@ textarea:focus{
   position: relative;
   display:inline-block;
   box-shadow: inset 0 0 7px #416B80;
-  min-width: 150px;
+  max-width: 340px;
   padding: 0.5em 0.75em;
 }
 #chart-builder-options p {
@@ -529,20 +530,46 @@ textarea:focus{
 }
 .chart-builder-option-box{
   display: inline-block;
-  min-height:81px;
   margin-right: 20px;
   float:left;
   line-height:20px;
+  max-width: 170px;
 }
-.chart-builder-option-box-title{
+#chart-builder-options p.chart-builder-option-box-title{
   font-size:13px;
-  margin-bottom:3px;
+  margin-bottom:5px;
 }
-.chart-builder-option-box input[type='text']{
+.chart-builder-input-text{
   display:block;
-  margin-bottom:2px;
-  width:96%;
+  margin-bottom: 4px;
+  width: 96%;
+  height: 15px;
+
 }
+.chart-builder-submit{
+  margin-top:5px;
+  max-width: 170px;
+  float:left;
+  margin-right: 28px; /* Helps keep this inline with the radio buttons when window is resized */
+}
+.chart-builder-submit .btn{
+  padding: 0 .75em;
+  border-width:2px;
+  width:87%;
+  -webkit-box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px;
+  -moz-box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px;
+  box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px;
+  /*box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;*/
+
+}
+.chart-builder-submit .btn.disabled:active{
+  top: 0;
+  left: 0;
+  -webkit-box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px;
+  -moz-box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px;
+  box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px;
+}
+
 .radio-btn-text{
   font-size:12px;
 }
@@ -581,5 +608,8 @@ textarea:focus{
   }
   .radio-btn-fixed-width{
     width: 55px;
+  }
+  .chart-builder-submit .btn{
+    width: 77%;
   }
 }

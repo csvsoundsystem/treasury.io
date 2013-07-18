@@ -6,7 +6,8 @@ $(function() {
       $download_csv_btn = $('#download-csv'),
       $download_json_btn = $('#download-json'),
       $sql_query_textarea = $('#sql'),
-      $any_download_as_csv_btn = $('.download-as-csv-btn');
+      $any_download_as_csv_btn = $('.download-as-csv-btn'),
+      $chart_builder_input_text = $('.chart-builder-input-text');
 
   function bindHandlers(){
       /* NAV MENU BEHAVIOR */
@@ -157,6 +158,41 @@ $(function() {
         }
       });
 
+      /* CHART BUILDER ENABLE DISABLE BUTTON */
+      $chart_builder_input_text.keyup(function(e){
+        validateChartBuilder();
+      });
+
+  };
+
+  function validateChartBuilder(){
+        var $cb_inputs = $('.chart-builder-input-text'),
+            input_checker = 0;
+
+        // Loop through the input fields and if they are something other than the default value or empty, count that as acceptable for the chart builder button to become active.
+        $.each($cb_inputs, function(ind, el){
+          var $el = $(el);
+          if ($el.val() != 'Series names ' && $el.val() != 'Y-axis data ' && $el.val() != 'X-axis data ' && $el.val() != '' && $el.val() != '' && $el.val() != ''){
+            input_checker++
+          };
+        });
+
+        if (input_checker != 3){
+          // More info needed
+          disableChartViewBtn();
+
+        }else{
+          // Ok to go!
+          enableChartViewBtn();
+        }
+  };
+
+  function disableChartViewBtn(){
+    $('.chart-builder-submit .btn').addClass('disabled');
+  };
+
+  function enableChartViewBtn(){
+    $('.chart-builder-submit .btn').removeClass('disabled');
   };
 
   function makeTextfieldsPlaceholderable(){
@@ -204,7 +240,7 @@ $(function() {
   }
 
   function enableBuilderBtnsAndChartOptions(){
-    var $builder_btns = $('#builder-btns .btn'),
+    var $builder_btns = $('#builder-btns .btn').not('.chart-builder-submit .btn'),
         $chart_options = $('#chart-builder-options');
 
     if($builder_btns.hasClass('disabled')){
@@ -215,7 +251,7 @@ $(function() {
   }
 
   function disableBuilderBtnsAndChartOptions(){
-    var $builder_btns = $('#builder-btns .btn'),
+    var $builder_btns = $('#builder-btns .btn').not('.chart-builder-submit .btn'),
         $chart_options = $('#chart-builder-options');
 
     if(!$builder_btns.hasClass('disabled')){
