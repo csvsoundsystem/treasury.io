@@ -34,6 +34,14 @@ p strong{
   position:relative;
   z-index:9999;
 }
+#beta-marker{
+  position: fixed;
+  top: 19px;
+  left: 186px;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
 #title{
   overflow: hidden;
   filter: glow(color=black,strength=5);
