@@ -133,9 +133,9 @@ $(function() {
       $sql_query_textarea.keyup(function(){
         var q_string = $sql_query_textarea.val();
         if (q_string.length > 0 ){
-          enableBuilderBtns();
+          enableBuilderBtnsAndChartOptions();
         }else{
-          disableBuilderBtns();
+          disableBuilderBtnsAndChartOptions();
         }
         loadBtnAttrsWithQueryLink(q_string)
       });
@@ -203,18 +203,24 @@ $(function() {
     $.scrollTo(target, 300);
   }
 
-  function enableBuilderBtns(){
-    var $builder_btns = $('#builder-btns .btn')
+  function enableBuilderBtnsAndChartOptions(){
+    var $builder_btns = $('#builder-btns .btn'),
+        $chart_options = $('#chart-builder-options');
+
     if($builder_btns.hasClass('disabled')){
       $builder_btns.removeClass('disabled');
+      $chart_options.removeClass('disabled');
       $('#builder-btns-overlay').css('z-index',0);
     };
   }
 
-  function disableBuilderBtns(){
-    var $builder_btns = $('#builder-btns .btn')
+  function disableBuilderBtnsAndChartOptions(){
+    var $builder_btns = $('#builder-btns .btn'),
+        $chart_options = $('#chart-builder-options');
+
     if(!$builder_btns.hasClass('disabled')){
       $builder_btns.addClass('disabled');
+      $chart_options.addClass('disabled');
       $('#builder-btns-overlay').css('z-index',9999);
     };
   }
@@ -222,7 +228,7 @@ $(function() {
     RedQueryBuilderFactory.create({
       meta : table_schema,
       onSqlChange : function(sql, args) {
-        enableBuilderBtns();
+        enableBuilderBtnsAndChartOptions();
 
         $query_refresher[0].disabled = true;
         var out = sql + '\r\n';
