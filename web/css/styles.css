@@ -501,6 +501,14 @@ textarea:focus{
   text-decoration: underline;
 }
 
+#github-ribbon{
+  position: fixed;
+  top: 0;
+  right: 0;
+  border: 0;
+  z-index:99999999;
+}
+
 @media screen and (max-width: 640px) {
   #container-fluid, #container-solid{
     margin:10px;
@@ -508,11 +516,15 @@ textarea:focus{
   #container-fluid{
     margin-top:40px;
   }
-  #title, #navmenu {
+  #title, #navmenu, #beta-marker {
     position: inherit;
   }
-  #title {
+  #title, #beta-marker {
     text-align: center;
+  }
+  #beta-marker{
+    top: 28px;
+    left: 86px;
   }
   #subhead {
     display: none;
@@ -529,5 +541,8 @@ textarea:focus{
   }
   #title {
     padding-left: 0;
+  }
+  #github-ribbon{
+    position:absolute;
   }
 }
