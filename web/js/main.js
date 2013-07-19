@@ -184,11 +184,9 @@ $(function() {
       y: $chart_builder_y_data.val()
     };
 
-    console.log(chart_settings)
-
+    $chart_container.show();
     $chart_canvas.dynamicHighchart(chart_settings, function(response){
-      console.log(reponse)
-      $chart_container.show();
+      console.log(response)
     });
   };
 

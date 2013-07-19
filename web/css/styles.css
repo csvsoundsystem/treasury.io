@@ -576,9 +576,11 @@ textarea:focus{
   -moz-box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px;
   box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px;
 }
+#chart-container{
+}
 
 #chart-canvas{
-  min-width: 400px;
+  width: 100%;
   margin: 0 auto;
   height: 400px;
 }
