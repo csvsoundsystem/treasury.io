@@ -59,11 +59,6 @@ $(function() {
          }
       });
 
-      /* QUERY REFRESHING */
-      $('#query').on('keydown', '.gwt-TextBox', function(){
-          $query_refresher.removeAttr('disabled');
-      });
-
       /* DISABLE FIRST LIST ITEM, COULD BE IMPROVED  TO BE DISABLED FROM THE BEGINNING BUT THAT WAS CAUSING PROBLEMS WITH RQB */
       $('#query').on('change', '.gwt-ListBox', function(){
         if ($('#rqb .gwt-ListBox option:first-child').attr('disabled') == undefined){
