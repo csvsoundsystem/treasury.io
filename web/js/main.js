@@ -24,7 +24,7 @@ $(function() {
             var that = $('#navmenu a[href="#query"]')[0]
           } else {
             var that = this;
-          }
+          };
           scrollThere(that, e);
           return false;
       });
@@ -56,14 +56,14 @@ $(function() {
          }else{
            var unencoded_text = decodeURI(query_text);
            $sql_query_textarea.val(unencoded_text);
-         }
+         };
       });
 
       /* DISABLE FIRST LIST ITEM, COULD BE IMPROVED  TO BE DISABLED FROM THE BEGINNING BUT THAT WAS CAUSING PROBLEMS WITH RQB */
       $('#query').on('change', '.gwt-ListBox', function(){
         if ($('#rqb .gwt-ListBox option:first-child').attr('disabled') == undefined){
           $('#rqb .gwt-ListBox option:first-child').attr('disabled','disabled');
-        }
+        };
       });
 
       /* DOWNLOAD AS CSV BUTTON BEHAVIOR */
@@ -126,9 +126,9 @@ $(function() {
             }else{
               alert(err.status + ' ' + JSON.stringify(err.responseJSON))
             };
-          })
+          });
         }else{
-          return false
+          return false;
         };
       });
 
@@ -156,7 +156,7 @@ $(function() {
           $('#results-table-container').show();
           $(this).html('Hide preview table')
           $(this).data('state','hide');
-        }
+        };
       });
 
       /* CHART BUILDER ENABLE DISABLE BUTTON */
@@ -186,25 +186,25 @@ $(function() {
   };
 
   function validateChartBuilder(){
-        var $cb_inputs = $('.chart-builder-input-text'),
-            input_checker = 0;
+    var $cb_inputs = $('.chart-builder-input-text'),
+        input_checker = 0;
 
-        // Loop through the input fields and if they are something other than the default value or empty, count that as acceptable for the chart builder button to become active.
-        $.each($cb_inputs, function(ind, el){
-          var $el = $(el);
-          if ($el.val() != 'Series names ' && $el.val() != 'Y-axis data ' && $el.val() != 'X-axis data ' && $el.val() != '' && $el.val() != '' && $el.val() != ''){
-            input_checker++
-          };
-        });
+    // Loop through the input fields and if they are something other than the default value or empty, count that as acceptable for the chart builder button to become active.
+    $.each($cb_inputs, function(ind, el){
+      var $el = $(el);
+      if ($el.val() != 'Series names ' && $el.val() != 'Y-axis data ' && $el.val() != 'X-axis data ' && $el.val() != '' && $el.val() != '' && $el.val() != ''){
+        input_checker++
+      };
+    });
 
-        if (input_checker != 3){
-          // More info needed
-          disableChartViewBtn();
+    if (input_checker != 3){
+      // More info needed
+      disableChartViewBtn();
 
-        }else{
-          // Ok to go!
-          enableChartViewBtn();
-        }
+    }else{
+      // Ok to go!
+      enableChartViewBtn();
+    };
   };
 
   function disableChartViewBtn(){
@@ -221,17 +221,17 @@ $(function() {
     var $textfield = $('.placeholder-textfield');
  
     $textfield.focus(function(srcc){
-        if ($(this).val() == $(this)[0].title){
-            $(this).removeClass("placeholder-textfield-active");
-            $(this).val("");
-        }
+      if ($(this).val() == $(this)[0].title){
+          $(this).removeClass("placeholder-textfield-active");
+          $(this).val("");
+      };
     });
  
     $textfield.blur(function(){
-        if ($(this).val() == ""){
-            $(this).addClass("placeholder-textfield-active");
-            $(this).val($(this)[0].title);
-        }
+      if ($(this).val() == ""){
+          $(this).addClass("placeholder-textfield-active");
+          $(this).val($(this)[0].title);
+      }
     });
  
     $textfield.blur();
@@ -240,14 +240,14 @@ $(function() {
   function trackQuery(fileFormat, resultCount){
     if (typeof(resultCount) == 'undefined') {
       var resultCount = false;
-    }
+    };
 
     // Track
     if (encoding == 'true'){
       var url = decodeURI($('#sql').val())
     }else{
       var url = $('#sql').val()
-    }
+    };
     var sql = url.replace('https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=', '')
     _paq.push(['trackSiteSearch', sql, fileFormat, resultCount]);
   }
@@ -257,7 +257,7 @@ $(function() {
     e.stopPropagation();
     target = that.hash;
     $.scrollTo(target, 300);
-  }
+  };
 
   function enableBuilderBtnsAndChartOptions(){
     var $builder_btns = $('#builder-btns .btn').not('.chart-builder-submit .btn'),
@@ -268,7 +268,7 @@ $(function() {
       $chart_options.removeClass('disabled');
       $('#builder-btns-overlay').css('z-index',0);
     };
-  }
+  };
 
   function disableBuilderBtnsAndChartOptions(){
     var $builder_btns = $('#builder-btns .btn').not('.chart-builder-submit .btn'),
@@ -279,7 +279,7 @@ $(function() {
       $chart_options.addClass('disabled');
       $('#builder-btns-overlay').css('z-index',9999);
     };
-  }
+  };
   function initRedQuery(table_schema){
     RedQueryBuilderFactory.create({
       meta : table_schema,
@@ -328,8 +328,8 @@ $(function() {
       $this.html('Fetching... ' + ajax_img).addClass('disabled');
     }else{
       $this.html(before_text).removeClass('disabled');
-    }
-  }
+    };
+  };
 
   function convertJSONtoCSV(query, $this, before_text){
     fetchJSON(query).done(function(json){
@@ -353,7 +353,7 @@ $(function() {
   };
 
   $.get('web/table_schema/tables.json', function(table_schema) {
-    initRedQuery(table_schema);
+    // initRedQuery(table_schema);
     bindHandlers();
   });
 
