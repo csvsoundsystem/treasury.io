@@ -13,9 +13,10 @@ $(function() {
       $chart_builder_x_data      = $('#cb-x-col'),
       $chart_builder_y_data      = $('#cb-y-col'),
       $chart_container           = $('#chart-container');
-      $chart_canvas              = $('#chart-canvas');
+      $chart_canvas              = $('#chart-canvas'),
+      $builder_table_select      = $('#builder-table-select');
 
-  function bindHandlers(){
+  function bindHandlers(db_schema){
       /* NAV MENU BEHAVIOR */
       $('#navmenu').scrollSpy()
 
@@ -60,11 +61,12 @@ $(function() {
       });
 
       /* DISABLE FIRST LIST ITEM, COULD BE IMPROVED  TO BE DISABLED FROM THE BEGINNING BUT THAT WAS CAUSING PROBLEMS WITH RQB */
-      $('#query').on('change', '.gwt-ListBox', function(){
-        if ($('#rqb .gwt-ListBox option:first-child').attr('disabled') == undefined){
-          $('#rqb .gwt-ListBox option:first-child').attr('disabled','disabled');
-        };
-      });
+      // $('#query').on('change', '.gwt-ListBox', function(){
+      //   disableFirstChoice($this);
+      //   // if ($('#rqb .gwt-ListBox option:first-child').attr('disabled') == undefined){
+      //   //   $('#rqb .gwt-ListBox option:first-child').attr('disabled','disabled');
+      //   // };
+      // });
 
       /* DOWNLOAD AS CSV BUTTON BEHAVIOR */
       $any_download_as_csv_btn.mousedown(function(e){
@@ -168,6 +170,38 @@ $(function() {
         constructDynamicHighchartObject();
       });
 
+
+      /* (TQB) Treasury Query Builder */
+      $builder_table_select.change( function(){
+        $this = $(this);
+        disableFirstChoice($this);
+        var table_selector = $this.val(),
+            table_schema   = db_schema.tables[table_selector]
+            table_desc = table_schema.desc;
+
+        $('#tqb').append('<p class="tqb-table-desc">' + table_desc + '</p>');
+
+        showOptions(table_schema);
+      });
+
+  };
+
+  function showOptions(table_schema){
+    if (table_schema.name == 't1'){
+      // showDatePicker();
+      showCol(table_schema.columns, 'account');
+    };
+  };
+
+  function showCol(table_columns, col){
+    console.log(table_columns[col]);
+  };
+
+  function disableFirstChoice($el){
+    $choice = $el.find('option:first-child')
+    if ($choice.attr('disabled') == undefined){
+      $choice.attr('disabled','disabled');
+    };
   };
 
   function constructDynamicHighchartObject(){
@@ -352,9 +386,10 @@ $(function() {
     });
   };
 
-  $.get('web/table_schema/tables.json', function(table_schema) {
+  $.get('web/table_schema/table_schema.json', function(db_schema) {
+    console.log(db_schema)
     // initRedQuery(table_schema);
-    bindHandlers();
+    bindHandlers(db_schema);
   });
 
 });

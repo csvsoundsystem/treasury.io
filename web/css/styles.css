@@ -153,6 +153,15 @@ h3 {
   font-weight:normal;
   margin: 35px 0 15px 0;
 }
+#builder h3{
+  margin: 15px 0;
+}
+#builder-table-select{
+  margin: 0 0 10px 0;
+}
+.tqb-table-desc{
+  line-height: 19px;
+}
 .btn, .btn-row-el{
   font-family: "Droid Sans", sans-serif;
   font-weight: 800;
