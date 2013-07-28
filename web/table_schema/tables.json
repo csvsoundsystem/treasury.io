@@ -150,8 +150,8 @@
                     "size": 10
                 },
                 {
-                    "label": "Type",
-                    "name": "type",
+                    "label": "Transaction type",
+                    "name": "transaction_type",
                     "type": "STRING",
                     "size": 10
                 },
@@ -162,20 +162,14 @@
                     "size": 10
                 },
                 {
+                    "label": "Parent item",
+                    "name": "parent_item",
+                    "type": "STRING",
+                    "size": 10
+                },
+                {
                     "label": "Item raw",
                     "name": "item_raw",
-                    "type": "STRING",
-                    "size": 10
-                },
-                {
-                    "label": "Subitem",
-                    "name": "subitem",
-                    "type": "STRING",
-                    "size": 10
-                },
-                {
-                    "label": "Subitem raw",
-                    "name": "subitem_raw",
                     "type": "STRING",
                     "size": 10
                 },
@@ -260,14 +254,20 @@
                     "size": 10
                 },
                 {
-                    "label": "Surtype",
-                    "name": "surtype",
+                    "label": "Transaction type",
+                    "name": "transaction_type",
                     "type": "STRING",
                     "size": 10
                 },
                 {
-                    "label": "Type",
-                    "name": "type",
+                    "label": "Debt type",
+                    "name": "debt_type",
+                    "type": "STRING",
+                    "size": 10
+                },
+                {
+                    "label": "Parent item",
+                    "name": "parent_item",
                     "type": "STRING",
                     "size": 10
                 },
@@ -280,18 +280,6 @@
                 {
                     "label": "Item raw",
                     "name": "item_raw",
-                    "type": "STRING",
-                    "size": 10
-                },
-                {
-                    "label": "Subitem",
-                    "name": "subitem",
-                    "type": "STRING",
-                    "size": 10
-                },
-                {
-                    "label": "Subitem raw",
-                    "name": "subitem_raw",
                     "type": "STRING",
                     "size": 10
                 },
@@ -375,8 +363,14 @@
                     "size": 10
                 },
                 {
-                    "label": "Type",
-                    "name": "type",
+                    "label": "Transaction type",
+                    "name": "transaction_type",
+                    "type": "STRING",
+                    "size": 10
+                },
+                {
+                    "label": "Parent item",
+                    "name": "parent_item",
                     "type": "STRING",
                     "size": 10
                 },
@@ -389,18 +383,6 @@
                 {
                     "label": "Item raw",
                     "name": "item_raw",
-                    "type": "STRING",
-                    "size": 10
-                },
-                {
-                    "label": "Subitem",
-                    "name": "subtype",
-                    "type": "STRING",
-                    "size": 10
-                },
-                {
-                    "label": "Subitem raw",
-                    "name": "subitem_raw",
                     "type": "STRING",
                     "size": 10
                 },
@@ -678,8 +660,8 @@
                     "size": 10
                 },
                 {
-                    "label": "Type",
-                    "name": "type",
+                    "label": "Transaction type",
+                    "name": "transaction_type",
                     "type": "STRING",
                     "size": 10
                 },
@@ -775,20 +757,20 @@
                     "size": 10
                 },
                 {
-                    "label": "Type",
-                    "name": "type",
+                    "label": "Refund method",
+                    "name": "refund_method",
                     "type": "STRING",
                     "size": 10
                 },
                 {
-                    "label": "Classification",
-                    "name": "classification",
+                    "label": "Refund type",
+                    "name": "refund_type",
                     "type": "STRING",
                     "size": 10
                 },
                 {
-                    "label": "Classification raw",
-                    "name": "classification_raw",
+                    "label": "Refund type raw",
+                    "name": "refund_type_raw",
                     "type": "STRING",
                     "size": 10
                 },
