@@ -354,22 +354,22 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
           <div class="qc-col-ctnr" data-col-name="<%= col.name %>">
             <div class="qc-col-header">
               <div class="qc-col-name"><strong><%= col.name %></strong> <span><%= normalizeFormatType(col.type) %></span>
-                <% if (col.type == 'TEXT' && col.name != 'date') { %>
-                  <span class="qc-col-control"><span class="qc-select-all">all</span>/<span class="qc-deselect-all">none</span></span>
+                <% if ( (col.type == 'TEXT' && col.name != 'date') || col.name == 'is_total' ) { %>
+                  <div class="qc-col-control"><input type="checkbox" class="qc-select-all" checked/></div>
                 <% } %>
               </div>
             </div>
             <ul class="qc-values-ctnr">
               <% if (col.name == 'is_total') { %>
-                <li class="queryable-item">
+                <li class="query-checkbox-item queryable-item">
                   <label for="<%= makeKeyFromName(col.name, table_name) %>-yes"><input type="checkbox" value="1" id="<%= makeKeyFromName(col.name, table_name) %>-yes" checked/> 1 (yes)</label>
                 </li>
-                <li class="queryable-item">
+                <li class="query-checkbox-item queryable-item">
                   <label for="<%= makeKeyFromName(col.name, table_name) %>-no"><input type="checkbox" value="0" id="<%= makeKeyFromName(col.name, table_name) %>-no" checked/> 0 (no)</label>
                 </li>
               <% } else %>
               <% if (col.type == 'TEXT' && col.name != 'date') { _.each(col.values, function(value){ %>
-                <li class="queryable-item">
+                <li class="query-checkbox-item queryable-item">
                   <label for="<%= makeKeyFromName(value.name, table_name) %>"><input type="checkbox" id="<%= makeKeyFromName(value.name, table_name) %>" checked/> <%= value.name %></label>
                 </li>
 

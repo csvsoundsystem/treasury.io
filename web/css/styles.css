@@ -615,7 +615,7 @@ textarea:focus{
 }
 .qc-col-ctnr{
   display: inline-block;
-  width: 150px;
+  width: 155px;
   margin: 0 10px 10px 0;
   vertical-align: top;
   background-color: #F9FDFF;
@@ -626,23 +626,18 @@ textarea:focus{
 }
 .qc-col-header{
   border-bottom: 1px dotted #303030;
+  overflow: auto;
 }
 .qc-col-control{
-  position: relative;
-  top: 3px;
   float: right;
   text-align: right;
-}
-.qc-col-control span{
-  text-decoration: underline;
-  padding: 2px;
-}
-.qc-col-control span:hover{
-  cursor: pointer;
-  cursor: hand;
-  color: #fff;
-  background-color: #000;
-  text-decoration: none;
+  padding-right: 1px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .qc-col-name{
   font-weight: bold;
@@ -650,8 +645,6 @@ textarea:focus{
 .qc-col-name span{
   font-size: 10px;
   font-weight: normal;
-  line-height: 20px;
-  margin-bottom:3px;
 }
 .qc-values-ctnr{
   max-height: 180px;

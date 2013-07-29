@@ -186,8 +186,22 @@ $(function() {
 
       });
 
+      $('.qc-select-all').click(function(){
+        $(this).parents('.qc-col-ctnr').find('.query-checkbox-item input').prop('checked', this.checked);
+      });
+
       /* The checkboxes and input textboxes need different listeners because .on('change') only detects changes for textfields after the box loses mouse focus (i.e. the user clicks away) */
       $qb_table_builders.on('change', '.queryable-item input:checkbox', function(){
+
+        console.log($(this).parents('.qc-values-ctnr').find('input:checkbox').length)
+
+        // If everything is checked, then check the main one, else uncheck it
+        if($(this).parents('.qc-values-ctnr').find('input:checkbox').length == $(this).parents('.qc-values-ctnr').find('input:checkbox:checked').length) {
+            $(this).parents('.qc-values-ctnr').siblings('.qc-col-header').find(".qc-select-all").prop('checked', 'true');
+        } else {
+            $(this).parents('.qc-values-ctnr').siblings('.qc-col-header').find('.qc-select-all').removeAttr('checked');
+        };
+
         buildQueryFromInputs();
       }); 
 
@@ -220,11 +234,6 @@ $(function() {
       formatHelpers = {
         normalizeFormatType: function(type){
           type = type.toLowerCase();
-          // if (type == 'real'){
-          //   type = 'integer';
-          // }else if (type == 'text'){
-          //   type = 'string';
-          // };
           return '(' + type + ')';
         },
         makeKeyFromName: function(name, table_name){
