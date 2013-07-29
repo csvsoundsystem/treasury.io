@@ -363,6 +363,22 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
             </li>
 
           <% }) } %>
+          <% if (type == 'REAL' || type == 'INTEGER' && name != 'is_total') { %>
+            <li>
+              <label for="<%= name %>-min">min: <input type="text" value="<%= values[0] %>" id="<%= name %>-min" /></label>
+            </li>
+            <li>
+              <label for="<%= name %>-max">max: <input type="text" value="<%= values[1] %>" id="<%= name %>-max" /></label>
+            </li>
+          <% } %>
+          <% if (name == 'is_total') { %>
+            <li>
+              <label for="<%= table_name %>-is_total_yes"><input type="checkbox" value="1" id="<%= table_name %>-is_total_yes" /> Yes</label>
+            </li>
+            <li>
+              <label for="<%= table_name %>-is_total_no"><input type="checkbox" value="0" id="<%= table_name %>-is_total_no" /> No</label>
+            </li>
+          <% } %>
         </ul>
       </div>
     </script>

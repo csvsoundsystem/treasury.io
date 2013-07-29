@@ -181,7 +181,7 @@ $(function() {
             table_cols     = table_schema.columns;
             // table_desc = table_schema.desc;
 
-            printTableColumns(table_cols);
+            printTableColumns(table_schema.name, table_cols);
 
         // $('#tqb').append('<p class="tqb-table-desc">' + table_desc + '</p>');
 
@@ -207,14 +207,16 @@ $(function() {
         }
       };
 
-  function printTableColumns(table_cols){
+  function printTableColumns(table_name, table_cols){
       /* Clear the current selection, this should be improved to actually print all of the elements, hide them, and then show hide the table queries */
       $tqb_col_ctnr.html(''); 
       for (var col in table_cols){
         if ( _.has(table_cols, col) ){
 
-          var data = table_cols[col];
-          _.extend(data, formatHelpers);
+          var data = table_cols[col],
+              table_name = {table_name: table_name};
+
+          _.extend(data, formatHelpers, table_name);
 
           console.log(data)
           var col_container = queryColCtnrTemplFactory(data);

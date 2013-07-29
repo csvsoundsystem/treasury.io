@@ -10,6 +10,7 @@
 ::-moz-selection {
   background: #98ebb5; /* Firefox */
 }
+
 p strong{
   font-weight:bold;
 }
