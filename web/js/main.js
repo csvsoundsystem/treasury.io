@@ -247,6 +247,188 @@ $(function() {
         }
       };
 
+  function initQueryBuilderBackbone(t2){
+
+    /********** M O D E L ************/
+    // Create a model for the services
+    var Value = Backbone.Model.extend({
+
+        // These are the default values
+        defaults:{
+            name: 'item',
+            date_range: ['1970-01-01', '2013-11-05'],
+            is_type_parent: false,
+            type_parents: null,
+            checked: false
+        },
+
+        // Helper function for checking/unchecking a service
+        toggle: function(){
+            this.set('checked', !this.get('checked'));
+        }
+    });
+
+
+    /********** C O L L E C T I O N S ************/
+
+    // Create an object to hold each collection of items (a collection corresponds to a column in the database)
+    var collections = {},
+        values;
+    for (var column in t2.columns){
+      if ( _.has(t2.columns, column)) {
+
+        if (t2.columns[column].type == 'TEXT' && t2.columns[column].name != 'date'){
+
+          // Create a collection for that column
+          collections[column] = Backbone.Collection.extend({
+            model: Value,
+
+            getChecked: function(){
+                return this.where({checked:true});
+            }
+          });
+
+          // Fill that collection with the column values
+          var column_values = [];
+          _.each(t2.columns[column].values, function(value){
+             var column_value = new Value(value);
+             column_values.push(column_value);
+          });
+
+          collections[column] = new collections[column](column_values)
+
+        };
+
+      };
+    };
+
+    // // Create a collection of items
+    // var ItemCollection = Backbone.Collection.extend({
+
+    //     // Will hold objects of the Service model
+    //     model: Item,
+
+    //     // Return an array only with the checked services
+    //     getChecked: function(){
+    //         return this.where({checked:true});
+    //     }
+    // });
+
+
+
+    // var item_list = [];
+    // t2.columns.item.values.forEach( function(item){
+    //   var new_item = new Item(item);
+    //   item_list.push(new_item)
+    // });
+
+    // // Prefill the collection with a number of services.
+    // var items = new ItemCollection(item_list);
+
+
+    /********** V I E W ************/
+    // This view turns an Item model into HTML. Will create LI elements.
+    var ItemView = Backbone.View.extend({
+        tagName: 'li',
+
+        events:{
+            'click': 'toggleItem'
+        },
+
+        initialize: function(){
+
+            // Set up event listeners. The change backbone event
+            // is raised when a property changes (like the checked field)
+
+            this.listenTo(this.model, 'change', this.render);
+        },
+
+        render: function(){
+
+            // Create the HTML
+
+            this.$el.html('<input type="checkbox" value="1" name="' + this.model.get('name') + '" /> ' + this.model.get('name'));
+            this.$('input').prop('checked', this.model.get('checked'));
+
+            // Returning the object is a good practice
+            // that makes chaining possible
+            return this;
+        },
+
+        toggleItem: function(){
+            this.model.toggle();
+        }
+    });
+
+
+    /********** A P P  V I E W ************/
+    // The main view of the application
+    var App = Backbone.View.extend({
+
+        // Base the view on an existing element
+        el: $('#qb-table-builders'),
+
+        initialize: function(){
+
+            var that = this;
+
+            // Cache these selectors
+            // this.total = $('#total span');
+            this.list = $('#items');
+
+            /* Do some crazy looping shit */
+            // Listen for the change event on the collection.
+            // This is equivalent to listening on every one of the 
+            // items objects in the collection.
+            for (var collection in collections){
+              if ( _.has(collections, collection)){
+                console.log(collections[collection])
+                this.listenTo(collections[collection], 'change', this.render);
+
+                // Create views for every one of the items in the
+                // collection and add them to the page
+                collections[collection].each(function(item){
+
+                  var view = new ItemView({ model: item });
+                  this.$el.append(view.render().el);
+
+                }, that); // "that" is the context in the callback
+              };
+            };
+
+
+        },
+
+        render: function(){
+
+            // Calculate the total order amount by agregating
+            // the prices of only the checked elements
+
+            // var total = 0;
+
+            for (var collection in collections){
+              if ( _.has(collections, collection)){
+
+                _.each(collections[collection].getChecked(), function(elem){
+                  console.log(elem.get('name'))
+                });
+              };
+            };
+
+            // // Update the total price
+            // this.total.text('$'+total);
+
+            return this;
+        }
+    });
+
+    new App();
+
+
+
+
+  };
+
   function drawQueryBuilder(table_name, table_cols){
       var table_info    = {
         table_name: table_name,
@@ -450,9 +632,9 @@ $(function() {
   };
 
   $.get('web/table_schema/db_schema.json', function(db_schema) {
-    // console.log(db_schema)
-    // initRedQuery(table_schema);
-    drawQueryBuilders(db_schema);
+
+    initQueryBuilderBackbone(db_schema.tables.t2);
+    // drawQueryBuilders(db_schema);
     bindHandlers(db_schema);
   });
 
