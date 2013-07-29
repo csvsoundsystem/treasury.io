@@ -103,8 +103,8 @@ $(function() {
           fetchJSON(q + ' LIMIT 10').done(function(results){
             setDownloadBtn('reset', $download_browser_btn, before_text);
             trackQuery('browser', results.length)
-            $('#results').html('<img src="web/images/ajax-loader.gif"/>')
-            $('#results-container').show()
+            $('#results').html('<img src="web/images/ajax-loader.gif"/>');
+            $('#results-container').show();
             if (results.length === 0) {
               $('#results').html('No results found')
             } else {
@@ -118,16 +118,16 @@ $(function() {
                     return '<td><a href="' + row[columnName] + '" target="_blank">Source</td>'
                   } else { 
                     return '<td>' + row[columnName] + '</td>'
-                  }
+                  };
                 }).join('') + '</tr>'
               }).join(''))
-            }
+            };
           }).fail(function(err){
             setDownloadBtn('reset', $that, before_text);
             if (err.status == 404){
-              alert('404 Error. Please recheck your query and make sure everything is spelled correctly.')
+              alert('404 Error. Please recheck your query and make sure everything is spelled correctly.');
             }else{
-              alert(err.status + ' ' + JSON.stringify(err.responseJSON))
+              alert(err.status + ' ' + JSON.stringify(err.responseJSON));
             };
           });
         }else{
