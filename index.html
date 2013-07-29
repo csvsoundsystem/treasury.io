@@ -88,7 +88,7 @@
                 <option value="t4" >Where did the government invest cash it didn't immediately need?</option>
                 <option value="t4" >How much money did the government refund to businesses and individuals?</option>
               </select>
-              <div id="tqb"></div>
+              <div id="tqb-cols-ctnr"></div>
              <!--  <div id="rqb">&nbsp;</div> -->
 <!--               <div id="query-string-wrapper">
                 <fieldset>
@@ -352,6 +352,21 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
       <p>By <a href="http://www.twitter.com/brianabelson" target="_blank">Brian Abelson</a>, <a href="http://www.twitter.com/jbialer" target="_blank">Jake Bialer</a>, <a href="http://www.twitter.com/bjdewilde" target="_blank">Burton DeWilde</a>, <a href="http://www.twitter.com/mhkeller" target="_blank">Michael Keller</a>, <a href="http://www.twitter.com/thomaslevine" target="_blank">Thomas Levine</a> &amp; <a href="http://www.twitter.com/cezary" target="_blank">Cezary Podkul</a>. With an assist from <a href="http://www.twitter.com/ag_dubs" target="_blank">Ashley Williams</a>.</p>
       <p></p>
     </footer>
+
+    <script type="text/template" id="query_col_ctnr_templ">
+      <div class="qc-col-ctnr">
+        <div class="qc-col-name"><strong><%= name %></strong> <span><%= normalizeFormatType(type) %></span></div>
+        <ul class="qc-values-ctnr">
+          <% if (type == 'TEXT' && name != 'date') { _.each(values, function(value){ %>
+            <li>
+              <label for="<%= makeKeyFromName(value.name) %>"><input type="checkbox" id="<%= makeKeyFromName(value.name) %>" /> <%= value.name %></label>
+            </li>
+
+          <% }) } %>
+        </ul>
+      </div>
+    </script>
+
     <script src="web/js/main.js"></script>
     <!-- Piwik -->
     <script type="text/javascript">

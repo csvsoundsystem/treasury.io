@@ -14,7 +14,8 @@ $(function() {
       $chart_builder_y_data      = $('#cb-y-col'),
       $chart_container           = $('#chart-container');
       $chart_canvas              = $('#chart-canvas'),
-      $builder_table_select      = $('#builder-table-select');
+      $builder_table_select      = $('#builder-table-select'),
+      $tqb_col_ctnr              = $('#tqb-cols-ctnr');
 
   function bindHandlers(db_schema){
       /* NAV MENU BEHAVIOR */
@@ -176,25 +177,52 @@ $(function() {
         $this = $(this);
         disableFirstChoice($this);
         var table_selector = $this.val(),
-            table_schema   = db_schema.tables[table_selector]
-            table_desc = table_schema.desc;
+            table_schema   = db_schema.tables[table_selector],
+            table_cols     = table_schema.columns;
+            // table_desc = table_schema.desc;
 
-        $('#tqb').append('<p class="tqb-table-desc">' + table_desc + '</p>');
+            printTableColumns(table_cols);
 
-        showOptions(table_schema);
+        // $('#tqb').append('<p class="tqb-table-desc">' + table_desc + '</p>');
+
+        // showOptions(table_schema);
       });
 
   };
 
-  function showOptions(table_schema){
-    if (table_schema.name == 't1'){
-      // showDatePicker();
-      showCol(table_schema.columns, 'account');
-    };
-  };
+  var query_col_ctnr_templ = $('#query_col_ctnr_templ').html(),
+      queryColCtnrTemplFactory = _.template(query_col_ctnr_templ),
+      formatHelpers = {
+        normalizeFormatType: function(type){
+          type = type.toLowerCase();
+          if (type == 'real'){
+            type = 'integer';
+          }else if (type == 'text'){
+            type = 'string';
+          };
+          return '(' + type + ')';
+        },
+        makeKeyFromName: function(name){
+          return name.toLowerCase().replace(/ /g, '_').replace(/\(|\)/g, ''); /* Lowercase, spaces to underscores, parenthesis to nuthin' */
+        }
+      };
 
-  function showCol(table_columns, col){
-    console.log(table_columns[col]);
+  function printTableColumns(table_cols){
+      /* Clear the current selection, this should be improved to actually print all of the elements, hide them, and then show hide the table queries */
+      $tqb_col_ctnr.html(''); 
+      for (var col in table_cols){
+        if ( _.has(table_cols, col) ){
+
+          var data = table_cols[col];
+          _.extend(data, formatHelpers);
+
+          console.log(data)
+          var col_container = queryColCtnrTemplFactory(data);
+          $tqb_col_ctnr.append(col_container);
+          
+        };
+      };
+      // showCol(table_schema.columns, 'account');
   };
 
   function disableFirstChoice($el){
@@ -314,36 +342,36 @@ $(function() {
       $('#builder-btns-overlay').css('z-index',9999);
     };
   };
-  function initRedQuery(table_schema){
-    RedQueryBuilderFactory.create({
-      meta : table_schema,
-      onSqlChange : function(sql, args) {
-        enableBuilderBtnsAndChartOptions();
+  // function initRedQuery(table_schema){
+  //   RedQueryBuilderFactory.create({
+  //     meta : table_schema,
+  //     onSqlChange : function(sql, args) {
+  //       enableBuilderBtnsAndChartOptions();
 
-        $query_refresher[0].disabled = true;
-        var out = sql + '\r\n';
-        for (var i = 0; i < args.length; i++) {
-          var arg = args[i];
-          if(isNaN(arg)){
-            arg = "'" + arg + "'"
-          }else{
-            arg = Number(arg);
-          }
-          out = out.replace('?', arg)
-        }
-        sanitize_out = function(out) { return out.replace(/\"x0\"\.?/g, ''); }
+  //       $query_refresher[0].disabled = true;
+  //       var out = sql + '\r\n';
+  //       for (var i = 0; i < args.length; i++) {
+  //         var arg = args[i];
+  //         if(isNaN(arg)){
+  //           arg = "'" + arg + "'"
+  //         }else{
+  //           arg = Number(arg);
+  //         }
+  //         out = out.replace('?', arg)
+  //       }
+  //       sanitize_out = function(out) { return out.replace(/\"x0\"\.?/g, ''); }
 
-        query = function(base, out) { return base + encodeURI(sanitize_out(out)); }
+  //       query = function(base, out) { return base + encodeURI(sanitize_out(out)); }
 
-        if (encoding == 'true'){
-          document.getElementById("sql").value = encodeURI(sanitize_out(out));
-        }else{
-          document.getElementById("sql").value = sanitize_out(out);
-        }
-        loadBtnAttrsWithQueryLink(sanitize_out(out));
-      }
-    });
-  };
+  //       if (encoding == 'true'){
+  //         document.getElementById("sql").value = encodeURI(sanitize_out(out));
+  //       }else{
+  //         document.getElementById("sql").value = sanitize_out(out);
+  //       }
+  //       loadBtnAttrsWithQueryLink(sanitize_out(out));
+  //     }
+  //   });
+  // };
 
   function sanitizeForBtns(q_string){
     return q_string.replace(/\n/g,'%20').replace(/%20%20/g,'%20') // Convert line breaks to spaces, avoid double spaces
@@ -386,8 +414,8 @@ $(function() {
     });
   };
 
-  $.get('web/table_schema/table_schema.json', function(db_schema) {
-    console.log(db_schema)
+  $.get('web/table_schema/db_schema.json', function(db_schema) {
+    // console.log(db_schema)
     // initRedQuery(table_schema);
     bindHandlers(db_schema);
   });

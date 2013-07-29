@@ -159,9 +159,6 @@ h3 {
 #builder-table-select{
   margin: 0 0 10px 0;
 }
-.tqb-table-desc{
-  line-height: 19px;
-}
 .btn, .btn-row-el{
   font-family: "Droid Sans", sans-serif;
   font-weight: 800;
@@ -600,6 +597,51 @@ textarea:focus{
   width: 68px;
   display: inline-block;
 }
+/* QUERY BUILDER STYLES */
+#tqb-cols-ctnr{
+  width:100%;
+  /*background-color: #f0c;*/
+  font-size: 12px;
+  overflow: auto;
+}
+.qc-col-ctnr{
+  display: inline-block;
+  width: 150px;
+  margin: 0 10px 10px 0;
+  vertical-align: top;
+  background-color: #F9FDFF;
+  padding:5px;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.qc-col-name{
+  font-weight: bold;
+  border-bottom: 1px dotted #303030;
+}
+.qc-col-name span{
+  font-size: 10px;
+  font-weight: normal;
+  line-height: 20px;
+  margin-bottom:3px;
+}
+.qc-values-ctnr{
+  max-height: 175px;
+  overflow-y: scroll;
+}
+.qc-values-ctnr li{
+  line-height: 14px;
+  font-size: 11px;
+  padding: 3px;
+}
+.qc-values-ctnr li:nth-child(odd) {
+  background-color: rgb(193, 228, 242);
+}
+.qc-values-ctnr li:nth-child(even) {
+  background-color: white;
+}
+
+/* end query builder styles*/
 @media screen and (max-width: 640px) {
   #container-fluid, #container-solid{
     margin:10px;
