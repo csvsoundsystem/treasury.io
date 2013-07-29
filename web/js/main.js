@@ -15,7 +15,7 @@ $(function() {
       $chart_container           = $('#chart-container');
       $chart_canvas              = $('#chart-canvas'),
       $builder_table_select      = $('#builder-table-select'),
-      $tqb_col_ctnr              = $('#tqb-cols-ctnr');
+      $qb_table_builders         = $('#qb-table-builders');
 
   function bindHandlers(db_schema){
       /* NAV MENU BEHAVIOR */
@@ -181,17 +181,28 @@ $(function() {
             table_cols     = table_schema.columns;
             // table_desc = table_schema.desc;
 
-            printTableColumns(table_schema.name, table_cols);
+        $('.qb-table-builder').removeClass('queryable-table');
+        $('#qb-table-builder-'+table_selector).addClass('queryable-table');
 
-        // $('#tqb').append('<p class="tqb-table-desc">' + table_desc + '</p>');
-
-        // showOptions(table_schema);
       });
 
   };
 
-  var query_col_ctnr_templ = $('#query_col_ctnr_templ').html(),
-      queryColCtnrTemplFactory = _.template(query_col_ctnr_templ),
+  function drawQueryBuilders(db_schema){
+    var tables = db_schema.tables;
+    for (var table in tables){
+      if ( _.has(tables, table) ){
+        var table_schema   = tables[table],
+            table_cols     = table_schema.columns;
+        
+        drawQueryBuilder(table_schema.name, table_cols);
+      };
+    };
+  };
+
+  /* TODO, move thse template vars to the top */
+  var qb_table_builder_templ = $('#qb-table-builder-templ').html(),
+      queryTableBuilderTemplFactory = _.template(qb_table_builder_templ),
       formatHelpers = {
         normalizeFormatType: function(type){
           type = type.toLowerCase();
@@ -207,24 +218,30 @@ $(function() {
         }
       };
 
-  function printTableColumns(table_name, table_cols){
-      /* Clear the current selection, this should be improved to actually print all of the elements, hide them, and then show hide the table queries */
-      $tqb_col_ctnr.html(''); 
-      for (var col in table_cols){
-        if ( _.has(table_cols, col) ){
-
-          var data = table_cols[col],
-              table_name = {table_name: table_name};
-
-          _.extend(data, formatHelpers, table_name);
-
-          console.log(data)
-          var col_container = queryColCtnrTemplFactory(data);
-          $tqb_col_ctnr.append(col_container);
-          
-        };
+  function drawQueryBuilder(table_name, table_cols){
+      var table_info    = {
+        table_name: table_name,
+        table_cols: table_cols
       };
-      // showCol(table_schema.columns, 'account');
+
+      _.extend(table_info, formatHelpers, table_name);
+      var table_builder = queryTableBuilderTemplFactory(table_info);
+
+      $qb_table_builders.append(table_builder);
+
+      /* Clear the current selection, this should be improved to actually print all of the elements, hide them, and then show hide the table queries */
+      // for (var col in table_cols){
+      //   if ( _.has(table_cols, col) ){
+
+      //     var data = table_cols[col];
+
+      //     _.extend(data, formatHelpers, table_name);
+      //     var col_container = queryColCtnrTemplFactory(data);
+      //     $builder_group.append(col_container);
+          
+      //   };
+      // };
+
   };
 
   function disableFirstChoice($el){
@@ -419,6 +436,7 @@ $(function() {
   $.get('web/table_schema/db_schema.json', function(db_schema) {
     // console.log(db_schema)
     // initRedQuery(table_schema);
+    drawQueryBuilders(db_schema);
     bindHandlers(db_schema);
   });
 

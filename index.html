@@ -85,10 +85,10 @@
                 <option value="t3b">What types of debt is the government selling? (Table 3b)</option>
                 <option value="t3c">How close is the government to its credit limit (the debt ceiling)? (Table 3c)</option>
                 <option value="t4" >Where is the government getting its tax revenue from and where is it deposited? (Table 4)</option>
-                <option value="t4" >Where did the government invest cash it didn't immediately need? (Table 5)</option>
-                <option value="t4" >How much money did the government refund to businesses and individuals? (Table 6)</option>
+                <option value="t5" >Where did the government invest cash it didn't immediately need? (Table 5)</option>
+                <option value="t6" >How much money did the government refund to businesses and individuals? (Table 6)</option>
               </select>
-              <div id="tqb-cols-ctnr"></div>
+              <div id="qb-table-builders"></div>
              <!--  <div id="rqb">&nbsp;</div> -->
 <!--               <div id="query-string-wrapper">
                 <fieldset>
@@ -353,33 +353,38 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
       <p></p>
     </footer>
 
-    <script type="text/template" id="query_col_ctnr_templ">
-      <div class="qc-col-ctnr">
-        <div class="qc-col-name"><strong><%= name %></strong> <span><%= normalizeFormatType(type) %></span></div>
-        <ul class="qc-values-ctnr">
-          <% if (type == 'TEXT' && name != 'date') { _.each(values, function(value){ %>
-            <li>
-              <label for="<%= makeKeyFromName(value.name) %>"><input type="checkbox" id="<%= makeKeyFromName(value.name) %>" /> <%= value.name %></label>
-            </li>
+    <script type="text/template" id="qb-table-builder-templ">
+      <div class="qb-table-builder" id="qb-table-builder-<%= table_name %>">
+        <% for (var col in table_cols){ if ( _.has(table_cols, col) ){ var col = table_cols[col] %>
 
-          <% }) } %>
-          <% if (type == 'REAL' || type == 'INTEGER' && name != 'is_total') { %>
-            <li>
-              <label for="<%= name %>-min">min: <input type="text" value="<%= values[0] %>" id="<%= name %>-min" /></label>
-            </li>
-            <li>
-              <label for="<%= name %>-max">max: <input type="text" value="<%= values[1] %>" id="<%= name %>-max" /></label>
-            </li>
-          <% } %>
-          <% if (name == 'is_total') { %>
-            <li>
-              <label for="<%= table_name %>-is_total_yes"><input type="checkbox" value="1" id="<%= table_name %>-is_total_yes" /> 1 (yes)</label>
-            </li>
-            <li>
-              <label for="<%= table_name %>-is_total_no"><input type="checkbox" value="0" id="<%= table_name %>-is_total_no" /> 0 (no)</label>
-            </li>
-          <% } %>
-        </ul>
+          <div class="qc-col-ctnr">
+            <div class="qc-col-name"><strong><%= col.name %></strong> <span><%= normalizeFormatType(col.type) %></span></div>
+            <ul class="qc-values-ctnr">
+              <% if (col.type == 'TEXT' && col.name != 'date') { _.each(col.values, function(value){ %>
+                <li class="queryable-item">
+                  <label for="<%= makeKeyFromName(value.name) %>"><input type="checkbox" id="<%= makeKeyFromName(value.name) %>" checked/> <%= value.name %></label>
+                </li>
+
+              <% }) } %>
+              <% if (col.type == 'REAL' || col.type == 'INTEGER' && col.name != 'is_total') { %>
+                <li class="queryable-item">
+                  <label for="<%= col.name %>-min">min: <input type="text" value="<%= col.values[0] %>" id="<%= col.name %>-min"/></label>
+                </li>
+                <li class="queryable-item">
+                  <label for="<%= col.name %>-max">max: <input type="text" value="<%= col.values[1] %>" id="<%= col.name %>-max"/></label>
+                </li>
+              <% } %>
+              <% if (col.name == 'is_total') { %>
+                <li class="queryable-item">
+                  <label for="<%= col.table_name %>-is_total_yes"><input type="checkbox" value="1" id="<%= col.table_name %>-is_total_yes" checked/> 1 (yes)</label>
+                </li>
+                <li class="queryable-item">
+                  <label for="<%= col.table_name %>-is_total_no"><input type="checkbox" value="0" id="<%= col.table_name %>-is_total_no" checked/> 0 (no)</label>
+                </li>
+              <% } %>
+            </ul>
+          </div>
+        <% } } %>
       </div>
     </script>
 

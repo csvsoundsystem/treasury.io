@@ -599,11 +599,19 @@ textarea:focus{
   display: inline-block;
 }
 /* QUERY BUILDER STYLES */
-#tqb-cols-ctnr{
+#qb-table-builders{
   width:100%;
   /*background-color: #f0c;*/
   font-size: 12px;
   overflow: auto;
+}
+.qb-table-builder{
+  width: 100%;
+  overflow: auto;
+  display: none;
+}
+.qb-table-builder.queryable-table{
+  display: block;
 }
 .qc-col-ctnr{
   display: inline-block;
@@ -627,7 +635,7 @@ textarea:focus{
   margin-bottom:3px;
 }
 .qc-values-ctnr{
-  max-height: 175px;
+  max-height: 180px;
   overflow-y: scroll;
 }
 .qc-values-ctnr li{
@@ -640,6 +648,12 @@ textarea:focus{
 }
 .qc-values-ctnr li:nth-child(even) {
   background-color: white;
+}
+.qc-values-ctnr li{
+  display: none;
+}
+.qc-values-ctnr li.queryable-item{
+  display: block;
 }
 
 /* end query builder styles*/
