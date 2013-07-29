@@ -188,13 +188,18 @@ $(function() {
 
       /* The checkboxes and input textboxes need different listeners because .on('change') only detects changes for textfields after the box loses mouse focus (i.e. the user clicks away) */
       $qb_table_builders.on('change', '.queryable-item input:checkbox', function(){
-        console.log('build query')
+        buildQueryFromInputs();
       }); 
 
       $qb_table_builders.on('keyup', '.queryable-item input:text', function(){
-        console.log('build query')
+        buildQueryFromInputs();
       }); 
 
+  };
+
+  function buildQueryFromInputs(){
+    var filters = [];
+    // $('.queryable-table').find('.query')
   };
 
   function drawQueryBuilders(db_schema){
@@ -215,16 +220,17 @@ $(function() {
       formatHelpers = {
         normalizeFormatType: function(type){
           type = type.toLowerCase();
-          if (type == 'real'){
-            type = 'integer';
-          }else if (type == 'text'){
-            type = 'string';
-          };
+          // if (type == 'real'){
+          //   type = 'integer';
+          // }else if (type == 'text'){
+          //   type = 'string';
+          // };
           return '(' + type + ')';
         },
         makeKeyFromName: function(name, table_name){
+          var name_formatted = name.toLowerCase().replace(/ /g, '_').replace(/\(|\)/g, ''); /* Lowercase, spaces to underscores, parenthesis to nuthin' */
           /* prepend table_name */
-          return table_name + '-' + name.toLowerCase().replace(/ /g, '_').replace(/\(|\)/g, ''); /* Lowercase, spaces to underscores, parenthesis to nuthin' */
+          return table_name + '-' + name_formatted;
         }
       };
 
@@ -238,19 +244,6 @@ $(function() {
       var table_builder = queryTableBuilderTemplFactory(table_info);
 
       $qb_table_builders.append(table_builder);
-
-      /* Clear the current selection, this should be improved to actually print all of the elements, hide them, and then show hide the table queries */
-      // for (var col in table_cols){
-      //   if ( _.has(table_cols, col) ){
-
-      //     var data = table_cols[col];
-
-      //     _.extend(data, formatHelpers, table_name);
-      //     var col_container = queryColCtnrTemplFactory(data);
-      //     $builder_group.append(col_container);
-          
-      //   };
-      // };
 
   };
 

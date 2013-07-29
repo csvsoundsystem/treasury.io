@@ -624,9 +624,28 @@ textarea:focus{
      -moz-box-sizing: border-box;
           box-sizing: border-box;
 }
+.qc-col-header{
+  border-bottom: 1px dotted #303030;
+}
+.qc-col-control{
+  position: relative;
+  top: 3px;
+  float: right;
+  text-align: right;
+}
+.qc-col-control span{
+  text-decoration: underline;
+  padding: 2px;
+}
+.qc-col-control span:hover{
+  cursor: pointer;
+  cursor: hand;
+  color: #fff;
+  background-color: #000;
+  text-decoration: none;
+}
 .qc-col-name{
   font-weight: bold;
-  border-bottom: 1px dotted #303030;
 }
 .qc-col-name span{
   font-size: 10px;

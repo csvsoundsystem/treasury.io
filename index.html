@@ -351,29 +351,35 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
       <div class="qb-table-builder" id="qb-table-builder-<%= table_name %>">
         <% for (var col in table_cols){ if ( _.has(table_cols, col) ){ var col = table_cols[col] %>
 
-          <div class="qc-col-ctnr">
-            <div class="qc-col-name"><strong><%= col.name %></strong> <span><%= normalizeFormatType(col.type) %></span></div>
+          <div class="qc-col-ctnr" data-col-name="<%= col.name %>">
+            <div class="qc-col-header">
+              <div class="qc-col-name"><strong><%= col.name %></strong> <span><%= normalizeFormatType(col.type) %></span>
+                <% if (col.type == 'TEXT' && col.name != 'date') { %>
+                  <span class="qc-col-control"><span class="qc-select-all">all</span>/<span class="qc-deselect-all">none</span></span>
+                <% } %>
+              </div>
+            </div>
             <ul class="qc-values-ctnr">
+              <% if (col.name == 'is_total') { %>
+                <li class="queryable-item">
+                  <label for="<%= makeKeyFromName(col.name, table_name) %>-yes"><input type="checkbox" value="1" id="<%= makeKeyFromName(col.name, table_name) %>-yes" checked/> 1 (yes)</label>
+                </li>
+                <li class="queryable-item">
+                  <label for="<%= makeKeyFromName(col.name, table_name) %>-no"><input type="checkbox" value="0" id="<%= makeKeyFromName(col.name, table_name) %>-no" checked/> 0 (no)</label>
+                </li>
+              <% } else %>
               <% if (col.type == 'TEXT' && col.name != 'date') { _.each(col.values, function(value){ %>
                 <li class="queryable-item">
                   <label for="<%= makeKeyFromName(value.name, table_name) %>"><input type="checkbox" id="<%= makeKeyFromName(value.name, table_name) %>" checked/> <%= value.name %></label>
                 </li>
 
-              <% }) } %>
+              <% }) } else %>
               <% if (col.type == 'REAL' || col.type == 'INTEGER' && col.name != 'is_total') { %>
                 <li class="queryable-item">
                   <label for="<%= makeKeyFromName(col.name, table_name) %>-min">min: <input type="text" value="<%= col.values[0] %>" id="<%= makeKeyFromName(col.name, table_name) %>-min"/></label>
                 </li>
                 <li class="queryable-item">
                   <label for="<%= makeKeyFromName(col.name, table_name) %>-max">max: <input type="text" value="<%= col.values[1] %>" id="<%= makeKeyFromName(col.name, table_name) %>-max"/></label>
-                </li>
-              <% } %>
-              <% if (col.name == 'is_total') { %>
-                <li class="queryable-item">
-                  <label for="<%= table_name %>-is_total_yes"><input type="checkbox" value="1" id="<%= table_name %>-is_total_yes" checked/> 1 (yes)</label>
-                </li>
-                <li class="queryable-item">
-                  <label for="<%= table_name %>-is_total_no"><input type="checkbox" value="0" id="<%= table_name %>-is_total_no" checked/> 0 (no)</label>
                 </li>
               <% } %>
             </ul>
