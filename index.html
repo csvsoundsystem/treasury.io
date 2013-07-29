@@ -19,12 +19,6 @@
     <script src="web/js/thirdparty/jquery.dynamic-highchart.js"></script>
     <!-- end chart builder -->
 
-    <!-- RED QUERY BUILDER -->
-    <script src="web/RedQueryBuilder/RedQueryBuilder.nocache.js"></script>
-    <link href="web/RedQueryBuilder/gwt/dark/dark.css" rel="stylesheet" type="text/css">
-    <script src="web/RedQueryBuilder/RedQueryBuilderFactory.nocache.js"></script>
-    <!-- end red query -->
-
     <!-- SYNTAX HIGHLIGHTING -->
     <link href="web/css/thirdparty/rainbow.github.css" rel="stylesheet" type="text/css">
     <script src="web/js/thirdparty/rainbow-custom.min.js"></script>
@@ -362,24 +356,24 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
             <ul class="qc-values-ctnr">
               <% if (col.type == 'TEXT' && col.name != 'date') { _.each(col.values, function(value){ %>
                 <li class="queryable-item">
-                  <label for="<%= makeKeyFromName(value.name) %>"><input type="checkbox" id="<%= makeKeyFromName(value.name) %>" checked/> <%= value.name %></label>
+                  <label for="<%= makeKeyFromName(value.name, table_name) %>"><input type="checkbox" id="<%= makeKeyFromName(value.name, table_name) %>" checked/> <%= value.name %></label>
                 </li>
 
               <% }) } %>
               <% if (col.type == 'REAL' || col.type == 'INTEGER' && col.name != 'is_total') { %>
                 <li class="queryable-item">
-                  <label for="<%= col.name %>-min">min: <input type="text" value="<%= col.values[0] %>" id="<%= col.name %>-min"/></label>
+                  <label for="<%= makeKeyFromName(col.name, table_name) %>-min">min: <input type="text" value="<%= col.values[0] %>" id="<%= makeKeyFromName(col.name, table_name) %>-min"/></label>
                 </li>
                 <li class="queryable-item">
-                  <label for="<%= col.name %>-max">max: <input type="text" value="<%= col.values[1] %>" id="<%= col.name %>-max"/></label>
+                  <label for="<%= makeKeyFromName(col.name, table_name) %>-max">max: <input type="text" value="<%= col.values[1] %>" id="<%= makeKeyFromName(col.name, table_name) %>-max"/></label>
                 </li>
               <% } %>
               <% if (col.name == 'is_total') { %>
                 <li class="queryable-item">
-                  <label for="<%= col.table_name %>-is_total_yes"><input type="checkbox" value="1" id="<%= col.table_name %>-is_total_yes" checked/> 1 (yes)</label>
+                  <label for="<%= table_name %>-is_total_yes"><input type="checkbox" value="1" id="<%= table_name %>-is_total_yes" checked/> 1 (yes)</label>
                 </li>
                 <li class="queryable-item">
-                  <label for="<%= col.table_name %>-is_total_no"><input type="checkbox" value="0" id="<%= col.table_name %>-is_total_no" checked/> 0 (no)</label>
+                  <label for="<%= table_name %>-is_total_no"><input type="checkbox" value="0" id="<%= table_name %>-is_total_no" checked/> 0 (no)</label>
                 </li>
               <% } %>
             </ul>

@@ -186,6 +186,15 @@ $(function() {
 
       });
 
+      /* The checkboxes and input textboxes need different listeners because .on('change') only detects changes for textfields after the box loses mouse focus (i.e. the user clicks away) */
+      $qb_table_builders.on('change', '.queryable-item input:checkbox', function(){
+        console.log('build query')
+      }); 
+
+      $qb_table_builders.on('keyup', '.queryable-item input:text', function(){
+        console.log('build query')
+      }); 
+
   };
 
   function drawQueryBuilders(db_schema){
@@ -213,8 +222,9 @@ $(function() {
           };
           return '(' + type + ')';
         },
-        makeKeyFromName: function(name){
-          return name.toLowerCase().replace(/ /g, '_').replace(/\(|\)/g, ''); /* Lowercase, spaces to underscores, parenthesis to nuthin' */
+        makeKeyFromName: function(name, table_name){
+          /* prepend table_name */
+          return table_name + '-' + name.toLowerCase().replace(/ /g, '_').replace(/\(|\)/g, ''); /* Lowercase, spaces to underscores, parenthesis to nuthin' */
         }
       };
 
