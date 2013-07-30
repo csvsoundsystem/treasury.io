@@ -274,6 +274,7 @@ $(function() {
     // Create an object to hold each collection of items (a collection corresponds to a column in the database)
     var collections = {},
         values;
+
     for (var column in t2.columns){
       if ( _.has(t2.columns, column)) {
 
@@ -302,34 +303,13 @@ $(function() {
       };
     };
 
-    // // Create a collection of items
-    // var ItemCollection = Backbone.Collection.extend({
-
-    //     // Will hold objects of the Service model
-    //     model: Item,
-
-    //     // Return an array only with the checked services
-    //     getChecked: function(){
-    //         return this.where({checked:true});
-    //     }
-    // });
-
-
-
-    // var item_list = [];
-    // t2.columns.item.values.forEach( function(item){
-    //   var new_item = new Item(item);
-    //   item_list.push(new_item)
-    // });
-
-    // // Prefill the collection with a number of services.
-    // var items = new ItemCollection(item_list);
-
 
     /********** V I E W ************/
     // This view turns an Item model into HTML. Will create LI elements.
     var ItemView = Backbone.View.extend({
         tagName: 'li',
+
+        template: $('#qb-table-builder-templ').html(),
 
         events:{
             'click': 'toggleItem'
@@ -360,6 +340,40 @@ $(function() {
         }
     });
 
+    // Column View
+    var ColumnView = Backbone.View.extend({
+        tagName: 'div',
+
+        template: $('#collection-view-templ').html(),
+
+        initialize: function(){
+
+            // Set up event listeners. The change backbone event
+            // is raised when a property changes (like the checked field)
+
+            this.listenTo(this.model, 'change', this.render);
+        },
+
+        render: function(){
+
+            // Create the HTML
+
+            this.$el.html( this.template(this.model) );
+
+            // Returning the object is a good practice
+            // that makes chaining possible
+            return this;
+        }
+    });
+
+    // var collectionView = new Backbone.CollectionView( {
+    //   el : $( "ul#demoMultipleSelectionList" ),
+    //   selectable : true,
+    //   selectMultiple : true,
+    //   collection : employeeCollection,
+    //   modelView : EmployeeView
+    // } );
+
 
     /********** A P P  V I E W ************/
     // The main view of the application
@@ -374,23 +388,24 @@ $(function() {
 
             // Cache these selectors
             // this.total = $('#total span');
-            this.list = $('#items');
+            // this.list = $('#items');
 
             /* Do some crazy looping shit */
             // Listen for the change event on the collection.
             // This is equivalent to listening on every one of the 
             // items objects in the collection.
-            for (var collection in collections){
-              if ( _.has(collections, collection)){
-                console.log(collections[collection])
-                this.listenTo(collections[collection], 'change', this.render);
+            for (var collection_name in collections){
+              if ( _.has(collections, collection_name)){
+                this.listenTo(collections[collection_name], 'change', this.render);
 
                 // Create views for every one of the items in the
                 // collection and add them to the page
-                collections[collection].each(function(item){
 
-                  var view = new ItemView({ model: item });
-                  this.$el.append(view.render().el);
+                collections[collection_name].each(function(item){
+
+                  var item_view = new ItemView({ model: item });
+                  console.log(item_view.render().el)
+                  this.$el.append(item_view.render().el);
 
                 }, that); // "that" is the context in the callback
               };
@@ -406,10 +421,10 @@ $(function() {
 
             // var total = 0;
 
-            for (var collection in collections){
-              if ( _.has(collections, collection)){
+            for (var collection_name in collections){
+              if ( _.has(collections, collection_name)){
 
-                _.each(collections[collection].getChecked(), function(elem){
+                _.each(collections[collection_name].getChecked(), function(elem){
                   console.log(elem.get('name'))
                 });
               };
