@@ -282,7 +282,9 @@ $(function() {
     }).fail(function(err){
       setDownloadBtn('reset', $this, before_text);
       $('#download-cancel').hide()
-      if (err.status == 404){
+      if (err.status === 0){
+        // Manually cancelled
+      } else if (err.status == 404){
         alert('404 Error. Please recheck your query and make sure everything is spelled correctly.')
       }else{
         alert(err.status + ' ' + JSON.stringify(err.responseJSON))
