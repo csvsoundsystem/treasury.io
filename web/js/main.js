@@ -240,7 +240,7 @@ $(function() {
           type = type.toLowerCase();
           return '(' + type + ')';
         },
-        makeKeyFromName: function(name, table_name){
+        makeKeyFromName: function(table_name, name){
           var name_formatted = name.toLowerCase().replace(/ /g, '_').replace(/\(|\)/g, ''); /* Lowercase, spaces to underscores, parenthesis to nuthin' */
           /* prepend table_name */
           return table_name + '-' + name_formatted;
@@ -255,6 +255,8 @@ $(function() {
 
         // These are the default values
         defaults:{
+            table_name: 't1',
+            column_name: 'no_column',
             name: 'item',
             date_range: ['1970-01-01', '2013-11-05'],
             is_type_parent: false,
@@ -268,48 +270,102 @@ $(function() {
         }
     });
 
+    var Column = Backbone.Model.extend({
+
+      defaults: {
+        table_name: 't1',
+        name: 'column',
+        type: 'text'
+      }
+    });
+
 
     /********** C O L L E C T I O N S ************/
 
     // Create an object to hold each collection of items (a collection corresponds to a column in the database)
-    var collections = {},
-        values;
+    var column_collections       = {};
+    var column_value_collections = {};
+    var values;
 
-    for (var column in t2.columns){
-      if ( _.has(t2.columns, column)) {
+    // Loop through each column name in the table
+    for (var column_name in t2.columns){
+      if ( _.has(t2.columns, column_name)) {
 
-        if (t2.columns[column].type == 'TEXT' && t2.columns[column].name != 'date'){
+        /**** COLUMN_COLLECTIONS ****/
+        // Create a new collection for each column
+        column_collections[column_name] = Backbone.Collection.extend({
+          model: Column
+        });
 
-          // Create a collection for that column
-          collections[column] = Backbone.Collection.extend({
-            model: Value,
+        // Fill each collection with the information for that column
+        column_collections[column_name] = new column_collections[column_name]([
+          { 
+            table_name: 't2',
+            name: t2.columns[column_name].name,
+            type: t2.columns[column_name].type,
+          }
+        ]);
 
-            getChecked: function(){
-                return this.where({checked:true});
-            }
-          });
+        /**** VALUE_COLLECTIONS ****/
 
-          // Fill that collection with the column values
-          var column_values = [];
-          _.each(t2.columns[column].values, function(value){
-             var column_value = new Value(value);
-             column_values.push(column_value);
-          });
+        // if (t2.columns[column].type == 'TEXT' && t2.columns[column].name != 'date'){
 
-          collections[column] = new collections[column](column_values)
+        // Create a collection for that column's values
+        column_value_collections[column_name] = Backbone.Collection.extend({
+          model: Value,
 
-        };
+          getChecked: function(){
+              return this.where({checked:true});
+          }
+        });
+
+        // Fill that collection with the column values
+        var column_values = [];
+        _.each(t2.columns[column_name].values, function(value){
+          _.extend(value, {table_name: 't2', column_name: column_name })
+           var column_value = new Value(value);
+           column_values.push(column_value);
+        });
+
+        column_value_collections[column_name] = new column_value_collections[column_name](column_values)
+
+        // };
 
       };
     };
 
 
-    /********** V I E W ************/
-    // This view turns an Item model into HTML. Will create LI elements.
-    var ItemView = Backbone.View.extend({
+    /********** V I E W S ************/
+    // This view turns a Column model into HTML. Will create DIV elements and a UL for the ItemView LIs to be appended to.
+    var ColumnView = Backbone.View.extend({
+        tagName : 'div',
+
+        template: _.template($('#column-view-templ').html()),
+
+        initialize: function(){
+
+          // I don't think I need this, maybe for it to load initially?
+          this.listenTo(this.model, 'change', this.render) 
+        },
+
+        render: function(){
+          var model_data = this.model.toJSON();
+          _.extend(model_data, formatHelpers);
+          this.$el.html( this.template(model_data) );
+          $(this.el).attr('data-col-name', this.model.get('name')).addClass('qc-col-ctnr');
+
+
+          return this
+        }
+
+
+    });
+
+    // This view turns an Value model into HTML. Will create LI elements.
+    var ValueView = Backbone.View.extend({
         tagName: 'li',
 
-        template: $('#qb-table-builder-templ').html(),
+        template: _.template($('#value-view-templ').html()),
 
         events:{
             'click': 'toggleItem'
@@ -326,8 +382,13 @@ $(function() {
         render: function(){
 
             // Create the HTML
-
-            this.$el.html('<input type="checkbox" value="1" name="' + this.model.get('name') + '" /> ' + this.model.get('name'));
+            var model_data = this.model.toJSON();
+            _.extend(model_data, formatHelpers);
+            this.$el.html( this.template(model_data) );
+            // this.$el.html('<label for="' + formatHelpers.makeKeyFromName(this.model.get('table_name'), this.model.get('name') ) + '"><input type="checkbox" id="' + formatHelpers.makeKeyFromName(this.model.get('table_name'), this.model.get('name') ) + '" /> ' + this.model.get('name') + '</label>');
+            // this.$el.html('<label for="' + formatHelpers.makeKeyFromName(this.model.get('table_name'), this.model.get('name') ) + '"><input type="checkbox" id="' + formatHelpers.makeKeyFromName(this.model.get('table_name'), this.model.get('name') ) + '" /> ' + this.model.get('name') + '</label>');
+            // this.$el.html('<lab<input type="checkbox" value="1" name="' + this.model.get('name') + '" /> ' + this.model.get('name'));
+            
             this.$('input').prop('checked', this.model.get('checked'));
 
             // Returning the object is a good practice
@@ -340,39 +401,6 @@ $(function() {
         }
     });
 
-    // Column View
-    var ColumnView = Backbone.View.extend({
-        tagName: 'div',
-
-        template: $('#collection-view-templ').html(),
-
-        initialize: function(){
-
-            // Set up event listeners. The change backbone event
-            // is raised when a property changes (like the checked field)
-
-            this.listenTo(this.model, 'change', this.render);
-        },
-
-        render: function(){
-
-            // Create the HTML
-
-            this.$el.html( this.template(this.model) );
-
-            // Returning the object is a good practice
-            // that makes chaining possible
-            return this;
-        }
-    });
-
-    // var collectionView = new Backbone.CollectionView( {
-    //   el : $( "ul#demoMultipleSelectionList" ),
-    //   selectable : true,
-    //   selectMultiple : true,
-    //   collection : employeeCollection,
-    //   modelView : EmployeeView
-    // } );
 
 
     /********** A P P  V I E W ************/
@@ -380,34 +408,38 @@ $(function() {
     var App = Backbone.View.extend({
 
         // Base the view on an existing element
-        el: $('#qb-table-builders'),
+        el: '#qb-table-builders',
 
         initialize: function(){
 
             var that = this;
 
             // Cache these selectors
-            // this.total = $('#total span');
-            // this.list = $('#items');
 
             /* Do some crazy looping shit */
             // Listen for the change event on the collection.
             // This is equivalent to listening on every one of the 
             // items objects in the collection.
-            for (var collection_name in collections){
-              if ( _.has(collections, collection_name)){
-                this.listenTo(collections[collection_name], 'change', this.render);
+            for (var collection_name in column_collections){
+              if ( _.has(column_collections, collection_name)){
+                this.listenTo(column_collections[collection_name], 'change', this.render);
+                this.listenTo(column_value_collections[collection_name], 'change', this.render);
 
-                // Create views for every one of the items in the
-                // collection and add them to the page
-
-                collections[collection_name].each(function(item){
-
-                  var item_view = new ItemView({ model: item });
-                  console.log(item_view.render().el)
-                  this.$el.append(item_view.render().el);
-
+                // Create views for every one of the items in the column collection
+                // Append it to 
+                column_collections[collection_name].each( function(column){
+                  var column_view = new ColumnView({model: column});
+                  this.$el.append(column_view.render().el)
                 }, that); // "that" is the context in the callback
+
+
+                // collections[collection_name].each(function(item){
+
+                //   var item_view = new ItemView({ model: item });
+                //   // console.log(item_view.render().el)
+                //   this.$el.append(item_view.render().el);
+
+                // }, that); // "that" is the context in the callback
               };
             };
 
@@ -425,7 +457,7 @@ $(function() {
               if ( _.has(collections, collection_name)){
 
                 _.each(collections[collection_name].getChecked(), function(elem){
-                  console.log(elem.get('name'))
+                  console.log(collection_name, elem.get('name'))
                 });
               };
             };

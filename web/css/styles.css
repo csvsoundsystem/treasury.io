@@ -608,7 +608,7 @@ textarea:focus{
 .qb-table-builder{
   width: 100%;
   overflow: auto;
-  display: none;
+  /*display: none;*/
 }
 .qb-table-builder.queryable-table{
   display: block;

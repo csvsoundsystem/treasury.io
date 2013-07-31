@@ -355,26 +355,19 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
       <p></p>
     </footer>
 
-    <script type="text/template" id="collection-view-templ">
-      <div class="qb-table-builder" id="qb-table-builder-<%= table_name %>">
-        <% for (var col in table_cols){ if ( _.has(table_cols, col) ){ var col = table_cols[col] %>
-
-          <div class="qc-col-ctnr" data-col-name="<%= col.name %>">
-            <div class="qc-col-header">
-              <div class="qc-col-name"><strong><%= col.name %></strong> <span><%= normalizeFormatType(col.type) %></span>
-                <% if ( (col.type == 'TEXT' && col.name != 'date') || col.name == 'is_total' ) { %>
-                  <div class="qc-col-control"><input type="checkbox" class="qc-select-all" checked/></div>
-                <% } %>
-              </div>
-            </div>
-            <ul class="qc-values-ctnr">
-            </ul>
+    <script type="text/template" id="column-view-templ">
+        <div class="qc-col-header">
+          <div class="qc-col-name"><strong><%= name %></strong> <span><%= normalizeFormatType(type) %></span>
+            <% if ( (type == 'TEXT' && name != 'date') || name == 'is_total' ) { %>
+              <div class="qc-col-control"><input type="checkbox" class="qc-select-all" checked/></div>
+            <% } %>
           </div>
-        <% } } %>
-      </div>
+        </div>
+        <ul class="qc-values-ctnr">
+        </ul>
     </script>
 
-    <script type="text/template" id="model-view-templ">
+    <script type="text/template" id="value-view-templ">
       <% if (col.name == 'is_total') { %>
         <li class="query-checkbox-item queryable-item">
           <label for="<%= makeKeyFromName(col.name, table_name) %>-yes"><input type="checkbox" value="1" id="<%= makeKeyFromName(col.name, table_name) %>-yes" checked/> 1 (yes)</label>
