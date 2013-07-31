@@ -255,6 +255,9 @@ a:hover{
 #download-csv{
   width:140px;
 }
+#download-cancel{
+  background-color: red;
+}
 #builder-btns{
   position:relative;
 }
