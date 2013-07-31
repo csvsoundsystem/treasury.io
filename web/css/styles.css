@@ -256,7 +256,7 @@ a:hover{
   width:140px;
 }
 #download-cancel{
-  background-color: red;
+  background-color: #f51;
 }
 #builder-btns{
   position:relative;
