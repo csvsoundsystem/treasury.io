@@ -26,7 +26,6 @@
 
     <!-- BACKBONE -->
     <script src="web/js/thirdparty/backbone-min.js"></script>
-    <script src="web/js/thirdparty/backbone.collectionView.min.js"></script>
 
     <!-- end backbone -->
 
@@ -368,26 +367,26 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
     </script>
 
     <script type="text/template" id="value-view-templ">
-      <% if (col.name == 'is_total') { %>
+      <% if (name == 'is_total') { alert('yo') %>
         <li class="query-checkbox-item queryable-item">
-          <label for="<%= makeKeyFromName(col.name, table_name) %>-yes"><input type="checkbox" value="1" id="<%= makeKeyFromName(col.name, table_name) %>-yes" checked/> 1 (yes)</label>
+          <label for="<%= makeKeyFromName(name, table_name) %>-yes"><input type="checkbox" value="1" id="<%= makeKeyFromName(name, table_name) %>-yes" checked/> 1 (yes)</label>
         </li>
         <li class="query-checkbox-item queryable-item">
-          <label for="<%= makeKeyFromName(col.name, table_name) %>-no"><input type="checkbox" value="0" id="<%= makeKeyFromName(col.name, table_name) %>-no" checked/> 0 (no)</label>
+          <label for="<%= makeKeyFromName(name, table_name) %>-no"><input type="checkbox" value="0" id="<%= makeKeyFromName(name, table_name) %>-no" checked/> 0 (no)</label>
         </li>
       <% } else %>
-      <% if (col.type == 'TEXT' && col.name != 'date') { _.each(col.values, function(value){ %>
+      <% if (type == 'TEXT' && name != 'date'){ %>
         <li class="query-checkbox-item queryable-item">
-          <label for="<%= makeKeyFromName(value.name, table_name) %>"><input type="checkbox" id="<%= makeKeyFromName(value.name, table_name) %>" checked/> <%= value.name %></label>
+          <label for="<%= makeKeyFromName(name, table_name) %>"><input type="checkbox" id="<%= makeKeyFromName(name, table_name) %>" checked/> <%= name %></label>
         </li>
 
-      <% }) } else %>
-      <% if (col.type == 'REAL' || col.type == 'INTEGER' && col.name != 'is_total') { %>
+      <% } else %>
+      <% if (type == 'REAL' || type == 'INTEGER' && name != 'is_total') { %>
         <li class="queryable-item">
-          <label for="<%= makeKeyFromName(col.name, table_name) %>-min">min: <input type="text" value="<%= col.values[0] %>" id="<%= makeKeyFromName(col.name, table_name) %>-min"/></label>
+          <label for="<%= makeKeyFromName(name, table_name) %>-min">min: <input type="text" value="<%= values[0] %>" id="<%= makeKeyFromName(name, table_name) %>-min"/></label>
         </li>
         <li class="queryable-item">
-          <label for="<%= makeKeyFromName(col.name, table_name) %>-max">max: <input type="text" value="<%= col.values[1] %>" id="<%= makeKeyFromName(col.name, table_name) %>-max"/></label>
+          <label for="<%= makeKeyFromName(name, table_name) %>-max">max: <input type="text" value="<%= values[1] %>" id="<%= makeKeyFromName(name, table_name) %>-max"/></label>
         </li>
       <% } %>
     </script>

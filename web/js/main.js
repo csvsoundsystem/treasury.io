@@ -257,11 +257,12 @@ $(function() {
         defaults:{
             table_name: 't1',
             column_name: 'no_column',
+            type: 'none',
             name: 'item',
             date_range: ['1970-01-01', '2013-11-05'],
             is_type_parent: false,
             type_parents: null,
-            checked: false
+            checked: true
         },
 
         // Helper function for checking/unchecking a service
@@ -322,7 +323,7 @@ $(function() {
         // Fill that collection with the column values
         var column_values = [];
         _.each(t2.columns[column_name].values, function(value){
-          _.extend(value, {table_name: 't2', column_name: column_name })
+          _.extend(value, {table_name: 't2', column_name: column_name, type: t2.columns[column_name].type })
            var column_value = new Value(value);
            column_values.push(column_value);
         });
@@ -352,7 +353,7 @@ $(function() {
           var model_data = this.model.toJSON();
           _.extend(model_data, formatHelpers);
           this.$el.html( this.template(model_data) );
-          $(this.el).attr('data-col-name', this.model.get('name')).addClass('qc-col-ctnr');
+          $(this.el).attr('id','qc-col-ctnr-' + this.model.get('name')).addClass('qc-col-ctnr');
 
 
           return this
@@ -382,9 +383,12 @@ $(function() {
         render: function(){
 
             // Create the HTML
+            if(this.model.get('type') == 'none'){
+              console.log(this.model.toJSON())
+            }
             var model_data = this.model.toJSON();
             _.extend(model_data, formatHelpers);
-            this.$el.html( this.template(model_data) );
+            this.setElement( this.template(model_data) );
             // this.$el.html('<label for="' + formatHelpers.makeKeyFromName(this.model.get('table_name'), this.model.get('name') ) + '"><input type="checkbox" id="' + formatHelpers.makeKeyFromName(this.model.get('table_name'), this.model.get('name') ) + '" /> ' + this.model.get('name') + '</label>');
             // this.$el.html('<label for="' + formatHelpers.makeKeyFromName(this.model.get('table_name'), this.model.get('name') ) + '"><input type="checkbox" id="' + formatHelpers.makeKeyFromName(this.model.get('table_name'), this.model.get('name') ) + '" /> ' + this.model.get('name') + '</label>');
             // this.$el.html('<lab<input type="checkbox" value="1" name="' + this.model.get('name') + '" /> ' + this.model.get('name'));
@@ -433,13 +437,13 @@ $(function() {
                 }, that); // "that" is the context in the callback
 
 
-                // collections[collection_name].each(function(item){
+                column_value_collections[collection_name].each(function(item){
 
-                //   var item_view = new ItemView({ model: item });
-                //   // console.log(item_view.render().el)
-                //   this.$el.append(item_view.render().el);
+                  var value_view = new ValueView({ model: item });
+                  // console.log(item_view.render().el)
+                  $('#qc-col-ctnr-' + collection_name).find('ul.qc-values-ctnr').append(value_view.render().el);
 
-                // }, that); // "that" is the context in the callback
+                }, that); // "that" is the context in the callback
               };
             };
 
@@ -453,11 +457,11 @@ $(function() {
 
             // var total = 0;
 
-            for (var collection_name in collections){
-              if ( _.has(collections, collection_name)){
+            for (var collection_name in column_value_collections){
+              if ( _.has(column_value_collections, collection_name)){
 
-                _.each(collections[collection_name].getChecked(), function(elem){
-                  console.log(collection_name, elem.get('name'))
+                _.each(column_value_collections[collection_name].getChecked(), function(elem){
+                  console.log(elem.get('column_name'), elem.get('name'))
                 });
               };
             };
