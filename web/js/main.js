@@ -563,6 +563,8 @@ $(function() {
 
         initialize: function(){
 
+            // _.bindAll(this, 'change');
+
             // Set up event listeners. The change backbone event
             // is raised when a property changes (like the checked field)
             this.listenTo(this.model, 'change', this.render);
@@ -573,10 +575,12 @@ $(function() {
             // Create the HTML
             var model_data = this.model.toJSON();
             _.extend(model_data, formatHelpers);
-            this.setElement( this.template(model_data) );
-            
+            this.$el.html( this.template(model_data) );
+            this.$el.addClass('queryable-item');
+            this.$el.find('input').prop('checked', this.model.get('checked'));
             // Returning the object is a good practice
             // that makes chaining possible
+
             return this;
         },
 
@@ -596,6 +600,8 @@ $(function() {
 
         initialize: function(){
 
+            // _.bindAll(this, 'change');
+
             // Set up event listeners. The change backbone event
             // is raised when a property changes (like the checked field)
             this.listenTo(this.model, 'change', this.render);
@@ -606,8 +612,9 @@ $(function() {
             // Create the HTML
             var model_data = this.model.toJSON();
             _.extend(model_data, formatHelpers);
-            this.setElement( this.template(model_data) );
-            
+            this.$el.html( this.template(model_data) );
+            this.$el.addClass('query-checkbox-item').addClass('queryable-item');
+
             // Returning the object is a good practice
             // that makes chaining possible
             return this;
@@ -630,6 +637,8 @@ $(function() {
 
         initialize: function(){
 
+            // _.bindAll(this, 'change');
+
             var that = this;
 
             // Cache these selectors
@@ -640,8 +649,8 @@ $(function() {
             // items objects in the collection.
             for (var collection_name in column_collections){
               if ( _.has(column_collections, collection_name)){
-                that.listenTo(column_collections[collection_name], 'change', that.render);
-                that.listenTo(column_value_collections[collection_name], 'change', that.render);
+                this.listenTo(column_collections[collection_name], 'change', this.render);
+                this.listenTo(column_value_collections[collection_name], 'change', this.render);
 
                 // Create views for every one of the items in the column collection
 

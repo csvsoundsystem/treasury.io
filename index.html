@@ -366,26 +366,14 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
 
     <script type="text/template" id="Checkbox-view-templ">
       <% if (column_name != 'is_total' ) { %>
-        <li class="query-checkbox-item queryable-item">
-          <label for="<%= makeKeyFromName(name, table_name) %>"><input type="checkbox" id="<%= makeKeyFromName(name, table_name) %>" checked/> <%= name %></label>
-        </li>
+        <label for="<%= makeKeyFromName(name, table_name) %>"><input type="checkbox" id="<%= makeKeyFromName(name, table_name) %>" checked/> <%= name %></label>
       <% } else { %>
-        <li class="query-checkbox-item queryable-item">
-          <label for="<%= makeKeyFromName(column_name, name, table_name) %>-<%= formatBinaryToText(value) %>"><input type="checkbox" value="<%= value %>" id="<%= makeKeyFromName(column_name, table_name) %>-<%= formatBinaryToText(value) %>" checked/> <%= value %> (<%= formatBinaryToText(value) %>)</label>
-        </li>
+        <label for="<%= makeKeyFromName(column_name, name, table_name) %>-<%= formatBinaryToText(value) %>"><input type="checkbox" value="<%= value %>" id="<%= makeKeyFromName(column_name, table_name) %>-<%= formatBinaryToText(value) %>" checked/> <%= value %> (<%= formatBinaryToText(value) %>)</label>
       <% } %>
     </script>
 
-    <script type="text/template" id="IsTotal-view-templ">
-      <li class="query-checkbox-item queryable-item">
-        <label for="<%= makeKeyFromName(column_name, name, table_name) %>-<%= formatBinaryToText(value) %>"><input type="checkbox" value="<%= value %>" id="<%= makeKeyFromName(name, table_name) %>-<%= formatBinaryToText(value) %>" checked/> <%= value %> (<%= formatBinaryToText(value) %>)</label>
-      </li>
-    </script>
-
     <script type="text/template" id="OutputNumber-view-templ">
-      <li class="queryable-item">
-        <label for="<%= makeKeyFromName(column_name, table_name) %>-<%= zeroToText(value) %>"><%= zeroToText(value) %>: <input type="text" value="<%= value %>" id="<%= makeKeyFromName(column_name, table_name) %>-<%= zeroToText(value) %>"/></label>
-      </li>
+      <label for="<%= makeKeyFromName(column_name, table_name) %>-<%= zeroToText(value) %>"><%= zeroToText(value) %>: <input type="text" value="<%= value %>" id="<%= makeKeyFromName(column_name, table_name) %>-<%= zeroToText(value) %>"/></label>
     </script>
 
 
