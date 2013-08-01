@@ -4,7 +4,7 @@
     <title>Treasury IO: A daily data feed for the U.S. Treasury</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="icon" type="image/png" href="web/favicon.png">
-    <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>
+    <!-- <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'> -->
     <script src="web/js/thirdparty/jquery-1.10.1.min.js"></script>
     <script src="web/js/thirdparty/dsv.min.js"></script>
     <script src="web/js/thirdparty/jquery.formalize.min.js"></script>
@@ -25,6 +25,7 @@
     <!-- end syntax highlighting -->
 
     <!-- BACKBONE -->
+    <!-- // <script src="web/js/thirdparty/underscore-min.js"></script> -->
     <script src="web/js/thirdparty/backbone-min.js"></script>
 
     <!-- end backbone -->
@@ -354,41 +355,37 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
       <p></p>
     </footer>
 
-    <script type="text/template" id="column-view-templ">
+    <script type="text/template" id="ColumnView-templ">
         <div class="qc-col-header">
           <div class="qc-col-name"><strong><%= name %></strong> <span><%= normalizeFormatType(type) %></span>
-            <% if ( (type == 'TEXT' && name != 'date') || name == 'is_total' ) { %>
-              <div class="qc-col-control"><input type="checkbox" class="qc-select-all" checked/></div>
-            <% } %>
           </div>
         </div>
         <ul class="qc-values-ctnr">
         </ul>
     </script>
 
-    <script type="text/template" id="value-view-templ">
-      <% if (name == 'is_total') { alert('yo') %>
-        <li class="query-checkbox-item queryable-item">
-          <label for="<%= makeKeyFromName(name, table_name) %>-yes"><input type="checkbox" value="1" id="<%= makeKeyFromName(name, table_name) %>-yes" checked/> 1 (yes)</label>
-        </li>
-        <li class="query-checkbox-item queryable-item">
-          <label for="<%= makeKeyFromName(name, table_name) %>-no"><input type="checkbox" value="0" id="<%= makeKeyFromName(name, table_name) %>-no" checked/> 0 (no)</label>
-        </li>
-      <% } else %>
-      <% if (type == 'TEXT' && name != 'date'){ %>
+    <script type="text/template" id="Checkbox-view-templ">
+      <% if (column_name != 'is_total' ) { %>
         <li class="query-checkbox-item queryable-item">
           <label for="<%= makeKeyFromName(name, table_name) %>"><input type="checkbox" id="<%= makeKeyFromName(name, table_name) %>" checked/> <%= name %></label>
         </li>
-
-      <% } else %>
-      <% if (type == 'REAL' || type == 'INTEGER' && name != 'is_total') { %>
-        <li class="queryable-item">
-          <label for="<%= makeKeyFromName(name, table_name) %>-min">min: <input type="text" value="<%= values[0] %>" id="<%= makeKeyFromName(name, table_name) %>-min"/></label>
-        </li>
-        <li class="queryable-item">
-          <label for="<%= makeKeyFromName(name, table_name) %>-max">max: <input type="text" value="<%= values[1] %>" id="<%= makeKeyFromName(name, table_name) %>-max"/></label>
+      <% } else { %>
+        <li class="query-checkbox-item queryable-item">
+          <label for="<%= makeKeyFromName(column_name, name, table_name) %>-<%= formatBinaryToText(value) %>"><input type="checkbox" value="<%= value %>" id="<%= makeKeyFromName(column_name, table_name) %>-<%= formatBinaryToText(value) %>" checked/> <%= value %> (<%= formatBinaryToText(value) %>)</label>
         </li>
       <% } %>
+    </script>
+
+    <script type="text/template" id="IsTotal-view-templ">
+      <li class="query-checkbox-item queryable-item">
+        <label for="<%= makeKeyFromName(column_name, name, table_name) %>-<%= formatBinaryToText(value) %>"><input type="checkbox" value="<%= value %>" id="<%= makeKeyFromName(name, table_name) %>-<%= formatBinaryToText(value) %>" checked/> <%= value %> (<%= formatBinaryToText(value) %>)</label>
+      </li>
+    </script>
+
+    <script type="text/template" id="OutputNumber-view-templ">
+      <li class="queryable-item">
+        <label for="<%= makeKeyFromName(column_name, table_name) %>-<%= zeroToText(value) %>"><%= zeroToText(value) %>: <input type="text" value="<%= value %>" id="<%= makeKeyFromName(column_name, table_name) %>-<%= zeroToText(value) %>"/></label>
+      </li>
     </script>
 
 
