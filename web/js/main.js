@@ -300,11 +300,11 @@ $(function() {
 
         // Fill each collection with the information for that column
         column_collections[column_name] = new column_collections[column_name]([
-          { 
+          new Column({ 
             table_name: 't2',
             name: t2.columns[column_name].name,
             type: t2.columns[column_name].type,
-          }
+          })
         ]);
 
         /**** VALUE_COLLECTIONS ****/
