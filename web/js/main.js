@@ -251,17 +251,63 @@ $(function() {
 
     /********** M O D E L ************/
     // Create a model for the services
-    var Value = Backbone.Model.extend({
+    // var Value = Backbone.Model.extend({
+
+    //     // These are the default values
+    //     defaults:{
+    //         table_name: 't1',
+    //         column_name: 'no_column',
+    //         type: 'none',
+    //         name: 'item',
+    //         date_range: ['1970-01-01', '2013-11-05'],
+    //         is_type_parent: false,
+    //         type_parents: null,
+    //         checked: true
+    //     },
+
+    //     // Helper function for checking/unchecking a service
+    //     toggle: function(){
+    //         this.set('checked', !this.get('checked'));
+    //     }
+    // });
+
+    // var Column = Backbone.Model.extend({
+
+    //   defaults: {
+    //     table_name: 't1',
+    //     name: 'column',
+    //     type: 'text'
+    //   }
+    // });
+
+   var models = {
+      ColumnModel: null,
+      TypeParentModel: null,
+      ItemModel: null,
+      IsTotalModel: null,
+      OutputNumberModel: null
+    };
+
+    /********** M O D E L ************/
+
+    models.ColumnModel = Backbone.Model.extend({
+      defaults: {
+        table_name: 't1',
+        name: 'column',
+        type: 'text'
+      }
+    });
+
+    // Create a model for the services
+    models.DateModel = Backbone.Model.extend({
 
         // These are the default values
         defaults:{
-            table_name: 't1',
-            column_name: 'no_column',
+            table_name: 't0',
+            column_name: 'date',
             type: 'none',
-            name: 'item',
+            comparinator: '>',
             date_range: ['1970-01-01', '2013-11-05'],
-            is_type_parent: false,
-            type_parents: null,
             checked: true
         },
 
@@ -271,13 +317,78 @@ $(function() {
         }
     });
 
-    var Column = Backbone.Model.extend({
+    models.TypeParentModel = Backbone.Model.extend({
+
+        // These are the default values
+        defaults:{
+            table_name: 't0',
+            column_name: 'no_column',
+            type: 'none',
+            name: 'item',
+            date_range: ['1970-01-01', '2013-11-05'],
+            is_type_parent: true,
+            checked: true
+        },
+
+        // Helper function for checking/unchecking a service
+        toggle: function(){
+            this.set('checked', !this.get('checked'));
+        }
+    });
+
+
+    // Create a model for the services
+    models.ItemModel = Backbone.Model.extend({
+
+        // These are the default values
+        defaults:{
+            table_name: 't0',
+            column_name: 'no_column',
+            type: 'none',
+            name: 'item',
+            date_range: ['1970-01-01', '2013-11-05'],
+            type_parents: null,
+            parent_item: null,
+            checked: true
+        },
+
+        // Helper function for checking/unchecking a service
+        toggle: function(){
+            this.set('checked', !this.get('checked'));
+        }
+    });
+
+    models.IsTotalModel = Backbone.Model.extend({
 
       defaults: {
-        table_name: 't1',
-        name: 'column',
-        type: 'text'
+        table_name: 't0',
+        column_name: 'is_total',
+        value: '0',
+        checked: true,
+      },
+
+      // Helper function for checking/unchecking a service
+      toggle: function(){
+          this.set('checked', !this.get('checked'));
       }
+
+    });
+
+    models.OutputNumberModel = Backbone.Model.extend({
+
+      defaults: {
+        table_name: 't0',
+        column_name: 'output_number',
+        value: 0,
+        comparinator: '>',
+        checked: true,
+      },
+
+      // Helper function for checking/unchecking a service
+      updateValue: function(value){
+          this.set('value', value);
+      }
+
     });
 
 
@@ -295,12 +406,12 @@ $(function() {
         /**** COLUMN_COLLECTIONS ****/
         // Create a new collection for each column
         column_collections[column_name] = Backbone.Collection.extend({
-          model: Column
+          model: models.ColumnModel
         });
 
         // Fill each collection with the information for that column
         column_collections[column_name] = new column_collections[column_name]([
-          new Column({ 
+          new models.ColumnModel({ 
             table_name: 't2',
             name: t2.columns[column_name].name,
             type: t2.columns[column_name].type,
@@ -313,18 +424,19 @@ $(function() {
 
         // Create a collection for that column's values
         column_value_collections[column_name] = Backbone.Collection.extend({
-          model: Value,
+          model: models.ItemModel,
 
           getChecked: function(){
               return this.where({checked:true});
           }
         });
 
+        
         // Fill that collection with the column values
         var column_values = [];
         _.each(t2.columns[column_name].values, function(value){
           _.extend(value, {table_name: 't2', column_name: column_name, type: t2.columns[column_name].type })
-           var column_value = new Value(value);
+           var column_value = new models.ItemModel(value);
            column_values.push(column_value);
         });
 
