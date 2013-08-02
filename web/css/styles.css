@@ -676,6 +676,10 @@ textarea:focus{
   display: inline-block;
   min-width: 40px;
 }
+.ui-widget{
+  font-size: .6em !important;
+}
+
 /* end query builder styles*/
 @media screen and (max-width: 640px) {
   #container-fluid, #container-solid{
