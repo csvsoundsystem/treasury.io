@@ -576,7 +576,7 @@ $(function() {
           this.$el.html( this.template(model_data) );
           this.$el.addClass('query-checkbox-item').addClass('queryable-item');
 
-          this.$el.find('input').datepicker();
+          // this.$el.find('input').datepicker();
           // console.log(this.$el.find('input'))
 
           this.listenTo(this.model, 'change', this.render);
