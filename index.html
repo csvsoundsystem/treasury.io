@@ -357,8 +357,10 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
 
     <script type="text/template" id="ColumnView-templ">
         <div class="qc-col-header">
-          <div class="qc-col-name"><strong><%= name %></strong> <span><%= normalizeFormatType(type) %></span>
+          <div class="qc-col-name">
+            <strong><%= name %></strong> <span><%= normalizeFormatType(type) %></span>
           </div>
+          <div class="qc-col-controls"></div>
         </div>
         <ul class="qc-values-ctnr">
         </ul>
@@ -373,9 +375,15 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
     </script>
 
     <script type="text/template" id="OutputNumber-view-templ">
-      <label for="<%= makeKeyFromName(column_name, table_name) %>-<%= zeroToText(value) %>"><%= zeroToText(value) %>: <input type="text" value="<%= value %>" id="<%= makeKeyFromName(column_name, table_name) %>-<%= zeroToText(value) %>"/></label>
+      <label for="<%= makeKeyFromName(column_name, table_name) %>-<%= comparinatorToText(comparinator) %>">
+        <%= comparinatorToText(comparinator) %>: <input type="text" value="<%= value %>" id="<%= makeKeyFromName(column_name, table_name) %>-<%= comparinatorToText(comparinator) %>"/>
+      </label>
     </script>
 
+    <script type="text/template" id="TextfieldSelector-view-templ">
+      <label for="<%= makeKeyFromName(column_name, table_name) %>-<%= comparinatorToText(comparinator) %>-select">
+        <input type="checkbox" value="<%= comparinator %>" id="<%= makeKeyFromName(column_name, table_name) %>-<%= comparinatorToText(comparinator) %>-select" checked /> <%= comparinatorToText(comparinator) %></label>
+    </script>
 
     <script src="web/js/main.js"></script>
     <!-- Piwik -->

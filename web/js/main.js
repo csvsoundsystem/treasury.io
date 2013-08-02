@@ -253,12 +253,12 @@ $(function() {
           return 'yes'
          }
        },
-       zeroToText: function(value){
-        if (value == 0){
+       comparinatorToText: function(comparinator){
+        if (comparinator == '>'){
           return 'min'
         }else{
           return 'max'
-        }
+        };
        }
       };
 
@@ -278,126 +278,84 @@ $(function() {
       defaults: {
         table_name: 't1',
         name: 'column',
-        type: 'text'
+        type: 'text',
+        queryable: true
+      },
+      toggleQueryable: function(){
+        this.set('queryable', !this.get('queryable'))
       }
     });
 
     // Create a model for the services
     models.DateModel = Backbone.Model.extend({
 
-        // These are the default values
-        defaults:{
-            table_name: 't0',
-            column_name: 'date',
-            type: 'none',
-            comparinator: '>',
-            date_range: ['1970-01-01', '2013-11-05'],
-            checked: true
-        },
+      // These are the default values
+      defaults:{
+        table_name: 't0',
+        column_name: 'date',
+        type: 'none',
+        comparinator: '>',
+        date_range: ['1970-01-01', '2013-11-05'],
+        checked: true,
+        queryable: true
+      },
 
-        // Helper function for checking/unchecking a service
-        toggle: function(){
-            this.set('checked', !this.get('checked'));
-        }
-    });
-
-    models.TypeParentModel = Backbone.Model.extend({
-
-        // These are the default values
-        defaults:{
-            table_name: 't0',
-            column_name: 'no_column',
-            type: 'none',
-            name: 'item',
-            date_range: ['1970-01-01', '2013-11-05'],
-            is_type_parent: true,
-            checked: true
-        },
-
-        // Helper function for checking/unchecking a service
-        toggle: function(){
-            this.set('checked', !this.get('checked'));
-        }
-    });
-
-
-    // Create a model for the services
-
-   var models = {
-      ColumnModel: null,
-      TypeParentModel: null,
-      ItemModel: null,
-      IsTotalModel: null,
-      OutputNumberModel: null
-    };
-
-    /********** M O D E L ************/
-
-    models.ColumnModel = Backbone.Model.extend({
-      defaults: {
-        table_name: 't1',
-        name: 'column',
-        type: 'text'
+      // Helper function for checking/unchecking a service
+      toggle: function(){
+          this.set('checked', !this.get('checked'));
+      },
+      toggleQueryable: function(){
+        this.set('queryable', !this.get('queryable'))
       }
     });
 
-    // Create a model for the services
-    models.DateModel = Backbone.Model.extend({
-
-        // These are the default values
-        defaults:{
-            table_name: 't0',
-            column_name: 'date',
-            type: 'none',
-            comparinator: '>',
-            date_range: ['1970-01-01', '2013-11-05'],
-            checked: true
-        },
-
-        // Helper function for checking/unchecking a service
-        toggle: function(){
-            this.set('checked', !this.get('checked'));
-        }
-    });
-
     models.TypeParentModel = Backbone.Model.extend({
 
-        // These are the default values
-        defaults:{
-            table_name: 't0',
-            column_name: 'no_column',
-            type: 'none',
-            name: 'item',
-            date_range: ['1970-01-01', '2013-11-05'],
-            is_type_parent: true,
-            checked: true
-        },
+      // These are the default values
+      defaults:{
+        table_name: 't0',
+        column_name: 'no_column',
+        type: 'none',
+        name: 'item',
+        date_range: ['1970-01-01', '2013-11-05'],
+        is_type_parent: true,
+        checked: true,
+        queryable: true
+      },
 
-        // Helper function for checking/unchecking a service
-        toggle: function(){
-            this.set('checked', !this.get('checked'));
-        }
+      // Helper function for checking/unchecking a service
+      toggle: function(){
+          this.set('checked', !this.get('checked'));
+      },
+      toggleQueryable: function(){
+        this.set('queryable', !this.get('queryable'))
+      }
     });
+
 
     // Create a model for the services
     models.ItemModel = Backbone.Model.extend({
 
-        // These are the default values
-        defaults:{
-            table_name: 't0',
-            column_name: 'no_column',
-            type: 'none',
-            name: 'item',
-            date_range: ['1970-01-01', '2013-11-05'],
-            type_parents: null,
-            parent_item: null,
-            checked: true
-        },
+      // These are the default values
+      defaults:{
+          table_name: 't0',
+          column_name: 'no_column',
+          type: 'none',
+          name: 'item',
+          date_range: ['1970-01-01', '2013-11-05'],
+          type_parents: null,
+          parent_item: null,
+          checked: true,
+          queryable: true
+      },
 
-        // Helper function for checking/unchecking a service
-        toggle: function(){
-            this.set('checked', !this.get('checked'));
-        }
+      // Helper function for checking/unchecking a service
+      toggle: function(){
+          this.set('checked', !this.get('checked'));
+      },
+      toggleQueryable: function(){
+        this.set('queryable', !this.get('queryable'))
+      }
     });
 
     models.IsTotalModel = Backbone.Model.extend({
@@ -407,11 +365,15 @@ $(function() {
         column_name: 'is_total',
         value: '0',
         checked: true,
+        queryable: true
       },
 
       // Helper function for checking/unchecking a service
       toggle: function(){
           this.set('checked', !this.get('checked'));
+      },
+      toggleQueryable: function(){
+        this.set('queryable', !this.get('queryable'))
       }
 
     });
@@ -424,11 +386,16 @@ $(function() {
         value: 0,
         comparinator: '>',
         checked: true,
+        queryable: true
       },
 
       // Helper function for checking/unchecking a service
       updateValue: function(value){
-          this.set('value', value);
+        this.set('value', value);
+      },
+      toggleQueryable: function(){
+        this.set('checked', !this.get('checked'));
+        this.set('queryable', !this.get('queryable'))
       }
 
     });
@@ -508,13 +475,15 @@ $(function() {
             new models.OutputNumberModel({ 
               table_name: 't2',
               column_name: column_name,
-              value: '0',
+              comparinator: '>',
+              value: t2.columns[column_name].values[0],
               checked: true
             }),
             new models.OutputNumberModel({ 
               table_name: 't2',
               column_name: column_name,
-              value: '1',
+              comparinator: '<',
+              value: t2.columns[column_name].values[1],
               checked: true
             })
           ]);
@@ -537,15 +506,15 @@ $(function() {
 
           // I don't think I need this, maybe for it to load initially?
           this.listenTo(this.model, 'change', this.render) 
-        },
-
-        render: function(){
           var model_data = this.model.toJSON();
           _.extend(model_data, formatHelpers);
           this.$el.html( this.template(model_data) );
+        },
+
+        render: function(){
           $(this.el).attr('id','qc-col-ctnr-' + this.model.get('name')).addClass('qc-col-ctnr');
 
-          return this
+          return this;
         }
 
 
@@ -558,34 +527,44 @@ $(function() {
         template: _.template($('#Checkbox-view-templ').html()),
 
         events:{
-            'click': 'toggleItem'
+          'click .checkbox-input': 'toggleItem'
         },
 
         initialize: function(){
 
-            // _.bindAll(this, 'change');
+          // _.bindAll(this, 'change');
 
-            // Set up event listeners. The change backbone event
-            // is raised when a property changes (like the checked field)
-            this.listenTo(this.model, 'change', this.render);
+          // Set up event listeners. The change backbone event
+          // is raised when a property changes (like the checked field)
+          // Create the HTML
+          var model_data = this.model.toJSON();
+          _.extend(model_data, formatHelpers);
+          this.$el.html( this.template(model_data) );
+          this.$el.addClass('queryable-item');
+
+          this.$el.find('input').addClass('checkbox-input'); // You have to add this class to the input element and then set the click even on that to preserve the proper behavior where the label simulates a click on the input.
+
+
+          this.listenTo(this.model, 'change', this.render);
         },
 
         render: function(){
 
-            // Create the HTML
-            var model_data = this.model.toJSON();
-            _.extend(model_data, formatHelpers);
-            this.$el.html( this.template(model_data) );
-            this.$el.addClass('queryable-item');
-            this.$el.find('input').prop('checked', this.model.get('checked'));
-            // Returning the object is a good practice
-            // that makes chaining possible
+          this.$el.find('input').prop('checked', this.model.get('checked'));
+          // Returning the object is a good practice
+          // that makes chaining possible
 
-            return this;
+          return this;
         },
 
-        toggleItem: function(){
-            this.model.toggle();
+        toggleItem: function(e){
+          // e.preventDefault();
+          this.model.toggle();
+        },
+
+        toggleQueryable: function(e){
+          // e.preventDefault();
+          this.model.toggleQueryable();
         }
     });
 
@@ -595,34 +574,87 @@ $(function() {
         template: _.template($('#OutputNumber-view-templ').html()),
 
         events:{
-            'keyup': 'updateValue'
+          'keyup': 'updateValue'
         },
 
         initialize: function(){
 
-            // _.bindAll(this, 'change');
+          // _.bindAll(this, 'change');
 
-            // Set up event listeners. The change backbone event
-            // is raised when a property changes (like the checked field)
-            this.listenTo(this.model, 'change', this.render);
+          // Set up event listeners. The change backbone event
+          // is raised when a property changes (like the checked field)
+          var model_data = this.model.toJSON();
+          _.extend(model_data, formatHelpers);
+          this.$el.html( this.template(model_data) );
+          this.$el.addClass('query-checkbox-item').addClass('queryable-item');
+
+          this.listenTo(this.model, 'change', this.render);
         },
 
         render: function(){
 
-            // Create the HTML
-            var model_data = this.model.toJSON();
-            _.extend(model_data, formatHelpers);
-            this.$el.html( this.template(model_data) );
-            this.$el.addClass('query-checkbox-item').addClass('queryable-item');
+          // Update the HTML
+          this.$el.find('input').val( this.model.get('value') );
 
-            // Returning the object is a good practice
-            // that makes chaining possible
-            return this;
+          if (this.model.get('queryable')){
+            this.$el.show();
+          }else{
+            this.$el.hide();
+          }
+
+          // Returning the object is a good practice
+          // that makes chaining possible
+          return this;
         },
 
         updateValue: function(){
-            var value = this.$el.val();
-            this.model.updateValue(value);
+          var value = this.$el.find('input').val();
+          this.model.updateValue(value);
+        }
+    });
+
+    var TextfieldSelectorView = Backbone.View.extend({
+        tagName: 'div',
+
+        template: _.template($('#TextfieldSelector-view-templ').html()),
+
+        events:{
+          'click .checkbox-input': 'toggleQueryable'
+        },
+
+        initialize: function(){
+
+          // _.bindAll(this, 'change');
+
+          // Set up event listeners. The change backbone event
+          // is raised when a property changes (like the checked field)
+          var model_data = this.model.toJSON();
+          _.extend(model_data, formatHelpers);
+          this.$el.html( this.template(model_data) );
+          this.$el.addClass('query-checkbox-controller');
+
+          this.$el.find('input').addClass('checkbox-input'); // You have to add this class to the input element and then set the click even on that to preserve the proper behavior where the label simulates a click on the input.
+
+          this.listenTo(this.model, 'change', this.render);
+        },
+
+        render: function(){
+
+
+          // Create the HTML
+          this.$el.find('input').prop('checked', this.model.get('checked'));
+
+          // console.log(this.$el.find('input').prop('checked'));
+          // Returning the object is a good practice
+          // that makes chaining possible
+          return this;
+        },
+
+        toggleQueryable: function(e){
+
+          // e.preventDefault();
+          this.model.toggleQueryable();
+          console.log('rendering')
         }
     });
 
@@ -662,12 +694,15 @@ $(function() {
                 // // Create views for all of the items
                 column_value_collections[collection_name].each(function(item){
                   var model_type = t2.columns[collection_name].model,
-                      item_value_view;
+                      item_value_view,
+                      controller_view;
 
                   if (model_type == 'TypeParentModel' || model_type == 'ItemModel' || model_type == 'IsTotalModel' ){
                     item_value_view = new CheckboxView({ model: item });
                   }else if (model_type == 'OutputNumberModel'){
                     item_value_view = new TextfieldView({ model: item });
+                    controller_view = new TextfieldSelectorView({ model: item });
+                    $('#qc-col-ctnr-' + collection_name).find('.qc-col-controls').append(controller_view.render().el);
                   }
 
                   $('#qc-col-ctnr-' + collection_name).find('ul.qc-values-ctnr').append(item_value_view.render().el);
@@ -679,13 +714,13 @@ $(function() {
         },
 
         render: function(){
-
+            // alert('rendering')
             for (var collection_name in column_value_collections){
               if ( _.has(column_value_collections, collection_name)){
 
                 _.each(column_value_collections[collection_name].getChecked(), function(elem){
-                  console.log(elem.get('column_name'), elem.get('name'));
-                  console.log(new Date().getTime())
+                  // console.log(elem.get('column_name'), elem.get('name'), elem.get('value'));
+                  // console.log(new Date().getTime())
                 });
               };
             };

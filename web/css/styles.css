@@ -667,7 +667,15 @@ textarea:focus{
 .qc-values-ctnr li.queryable-item{
   display: block;
 }
-
+.qc-col-controls{
+  line-height: 0px;
+}
+.query-checkbox-controller{
+  height: 18px;
+  font-size: 10px;
+  display: inline-block;
+  min-width: 40px;
+}
 /* end query builder styles*/
 @media screen and (max-width: 640px) {
   #container-fluid, #container-solid{
