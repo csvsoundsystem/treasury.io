@@ -440,13 +440,25 @@ $(function() {
         column_value_collections[column_name] = Backbone.Collection.extend({
           model: models[t2.columns[column_name].model],
 
-          getChecked: function(){
-            return this.where({checked: true});
+          majorityChecked: function(){
+            var all_items = this.length,
+                checked_items = this.where({checked: true}).length,
+                compare = checked_items / all_items
+
+            if (compare > .5 && compare < 1){
+              return true
+            }else{
+              return false
+            };
           },
 
-          getQueryable: function(){
-            return this.where({queryable: true});
-          }
+          getQueryableAndChecked: function(){
+            return this.where({queryable: true, checked: true});
+          },
+          getQueryableAndUnchecked: function(){
+            return this.where({queryable: true, checked: false});
+          },
+
         });
 
         
@@ -724,11 +736,9 @@ $(function() {
 
         render: function(){
           // BUILD JSON OBJECT FOR SQL STRING
-
           var filter_json = buildQueryJson(column_value_collections);
-
           var sql_string = JsonToSql(filter_json);
-          console.log(sql_string)
+          console.log(sql_string);
 
           return this;
         }
@@ -823,14 +833,33 @@ $(function() {
         column_obj = {};
         value_obj  = {};
 
+        var cmpr = '=';
         column_obj[collection_name] = []
 
         // We only want to include queryable items
-        queryable_models = column_value_collections[collection_name].getQueryable();
+        console.log(collection_name)
+        if (collection_name != 'item'){
+          queryable_models = column_value_collections[collection_name].getQueryableAndChecked();
+        }else{
+          if(column_value_collections[collection_name].majorityChecked()){ // If the majority of them are checked, then it's easier to only do a WHERE clause on the excluded items
+            cmpr = '!='
+            queryable_models = column_value_collections[collection_name].getQueryableAndUnchecked();
+          }else{
+            queryable_models = column_value_collections[collection_name].getQueryableAndChecked();
+          }
+        };
+        // TODO put a check in there so that if all of the items are selected or that all of the items are deselected, it doesn't include that column
+
+
 
         _.each(queryable_models, function(elem){
+          if (collection_name != 'item'){
+            cmpr = elem.get('comparinator')
+          }else{
+            cmpr = cmpr
+          }
           value_obj = {
-            comparinator: elem.get('comparinator'),
+            comparinator: cmpr,
             value: elem.get('value')
           };
           column_obj[collection_name].push(value_obj);
