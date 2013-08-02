@@ -368,9 +368,9 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
 
     <script type="text/template" id="Checkbox-view-templ">
       <% if (column_name != 'is_total' ) { %>
-        <label for="<%= makeKeyFromName(name, table_name) %>"><input type="checkbox" id="<%= makeKeyFromName(name, table_name) %>" checked/> <%= name %></label>
+        <label for="<%= makeKeyFromName(table_name, value) %>"><input type="checkbox" id="<%= makeKeyFromName(table_name, value) %>" checked/> <%= value %></label>
       <% } else { %>
-        <label for="<%= makeKeyFromName(column_name, name, table_name) %>-<%= formatBinaryToText(value) %>"><input type="checkbox" value="<%= value %>" id="<%= makeKeyFromName(column_name, table_name) %>-<%= formatBinaryToText(value) %>" checked/> <%= value %> (<%= formatBinaryToText(value) %>)</label>
+        <label for="<%= makeKeyFromName(column_name, table_name) %>-<%= formatBinaryToText(value) %>"><input type="checkbox" value="<%= value %>" id="<%= makeKeyFromName(column_name, table_name) %>-<%= formatBinaryToText(value) %>" checked/> <%= value %> (<%= formatBinaryToText(value) %>)</label>
       <% } %>
     </script>
 

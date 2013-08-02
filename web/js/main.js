@@ -295,6 +295,7 @@ $(function() {
         column_name: 'date',
         type: 'none',
         comparinator: '>',
+        value: 0,
         date_range: ['1970-01-01', '2013-11-05'],
         checked: true,
         queryable: true
@@ -316,7 +317,8 @@ $(function() {
         table_name: 't0',
         column_name: 'no_column',
         type: 'none',
-        name: 'item',
+        value: 'item',
+        comparinator: '=',
         date_range: ['1970-01-01', '2013-11-05'],
         is_type_parent: true,
         checked: true,
@@ -341,7 +343,8 @@ $(function() {
           table_name: 't0',
           column_name: 'no_column',
           type: 'none',
-          name: 'item',
+          value: 'item',
+          comparinator: '=',
           date_range: ['1970-01-01', '2013-11-05'],
           type_parents: null,
           parent_item: null,
@@ -364,6 +367,7 @@ $(function() {
         table_name: 't0',
         column_name: 'is_total',
         value: '0',
+        comparinator: '=',
         checked: true,
         queryable: true
       },
@@ -415,7 +419,11 @@ $(function() {
         /**** COLUMN_COLLECTIONS ****/
         // Create a new collection for each column
         column_collections[column_name] = Backbone.Collection.extend({
-          model: models.ColumnModel
+          model: models.ColumnModel,
+
+          getQueryable: function(){
+              return this.where({queryable: true});
+          }
         });
 
         // Fill each collection with the information for that column
@@ -433,7 +441,11 @@ $(function() {
           model: models[t2.columns[column_name].model],
 
           getChecked: function(){
-              return this.where({checked: true});
+            return this.where({checked: true});
+          },
+
+          getQueryable: function(){
+            return this.where({queryable: true});
           }
         });
 
@@ -459,14 +471,12 @@ $(function() {
               table_name: 't2',
               column_name: 'is_total',
               value: 0,
-              comparinator: '>',
               checked: true
             }),
             new models.IsTotalModel({ 
               table_name: 't2',
               column_name: 'is_total',
               value: 1,
-              comparinator: '<',
               checked: true
             })
           ]);
@@ -654,7 +664,6 @@ $(function() {
 
           // e.preventDefault();
           this.model.toggleQueryable();
-          console.log('rendering')
         }
     });
 
@@ -714,25 +723,123 @@ $(function() {
         },
 
         render: function(){
-            // alert('rendering')
-            for (var collection_name in column_value_collections){
-              if ( _.has(column_value_collections, collection_name)){
+          // BUILD JSON OBJECT FOR SQL STRING
 
-                _.each(column_value_collections[collection_name].getChecked(), function(elem){
-                  // console.log(elem.get('column_name'), elem.get('name'), elem.get('value'));
-                  // console.log(new Date().getTime())
-                });
-              };
-            };
+          var filter_json = buildQueryJson(column_value_collections);
 
-            return this;
+          var sql_string = JsonToSql(filter_json);
+          console.log(sql_string)
+
+          return this;
         }
     });
 
     new App();
 
+  };
+
+  function JsonToSql(filters){
+    var column_group = [];
+    _.each(filters, function(filter) {
+      for (var col in filter) {
+        if (_.has(filter, col)) {
+          var column_items = [];
+          _.each(filter[col], function(column_item){
+            var column_item_string = '"' + col  + '"' + ' ' + column_item.comparinator + ' ' + quoteValIfString(column_item.value);
+            column_items.push(column_item_string);
+          });
+          column_items_string = column_items.join(' OR ');
+          column_group.push(column_items_string);
+        };
+      };
+
+    });
+    var column_group_string = wrapElsWithParens(column_group).join(' AND ');
+    return 'WHERE ' + column_group_string;
+
+  };
+
+  function wrapElsWithParens(arr){
+    return _.map(arr, function(el){ return '(' + el + ')' });
+  };
+
+  function quoteValIfString(val){
+    if ( isNaN(Number(val)) ){
+      return "'" + val + "'";
+    }else{
+      return val;
+    };
+  };
+
+  function buildQueryJson(column_value_collections){
+    var queryable_models,
+        checked_models,
+        column_obj = {},
+        filters = []; // The structure of this object will be an array of objects that are arrays of objects. BOOM.
+
+        /*  var filters = [
+              {
+                "type": [
+                  {
+                    "comparinator": "=",
+                    "value": "withdrawal"
+                  },
+                  {
+                    "comparinator": "=",
+                    "value": "deposit"
+                  }
+                ]
+              },
+              {
+                "item": [
+                  {
+                    "comparinator": "=",
+                    "value": "Medicare"
+                  },
+                  {
+                    "comparinator": "=",
+                    "value": "Medicaid"
+                  }
+                ]
+              },
+              {
+                "is_total":[
+                  {
+                    "comparinator": "=",
+                    "value": "0"
+                  }
+                ]
+              
+              }
+            ];
+        */
 
 
+    // Loop through every collection
+    for (var collection_name in column_value_collections){
+      if ( _.has(column_value_collections, collection_name)){
+        // For every column...
+        // TODO: ADD `IF COLLECTION (column) IS QUERYABLE`
+        column_obj = {};
+        value_obj  = {};
+
+        column_obj[collection_name] = []
+
+        // We only want to include queryable items
+        queryable_models = column_value_collections[collection_name].getQueryable();
+
+        _.each(queryable_models, function(elem){
+          value_obj = {
+            comparinator: elem.get('comparinator'),
+            value: elem.get('value')
+          };
+          column_obj[collection_name].push(value_obj);
+        });
+
+        filters.push(column_obj)
+      };
+    };
+    return filters;
 
   };
 

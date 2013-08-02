@@ -10,7 +10,7 @@
           "model": "DateModel",
           "date_range": [
             "2005-06-09",
-            "2013-07-30"
+            "2013-07-31"
           ]
         },
         "is_total": {
@@ -28,47 +28,37 @@
           "model": "ItemModel",
           "values": [
             {
-              "name": "Tax and Loan Note Accounts ( Table V )",
+              "value": "Federal Reserve Account",
               "date_range": [
                 "2005-06-09",
-                "2012-09-28"
+                "2013-07-31"
               ],
               "type_parents": [
                 0
               ]
             },
             {
-              "name": "Federal Reserve Account",
+              "value": "Total Operating Balance",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
-                0
+                1
               ]
             },
             {
-              "name": "Supplementary Financing Program",
+              "value": "Supplementary Financing Program",
               "date_range": [
                 "2008-09-18",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 0
               ]
             },
             {
-              "name": "Short Term Cash Investments ( Table V )",
-              "date_range": [
-                "2012-10-01",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                0
-              ]
-            },
-            {
-              "name": "Financial Institution Account",
+              "value": "Financial Institution Account",
               "date_range": [
                 "2008-12-01",
                 "2010-09-30"
@@ -78,13 +68,23 @@
               ]
             },
             {
-              "name": "Total Operating Balance",
+              "value": "Tax and Loan Note Accounts ( Table V )",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2012-09-28"
               ],
               "type_parents": [
-                1
+                0
+              ]
+            },
+            {
+              "value": "Short Term Cash Investments ( Table V )",
+              "date_range": [
+                "2012-10-01",
+                "2013-07-31"
+              ],
+              "type_parents": [
+                0
               ]
             }
           ]
@@ -137,31 +137,31 @@
           "model": "TypeParentModel",
           "values": [
             {
-              "name": "Federal Reserve Account",
+              "value": "Short Term Cash Investments",
               "date_range": [
-                "2005-06-09",
-                "2013-07-30"
+                "2012-10-01",
+                "2013-07-31"
               ]
             },
             {
-              "name": "Tax and Loan Note Accounts",
+              "value": "Tax and Loan Note Accounts",
               "date_range": [
                 "2005-06-09",
                 "2012-09-28"
               ]
             },
             {
-              "name": "Short Term Cash Investments",
+              "value": "Federal Reserve Account",
               "date_range": [
-                "2012-10-01",
-                "2013-07-30"
+                "2005-06-09",
+                "2013-07-31"
               ]
             },
             {
-              "name": "(blank)",
+              "value": "(blank)",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ]
             }
           ]
@@ -172,17 +172,17 @@
           "model": "TypeParentModel",
           "values": [
             {
-              "name": "deposit",
+              "value": "withdrawal",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ]
             },
             {
-              "name": "withdrawal",
+              "value": "deposit",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ]
             }
           ]
@@ -202,10 +202,46 @@
           "model": "ItemModel",
           "values": [
             {
-              "name": "Supplemental Security Income",
+              "value": "Agriculture Loan Repayments ( misc )",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "Federal Reserve Account",
+                "deposit",
+                0
+              ]
+            },
+            {
+              "value": "Commodity Credit Corporation programs",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "Federal Reserve Account",
+                "deposit",
+                0
+              ]
+            },
+            {
+              "value": "Customs and Certain Excise Taxes",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "Federal Reserve Account",
+                "deposit",
+                0
+              ]
+            },
+            {
+              "value": "Unemployment",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
               ],
               "parent_item": "Deposits by States",
               "type_parents": [
@@ -215,10 +251,10 @@
               ]
             },
             {
-              "name": "Commodity Credit Corporation programs",
+              "value": "Education Department programs",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -227,34 +263,10 @@
               ]
             },
             {
-              "name": "Customs and Certain Excise Taxes",
+              "value": "Supplemental Security Income",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "Federal Reserve Account",
-                "deposit",
-                0
-              ]
-            },
-            {
-              "name": "Agriculture Loan Repayments ( misc )",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "Federal Reserve Account",
-                "deposit",
-                0
-              ]
-            },
-            {
-              "name": "Unemployment",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "parent_item": "Deposits by States",
               "type_parents": [
@@ -264,10 +276,10 @@
               ]
             },
             {
-              "name": "Energy Department programs",
+              "value": "Estate and Gift Taxes",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -276,10 +288,10 @@
               ]
             },
             {
-              "name": "Education Department programs",
+              "value": "Housing and Urban Development programs",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -288,10 +300,10 @@
               ]
             },
             {
-              "name": "Estate and Gift Taxes",
+              "value": "Energy Department programs",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -300,10 +312,10 @@
               ]
             },
             {
-              "name": "Federal Reserve Earnings",
+              "value": "Federal Reserve Earnings",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -312,10 +324,10 @@
               ]
             },
             {
-              "name": "Foreign Deposits Military Sales",
+              "value": "FTDs Received",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -324,10 +336,10 @@
               ]
             },
             {
-              "name": "Justice Department programs",
+              "value": "Foreign Deposits Military Sales",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -336,10 +348,10 @@
               ]
             },
             {
-              "name": "Individual Income and Employment Taxes Not Withheld",
+              "value": "Interest recd from cash investments",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -348,10 +360,10 @@
               ]
             },
             {
-              "name": "Interest recd from cash investments",
+              "value": "Individual Income and Employment Taxes Not Withheld",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -360,10 +372,10 @@
               ]
             },
             {
-              "name": "FTDs Received",
+              "value": "Public Debt Cash Issues ( Table III B )",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -372,22 +384,10 @@
               ]
             },
             {
-              "name": "Housing and Urban Development programs",
+              "value": "Total Other Deposits",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "Federal Reserve Account",
-                "deposit",
-                0
-              ]
-            },
-            {
-              "name": "Total Other Deposits",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "parent_item": "Other Deposits",
               "type_parents": [
@@ -397,10 +397,10 @@
               ]
             },
             {
-              "name": "Postal Service",
+              "value": "Postal Service",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -409,7 +409,7 @@
               ]
             },
             {
-              "name": "Change in Balance of Uncollected Funds closing balance",
+              "value": "Change in Balance of Uncollected Funds closing balance",
               "date_range": [
                 "2005-06-09",
                 "2010-09-30"
@@ -421,10 +421,10 @@
               ]
             },
             {
-              "name": "Transfers from Depositaries",
+              "value": "Justice Department programs",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -433,10 +433,22 @@
               ]
             },
             {
-              "name": "Public Debt Cash Issues ( Table III B )",
+              "value": "Transfers from Federal Reserve Account Table V",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "deposit",
+                0,
+                "hasnull"
+              ]
+            },
+            {
+              "value": "Transfers from Depositaries",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -445,22 +457,10 @@
               ]
             },
             {
-              "name": "Total Federal Reserve Account",
+              "value": "Total Deposits ( excluding transfers )",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "Federal Reserve Account",
-                "deposit",
-                1
-              ]
-            },
-            {
-              "name": "Total Deposits ( excluding transfers )",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "deposit",
@@ -469,7 +469,19 @@
               ]
             },
             {
-              "name": "Total Tax and Loan Note Accounts Table V",
+              "value": "Total Federal Reserve Account",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "Federal Reserve Account",
+                "deposit",
+                1
+              ]
+            },
+            {
+              "value": "Total Tax and Loan Note Accounts Table V",
               "date_range": [
                 "2005-06-09",
                 "2012-09-28"
@@ -481,22 +493,10 @@
               ]
             },
             {
-              "name": "Transfers from Federal Reserve Account Table V",
+              "value": "Defense Vendor Payments ( EFT )",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "deposit",
-                0,
-                "hasnull"
-              ]
-            },
-            {
-              "name": "Defense Vendor Payments ( EFT )",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -505,10 +505,10 @@
               ]
             },
             {
-              "name": "Fed Highway Administration programs",
+              "value": "Fed Highway Administration programs",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -517,10 +517,10 @@
               ]
             },
             {
-              "name": "Food Stamps",
+              "value": "Food and Nutrition Service ( misc )",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -529,10 +529,10 @@
               ]
             },
             {
-              "name": "Federal Salaries ( EFT )",
+              "value": "Federal Employees Insurance Payments",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -541,10 +541,10 @@
               ]
             },
             {
-              "name": "Federal Employees Insurance Payments",
+              "value": "Federal Salaries ( EFT )",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -553,10 +553,10 @@
               ]
             },
             {
-              "name": "Food and Nutrition Service ( misc )",
+              "value": "Interest on Treasury Securities",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -565,10 +565,10 @@
               ]
             },
             {
-              "name": "GSA Programs",
+              "value": "Health and Human Services Grants ( misc )",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -577,10 +577,10 @@
               ]
             },
             {
-              "name": "Health and Human Services Grants ( misc )",
+              "value": "Labor Dept prgms ( excl unemployment )",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -589,10 +589,10 @@
               ]
             },
             {
-              "name": "Interest on Treasury Securities",
+              "value": "GSA Programs",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -601,10 +601,10 @@
               ]
             },
             {
-              "name": "Labor Dept prgms ( excl unemployment )",
+              "value": "NASA programs",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -613,10 +613,10 @@
               ]
             },
             {
-              "name": "Postal Service Money Orders and Other",
+              "value": "Food Stamps",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -625,10 +625,10 @@
               ]
             },
             {
-              "name": "NASA programs",
+              "value": "Medicaid",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -637,10 +637,10 @@
               ]
             },
             {
-              "name": "Medicare",
+              "value": "Medicare",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -649,10 +649,10 @@
               ]
             },
             {
-              "name": "Medicaid",
+              "value": "Public Debt Cash Redemp ( Table III B )",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -661,10 +661,10 @@
               ]
             },
             {
-              "name": "Public Debt Cash Redemp ( Table III B )",
+              "value": "Postal Service Money Orders and Other",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -673,10 +673,10 @@
               ]
             },
             {
-              "name": "Social Security Benefits ( EFT )",
+              "value": "Social Security Benefits ( EFT )",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -685,7 +685,57 @@
               ]
             },
             {
-              "name": "Emergency Prep Response ( DHS )",
+              "value": "Transportation Security Admin ( DHS )",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "Veterans Affairs Programs",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "Total Other Withdrawals",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                1
+              ]
+            },
+            {
+              "value": "Unclassified",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "Emergency Prep Response ( DHS )",
               "date_range": [
                 "2005-06-09",
                 "2013-07-29"
@@ -698,10 +748,10 @@
               ]
             },
             {
-              "name": "Temporary Assistance for Needy Families ( HHS )",
+              "value": "Temporary Assistance for Needy Families ( HHS )",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -710,10 +760,10 @@
               ]
             },
             {
-              "name": "Veterans Affairs Programs",
+              "value": "Transfers to Depositaries",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -722,109 +772,10 @@
               ]
             },
             {
-              "name": "Transportation Security Admin ( DHS )",
+              "value": "Net Change in Operating Cash Balance",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "Total Other Withdrawals",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                1
-              ]
-            },
-            {
-              "name": "Transfers to Federal Reserve Account Table V",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "Short Term Cash Investments",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "Unclassified",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "Transfers to Depositaries",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "Federal Housing Admin: Note Sales",
-              "date_range": [
-                "2005-06-10",
-                "2013-07-30"
-              ],
-              "parent_item": "Other Deposits",
-              "type_parents": [
-                "Federal Reserve Account",
-                "deposit",
-                0
-              ]
-            },
-            {
-              "name": "Total Withdrawals ( excluding transfers )",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "withdrawal",
-                1,
-                "hasnull"
-              ]
-            },
-            {
-              "name": "IRS Tax Refunds Individual ( EFT )",
-              "date_range": [
-                "2005-06-10",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "Net Change in Operating Cash Balance",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "withdrawal",
@@ -833,7 +784,19 @@
               ]
             },
             {
-              "name": "Farm Credit System Ins Corp",
+              "value": "Transfers to Federal Reserve Account Table V",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "Short Term Cash Investments",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "Farm Credit System Ins Corp",
               "date_range": [
                 "2005-06-10",
                 "2012-01-31"
@@ -846,10 +809,35 @@
               ]
             },
             {
-              "name": "IRS Tax Refunds Business ( EFT )",
+              "value": "Total Withdrawals ( excluding transfers )",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "withdrawal",
+                1,
+                "hasnull"
+              ]
+            },
+            {
+              "value": "Federal Housing Admin: Note Sales",
               "date_range": [
                 "2005-06-10",
-                "2013-07-30"
+                "2013-07-31"
+              ],
+              "parent_item": "Other Deposits",
+              "type_parents": [
+                "Federal Reserve Account",
+                "deposit",
+                0
+              ]
+            },
+            {
+              "value": "IRS Tax Refunds Business ( EFT )",
+              "date_range": [
+                "2005-06-10",
+                "2013-07-31"
               ],
               "type_parents": [
                 "Federal Reserve Account",
@@ -858,10 +846,22 @@
               ]
             },
             {
-              "name": "Agency for International Development",
+              "value": "IRS Tax Refunds Individual ( EFT )",
               "date_range": [
                 "2005-06-10",
-                "2013-07-25"
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "Agency for International Development",
+              "date_range": [
+                "2005-06-10",
+                "2013-07-31"
               ],
               "parent_item": "Other Withdrawals",
               "type_parents": [
@@ -871,7 +871,19 @@
               ]
             },
             {
-              "name": "Defense Finance Accounting Service",
+              "value": "Air Transport Security Fees",
+              "date_range": [
+                "2005-06-14",
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "Federal Reserve Account",
+                "deposit",
+                0
+              ]
+            },
+            {
+              "value": "Defense Finance Accounting Service",
               "date_range": [
                 "2005-06-14",
                 "2013-07-29"
@@ -884,45 +896,7 @@
               ]
             },
             {
-              "name": "State Department",
-              "date_range": [
-                "2005-06-14",
-                "2013-07-25"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "Air Transport Security Fees",
-              "date_range": [
-                "2005-06-14",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "Federal Reserve Account",
-                "deposit",
-                0
-              ]
-            },
-            {
-              "name": "Federal Transit Admin",
-              "date_range": [
-                "2005-06-14",
-                "2013-07-24"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "Military Active Duty Pay ( EFT )",
+              "value": "Military Active Duty Pay ( EFT )",
               "date_range": [
                 "2005-06-15",
                 "2013-07-15"
@@ -935,7 +909,20 @@
               ]
             },
             {
-              "name": "Interntl Security Assistance ( DSCA )",
+              "value": "State Department",
+              "date_range": [
+                "2005-06-14",
+                "2013-07-25"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "Interntl Security Assistance ( DSCA )",
               "date_range": [
                 "2005-06-16",
                 "2013-05-16"
@@ -948,10 +935,23 @@
               ]
             },
             {
-              "name": "Railroad Unemployment Ins",
+              "value": "Federal Transit Admin",
+              "date_range": [
+                "2005-06-14",
+                "2013-07-31"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "Railroad Unemployment Ins",
               "date_range": [
                 "2005-06-16",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "parent_item": "Other Deposits",
               "type_parents": [
@@ -961,85 +961,7 @@
               ]
             },
             {
-              "name": "Federal Aviation Administration",
-              "date_range": [
-                "2005-06-21",
-                "2013-06-28"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "Thrift Savings Plan Transfer",
-              "date_range": [
-                "2005-06-16",
-                "2013-07-30"
-              ],
-              "parent_item": "Other Deposits",
-              "type_parents": [
-                "Federal Reserve Account",
-                "deposit",
-                0
-              ]
-            },
-            {
-              "name": "USDA: Forest Service",
-              "date_range": [
-                "2005-06-21",
-                "2012-10-23"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "Agriculture Loan Payments ( misc )",
-              "date_range": [
-                "2005-06-24",
-                "2013-06-12"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "Minerals Management Svc Collections",
-              "date_range": [
-                "2005-06-20",
-                "2013-07-01"
-              ],
-              "parent_item": "Other Deposits",
-              "type_parents": [
-                "Federal Reserve Account",
-                "deposit",
-                0
-              ]
-            },
-            {
-              "name": "Interior: Office of Territories",
-              "date_range": [
-                "2005-06-24",
-                "2008-09-25"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "HHS Deposit Fund Transfers to States",
+              "value": "HHS Deposit Fund Transfers to States",
               "date_range": [
                 "2005-06-23",
                 "2013-05-17"
@@ -1052,10 +974,10 @@
               ]
             },
             {
-              "name": "Pension Benefit Guaranty Corp",
+              "value": "Thrift Savings Plan Transfer",
               "date_range": [
-                "2005-06-29",
-                "2013-07-30"
+                "2005-06-16",
+                "2013-07-31"
               ],
               "parent_item": "Other Deposits",
               "type_parents": [
@@ -1065,7 +987,98 @@
               ]
             },
             {
-              "name": "Export Import Bank ( net )",
+              "value": "USDA: Forest Service",
+              "date_range": [
+                "2005-06-21",
+                "2012-10-23"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "Federal Aviation Administration",
+              "date_range": [
+                "2005-06-21",
+                "2013-06-28"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "Minerals Management Svc Collections",
+              "date_range": [
+                "2005-06-20",
+                "2013-07-31"
+              ],
+              "parent_item": "Other Deposits",
+              "type_parents": [
+                "Federal Reserve Account",
+                "deposit",
+                0
+              ]
+            },
+            {
+              "value": "Agriculture Loan Payments ( misc )",
+              "date_range": [
+                "2005-06-24",
+                "2013-06-12"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "Interior: Office of Territories",
+              "date_range": [
+                "2005-06-24",
+                "2008-09-25"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "FSA Tobacco Assessments",
+              "date_range": [
+                "2005-06-30",
+                "2013-06-28"
+              ],
+              "parent_item": "Other Deposits",
+              "type_parents": [
+                "Federal Reserve Account",
+                "deposit",
+                0
+              ]
+            },
+            {
+              "value": "Pension Benefit Guaranty Corp",
+              "date_range": [
+                "2005-06-29",
+                "2013-07-31"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "Export Import Bank ( net )",
               "date_range": [
                 "2005-06-30",
                 "2008-07-15"
@@ -1078,33 +1091,7 @@
               ]
             },
             {
-              "name": "FSA Tobacco Assessments",
-              "date_range": [
-                "2005-06-30",
-                "2013-06-28"
-              ],
-              "parent_item": "Other Deposits",
-              "type_parents": [
-                "Federal Reserve Account",
-                "deposit",
-                0
-              ]
-            },
-            {
-              "name": "Foreign Military Sales Program",
-              "date_range": [
-                "2005-06-30",
-                "2013-04-10"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "Federal Financing Bank ( net )",
+              "value": "Federal Financing Bank ( net )",
               "date_range": [
                 "2005-06-30",
                 "2008-09-30"
@@ -1117,7 +1104,20 @@
               ]
             },
             {
-              "name": "Tennessee Valley Authority ( net )",
+              "value": "Foreign Military Sales Program",
+              "date_range": [
+                "2005-06-30",
+                "2013-04-10"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "Tennessee Valley Authority ( net )",
               "date_range": [
                 "2005-06-30",
                 "2012-11-29"
@@ -1130,7 +1130,7 @@
               ]
             },
             {
-              "name": "Military Retirement ( EFT )",
+              "value": "Civil Service Retirement ( EFT )",
               "date_range": [
                 "2005-07-01",
                 "2013-07-01"
@@ -1143,7 +1143,7 @@
               ]
             },
             {
-              "name": "Civil Service Retirement ( EFT )",
+              "value": "Military Retirement ( EFT )",
               "date_range": [
                 "2005-07-01",
                 "2013-07-01"
@@ -1156,7 +1156,7 @@
               ]
             },
             {
-              "name": "Railroad Retirement ( EFT )",
+              "value": "Railroad Retirement ( EFT )",
               "date_range": [
                 "2005-07-01",
                 "2013-07-01"
@@ -1169,20 +1169,7 @@
               ]
             },
             {
-              "name": "Pmt to Internat l Development Assn",
-              "date_range": [
-                "2005-07-01",
-                "2013-06-04"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "Supple Security Income Benefits ( EFT )",
+              "value": "Supple Security Income Benefits ( EFT )",
               "date_range": [
                 "2005-07-01",
                 "2013-07-02"
@@ -1195,20 +1182,20 @@
               ]
             },
             {
-              "name": "Overseas Private Investment Co ( net )",
+              "value": "Pmt to Internat l Development Assn",
               "date_range": [
-                "2005-07-12",
-                "2013-07-29"
+                "2005-07-01",
+                "2013-06-04"
               ],
-              "parent_item": "Other Deposits",
+              "parent_item": "Other Withdrawals",
               "type_parents": [
                 "Federal Reserve Account",
-                "deposit",
+                "withdrawal",
                 0
               ]
             },
             {
-              "name": "Veterans Benefits ( EFT )",
+              "value": "Veterans Benefits ( EFT )",
               "date_range": [
                 "2005-07-01",
                 "2013-07-24"
@@ -1221,20 +1208,20 @@
               ]
             },
             {
-              "name": "Federal Railroad Admin",
+              "value": "Overseas Private Investment Co ( net )",
               "date_range": [
-                "2005-07-15",
-                "2013-07-25"
+                "2005-07-12",
+                "2013-07-29"
               ],
-              "parent_item": "Other Withdrawals",
+              "parent_item": "Other Deposits",
               "type_parents": [
                 "Federal Reserve Account",
-                "withdrawal",
+                "deposit",
                 0
               ]
             },
             {
-              "name": "U S District Courts ( net )",
+              "value": "U S District Courts ( net )",
               "date_range": [
                 "2005-07-14",
                 "2013-07-08"
@@ -1247,33 +1234,7 @@
               ]
             },
             {
-              "name": "Pmt to Resolution Funding Corp ( Treas )",
-              "date_range": [
-                "2005-07-15",
-                "2013-07-15"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "International Monetary Fund",
-              "date_range": [
-                "2005-07-22",
-                "2013-06-27"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "Lend Lease Receipts",
+              "value": "Lend Lease Receipts",
               "date_range": [
                 "2005-07-15",
                 "2006-12-29"
@@ -1286,7 +1247,33 @@
               ]
             },
             {
-              "name": "Corps of Engineers",
+              "value": "Pmt to Resolution Funding Corp ( Treas )",
+              "date_range": [
+                "2005-07-15",
+                "2013-07-15"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "International Monetary Fund",
+              "date_range": [
+                "2005-07-22",
+                "2013-07-31"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "Corps of Engineers",
               "date_range": [
                 "2005-07-26",
                 "2013-05-09"
@@ -1299,33 +1286,7 @@
               ]
             },
             {
-              "name": "Comptroller of the Currency Assessment",
-              "date_range": [
-                "2005-08-01",
-                "2013-03-29"
-              ],
-              "parent_item": "Other Deposits",
-              "type_parents": [
-                "Federal Reserve Account",
-                "deposit",
-                0
-              ]
-            },
-            {
-              "name": "Animal Plant Health Inspection svcs",
-              "date_range": [
-                "2005-08-01",
-                "2013-04-30"
-              ],
-              "parent_item": "Other Deposits",
-              "type_parents": [
-                "Federal Reserve Account",
-                "deposit",
-                0
-              ]
-            },
-            {
-              "name": "Ofc of Thrift Supervision ( Assessments )",
+              "value": "Ofc of Thrift Supervision ( Assessments )",
               "date_range": [
                 "2005-07-29",
                 "2011-01-31"
@@ -1338,7 +1299,7 @@
               ]
             },
             {
-              "name": "Minerals Mgmt Svc Pmts to States",
+              "value": "Minerals Mgmt Svc Pmts to States",
               "date_range": [
                 "2005-07-29",
                 "2009-02-26"
@@ -1351,10 +1312,10 @@
               ]
             },
             {
-              "name": "Federal Crop Ins Corp",
+              "value": "Federal Crop Ins Corp",
               "date_range": [
                 "2005-07-28",
-                "2013-07-26"
+                "2013-07-31"
               ],
               "parent_item": "Other Withdrawals",
               "type_parents": [
@@ -1364,36 +1325,10 @@
               ]
             },
             {
-              "name": "Bank Insurance Fund ( net )",
+              "value": "Animal Plant Health Inspection svcs",
               "date_range": [
-                "2005-08-09",
-                "2005-08-30"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "Small Business Administration",
-              "date_range": [
-                "2005-08-08",
-                "2013-07-30"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "Interior: Bureau of Land Management",
-              "date_range": [
-                "2005-08-04",
-                "2012-07-06"
+                "2005-08-01",
+                "2013-07-31"
               ],
               "parent_item": "Other Deposits",
               "type_parents": [
@@ -1403,10 +1338,23 @@
               ]
             },
             {
-              "name": "Centers for Disease Control",
+              "value": "Comptroller of the Currency Assessment",
               "date_range": [
-                "2005-08-16",
-                "2013-07-30"
+                "2005-08-01",
+                "2013-03-29"
+              ],
+              "parent_item": "Other Deposits",
+              "type_parents": [
+                "Federal Reserve Account",
+                "deposit",
+                0
+              ]
+            },
+            {
+              "value": "Federal Railroad Admin",
+              "date_range": [
+                "2005-07-15",
+                "2013-07-25"
               ],
               "parent_item": "Other Withdrawals",
               "type_parents": [
@@ -1416,7 +1364,7 @@
               ]
             },
             {
-              "name": "Treasury Dept: Claims Payments",
+              "value": "Treasury Dept: Claims Payments",
               "date_range": [
                 "2005-08-11",
                 "2013-05-16"
@@ -1429,10 +1377,23 @@
               ]
             },
             {
-              "name": "Natl Railroad Retirement Inv Trust",
+              "value": "Bank Insurance Fund ( net )",
               "date_range": [
-                "2005-09-01",
-                "2013-07-01"
+                "2005-08-09",
+                "2005-08-30"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "Interior: Bureau of Land Management",
+              "date_range": [
+                "2005-08-04",
+                "2012-07-06"
               ],
               "parent_item": "Other Deposits",
               "type_parents": [
@@ -1442,33 +1403,33 @@
               ]
             },
             {
-              "name": "Federal Communications Commission",
+              "value": "Small Business Administration",
               "date_range": [
-                "2005-09-06",
-                "2012-09-13"
+                "2005-08-08",
+                "2013-07-30"
               ],
-              "parent_item": "Other Deposits",
+              "parent_item": "Other Withdrawals",
               "type_parents": [
                 "Federal Reserve Account",
-                "deposit",
+                "withdrawal",
                 0
               ]
             },
             {
-              "name": "Small Business Admin Loan Sales",
+              "value": "Centers for Disease Control",
               "date_range": [
-                "2005-08-23",
-                "2013-01-16"
+                "2005-08-16",
+                "2013-07-30"
               ],
-              "parent_item": "Other Deposits",
+              "parent_item": "Other Withdrawals",
               "type_parents": [
                 "Federal Reserve Account",
-                "deposit",
+                "withdrawal",
                 0
               ]
             },
             {
-              "name": "Securities and Exchange Commission",
+              "value": "Securities and Exchange Commission",
               "date_range": [
                 "2005-08-19",
                 "2013-06-10"
@@ -1481,7 +1442,20 @@
               ]
             },
             {
-              "name": "Pmt to Int l Bk for Reconstruction",
+              "value": "Small Business Admin Loan Sales",
+              "date_range": [
+                "2005-08-23",
+                "2013-01-16"
+              ],
+              "parent_item": "Other Deposits",
+              "type_parents": [
+                "Federal Reserve Account",
+                "deposit",
+                0
+              ]
+            },
+            {
+              "value": "Pmt to Int l Bk for Reconstruction",
               "date_range": [
                 "2005-09-19",
                 "2013-06-18"
@@ -1494,7 +1468,7 @@
               ]
             },
             {
-              "name": "Minerals Management Service",
+              "value": "Minerals Management Service",
               "date_range": [
                 "2005-09-29",
                 "2013-07-30"
@@ -1507,20 +1481,33 @@
               ]
             },
             {
-              "name": "HHS: Indian Health Service",
+              "value": "Federal Communications Commission",
               "date_range": [
-                "2005-10-04",
-                "2013-07-15"
+                "2005-09-06",
+                "2012-09-13"
               ],
-              "parent_item": "Other Withdrawals",
+              "parent_item": "Other Deposits",
               "type_parents": [
                 "Federal Reserve Account",
-                "withdrawal",
+                "deposit",
                 0
               ]
             },
             {
-              "name": "SEC: Stock Exchange Fees",
+              "value": "Natl Railroad Retirement Inv Trust",
+              "date_range": [
+                "2005-09-01",
+                "2013-07-01"
+              ],
+              "parent_item": "Other Deposits",
+              "type_parents": [
+                "Federal Reserve Account",
+                "deposit",
+                0
+              ]
+            },
+            {
+              "value": "SEC: Stock Exchange Fees",
               "date_range": [
                 "2005-09-29",
                 "2013-03-15"
@@ -1533,33 +1520,7 @@
               ]
             },
             {
-              "name": "Inter American Development Bank",
-              "date_range": [
-                "2005-10-03",
-                "2013-05-07"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "Pmt to Corp for Pub Broadcasting",
-              "date_range": [
-                "2005-10-03",
-                "2012-10-01"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "Asset Sale: U S Enrichment Corp",
+              "value": "Asset Sale: U S Enrichment Corp",
               "date_range": [
                 "2005-10-03",
                 "2007-08-15"
@@ -1572,23 +1533,10 @@
               ]
             },
             {
-              "name": "Gas and Oil Lease Sales Proceeds",
+              "value": "Inter American Development Bank",
               "date_range": [
-                "2005-11-29",
-                "2013-07-25"
-              ],
-              "parent_item": "Other Deposits",
-              "type_parents": [
-                "Federal Reserve Account",
-                "deposit",
-                0
-              ]
-            },
-            {
-              "name": "Interior: Office of Surface Mining",
-              "date_range": [
-                "2005-11-23",
-                "2013-01-11"
+                "2005-10-03",
+                "2013-05-07"
               ],
               "parent_item": "Other Withdrawals",
               "type_parents": [
@@ -1598,7 +1546,33 @@
               ]
             },
             {
-              "name": "Library of Congress",
+              "value": "Pmt to Corp for Pub Broadcasting",
+              "date_range": [
+                "2005-10-03",
+                "2012-10-01"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "HHS: Indian Health Service",
+              "date_range": [
+                "2005-10-04",
+                "2013-07-31"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "Library of Congress",
               "date_range": [
                 "2005-10-07",
                 "2013-04-25"
@@ -1611,7 +1585,20 @@
               ]
             },
             {
-              "name": "National Credit Union Administration",
+              "value": "Fed Crop Ins Corp Fund Premiums",
+              "date_range": [
+                "2005-10-31",
+                "2013-07-31"
+              ],
+              "parent_item": "Other Deposits",
+              "type_parents": [
+                "Federal Reserve Account",
+                "deposit",
+                0
+              ]
+            },
+            {
+              "value": "National Credit Union Administration",
               "date_range": [
                 "2005-10-18",
                 "2013-04-15"
@@ -1624,46 +1611,7 @@
               ]
             },
             {
-              "name": "Fed Crop Ins Corp Fund Premiums",
-              "date_range": [
-                "2005-10-31",
-                "2013-05-31"
-              ],
-              "parent_item": "Other Deposits",
-              "type_parents": [
-                "Federal Reserve Account",
-                "deposit",
-                0
-              ]
-            },
-            {
-              "name": "District of Columbia",
-              "date_range": [
-                "2005-12-29",
-                "2012-02-16"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "Environmental Protection Agency",
-              "date_range": [
-                "2006-01-31",
-                "2013-05-23"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "FSLIC Resolution Fund ( net )",
+              "value": "FSLIC Resolution Fund ( net )",
               "date_range": [
                 "2005-12-09",
                 "2012-10-19"
@@ -1676,10 +1624,23 @@
               ]
             },
             {
-              "name": "FHA Debentures",
+              "value": "Gas and Oil Lease Sales Proceeds",
               "date_range": [
-                "2006-01-03",
-                "2006-01-03"
+                "2005-11-29",
+                "2013-07-25"
+              ],
+              "parent_item": "Other Deposits",
+              "type_parents": [
+                "Federal Reserve Account",
+                "deposit",
+                0
+              ]
+            },
+            {
+              "value": "Interior: Office of Surface Mining",
+              "date_range": [
+                "2005-11-23",
+                "2013-01-11"
               ],
               "parent_item": "Other Withdrawals",
               "type_parents": [
@@ -1689,10 +1650,10 @@
               ]
             },
             {
-              "name": "Interior",
+              "value": "District of Columbia",
               "date_range": [
-                "2006-06-16",
-                "2013-07-26"
+                "2005-12-29",
+                "2012-02-16"
               ],
               "parent_item": "Other Withdrawals",
               "type_parents": [
@@ -1702,7 +1663,20 @@
               ]
             },
             {
-              "name": "Defense Energy Supply Center",
+              "value": "Environmental Protection Agency",
+              "date_range": [
+                "2006-01-31",
+                "2013-05-23"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "Defense Energy Supply Center",
               "date_range": [
                 "2006-02-02",
                 "2006-02-22"
@@ -1715,10 +1689,10 @@
               ]
             },
             {
-              "name": "Maritime Administration",
+              "value": "FHA Debentures",
               "date_range": [
-                "2006-04-27",
-                "2013-05-23"
+                "2006-01-03",
+                "2006-01-03"
               ],
               "parent_item": "Other Withdrawals",
               "type_parents": [
@@ -1728,20 +1702,7 @@
               ]
             },
             {
-              "name": "African Development Fund",
-              "date_range": [
-                "2006-08-23",
-                "2013-06-04"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "Federal Employees Insurance Receipt",
+              "value": "Federal Employees Insurance Receipt",
               "date_range": [
                 "2006-08-30",
                 "2013-07-22"
@@ -1754,7 +1715,46 @@
               ]
             },
             {
-              "name": "Prepayment of Treasury Securities ( net )",
+              "value": "African Development Fund",
+              "date_range": [
+                "2006-08-23",
+                "2013-06-04"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "Interior",
+              "date_range": [
+                "2006-06-16",
+                "2013-07-26"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "Maritime Administration",
+              "date_range": [
+                "2006-04-27",
+                "2013-05-23"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "Prepayment of Treasury Securities ( net )",
               "date_range": [
                 "2006-08-31",
                 "2011-10-14"
@@ -1767,46 +1767,7 @@
               ]
             },
             {
-              "name": "Puerto Rico Refund of IRS Collections",
-              "date_range": [
-                "2007-01-10",
-                "2013-01-08"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "Customs and Borders Protection ( DHS )",
-              "date_range": [
-                "2006-11-14",
-                "2013-04-01"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "Pmt to Resolution Funding Corp ( RTC )",
-              "date_range": [
-                "2007-10-10",
-                "2007-10-10"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "U S Enrichment Corp",
+              "value": "U S Enrichment Corp",
               "date_range": [
                 "2007-07-16",
                 "2007-07-16"
@@ -1819,20 +1780,7 @@
               ]
             },
             {
-              "name": "Deposit Insurance Fund ( net )",
-              "date_range": [
-                "2007-01-17",
-                "2013-07-25"
-              ],
-              "parent_item": "Other Deposits",
-              "type_parents": [
-                "Federal Reserve Account",
-                "deposit",
-                0
-              ]
-            },
-            {
-              "name": "HUD: Hurricane Relief",
+              "value": "HUD: Hurricane Relief",
               "date_range": [
                 "2007-04-02",
                 "2008-11-03"
@@ -1845,10 +1793,10 @@
               ]
             },
             {
-              "name": "Commodity Futures Trading Commission",
+              "value": "Deposit Insurance Fund ( net )",
               "date_range": [
-                "2007-11-23",
-                "2013-02-11"
+                "2007-01-17",
+                "2013-07-25"
               ],
               "parent_item": "Other Deposits",
               "type_parents": [
@@ -1858,10 +1806,10 @@
               ]
             },
             {
-              "name": "Commerce Programs",
+              "value": "Customs and Borders Protection ( DHS )",
               "date_range": [
-                "2008-03-24",
-                "2012-12-06"
+                "2006-11-14",
+                "2013-04-01"
               ],
               "parent_item": "Other Withdrawals",
               "type_parents": [
@@ -1871,33 +1819,20 @@
               ]
             },
             {
-              "name": "Veterans Assets Sales",
+              "value": "Puerto Rico Refund of IRS Collections",
               "date_range": [
-                "2008-04-24",
-                "2011-10-20"
+                "2007-01-10",
+                "2013-01-08"
               ],
-              "parent_item": "Other Deposits",
+              "parent_item": "Other Withdrawals",
               "type_parents": [
                 "Federal Reserve Account",
-                "deposit",
+                "withdrawal",
                 0
               ]
             },
             {
-              "name": "Interior: Bureau of Reclamation",
-              "date_range": [
-                "2008-04-04",
-                "2010-11-26"
-              ],
-              "parent_item": "Other Deposits",
-              "type_parents": [
-                "Federal Reserve Account",
-                "deposit",
-                0
-              ]
-            },
-            {
-              "name": "FSLIC Resolution Funds ( RTC net )",
+              "value": "FSLIC Resolution Funds ( RTC net )",
               "date_range": [
                 "2008-01-10",
                 "2008-01-10"
@@ -1910,10 +1845,36 @@
               ]
             },
             {
-              "name": "Medicare Premiums",
+              "value": "Commerce Programs",
               "date_range": [
-                "2008-02-21",
-                "2013-07-25"
+                "2008-03-24",
+                "2012-12-06"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "Pmt to Resolution Funding Corp ( RTC )",
+              "date_range": [
+                "2007-10-10",
+                "2007-10-10"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "Commodity Futures Trading Commission",
+              "date_range": [
+                "2007-11-23",
+                "2013-02-11"
               ],
               "parent_item": "Other Deposits",
               "type_parents": [
@@ -1923,33 +1884,20 @@
               ]
             },
             {
-              "name": "Presidential Election Campaign Fund",
+              "value": "Medicare Premiums",
               "date_range": [
-                "2008-09-05",
-                "2008-09-05"
+                "2008-02-21",
+                "2013-07-31"
               ],
-              "parent_item": "Other Withdrawals",
+              "parent_item": "Other Deposits",
               "type_parents": [
                 "Federal Reserve Account",
-                "withdrawal",
+                "deposit",
                 0
               ]
             },
             {
-              "name": "Agriculture",
-              "date_range": [
-                "2008-10-03",
-                "2013-07-26"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "Federal Trade Commission",
+              "value": "Federal Trade Commission",
               "date_range": [
                 "2008-05-08",
                 "2010-06-18"
@@ -1962,20 +1910,7 @@
               ]
             },
             {
-              "name": "Export Import Bank",
-              "date_range": [
-                "2008-10-15",
-                "2013-07-30"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "Prem ESF Money Mkt Guar Facility",
+              "value": "Prem ESF Money Mkt Guar Facility",
               "date_range": [
                 "2008-09-29",
                 "2009-11-23"
@@ -1988,23 +1923,10 @@
               ]
             },
             {
-              "name": "Federal Financing Bank",
+              "value": "Veterans Assets Sales",
               "date_range": [
-                "2008-10-01",
-                "2013-07-30"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "TARP",
-              "date_range": [
-                "2008-11-21",
-                "2013-07-30"
+                "2008-04-24",
+                "2011-10-20"
               ],
               "parent_item": "Other Deposits",
               "type_parents": [
@@ -2014,7 +1936,33 @@
               ]
             },
             {
-              "name": "Capital Purchase Program ( TARP )",
+              "value": "Interior: Bureau of Reclamation",
+              "date_range": [
+                "2008-04-04",
+                "2010-11-26"
+              ],
+              "parent_item": "Other Deposits",
+              "type_parents": [
+                "Federal Reserve Account",
+                "deposit",
+                0
+              ]
+            },
+            {
+              "value": "Presidential Election Campaign Fund",
+              "date_range": [
+                "2008-09-05",
+                "2008-09-05"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "Capital Purchase Program ( TARP )",
               "date_range": [
                 "2008-10-28",
                 "2008-11-14"
@@ -2027,7 +1975,59 @@
               ]
             },
             {
-              "name": "Federal Finance Bank",
+              "value": "Export Import Bank",
+              "date_range": [
+                "2008-10-15",
+                "2013-07-30"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "Agriculture",
+              "date_range": [
+                "2008-10-03",
+                "2013-07-26"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "TARP",
+              "date_range": [
+                "2008-11-21",
+                "2013-07-31"
+              ],
+              "parent_item": "Other Deposits",
+              "type_parents": [
+                "Federal Reserve Account",
+                "deposit",
+                0
+              ]
+            },
+            {
+              "value": "Federal Financing Bank",
+              "date_range": [
+                "2008-10-01",
+                "2013-07-30"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "Federal Finance Bank",
               "date_range": [
                 "2008-12-23",
                 "2013-07-01"
@@ -2040,33 +2040,7 @@
               ]
             },
             {
-              "name": "National Highway Traffic Safety Admin",
-              "date_range": [
-                "2009-08-27",
-                "2011-09-30"
-              ],
-              "parent_item": "Other Withdrawals",
-              "type_parents": [
-                "Federal Reserve Account",
-                "withdrawal",
-                0
-              ]
-            },
-            {
-              "name": "GSE Dividends",
-              "date_range": [
-                "2008-12-31",
-                "2013-06-28"
-              ],
-              "parent_item": "Other Deposits",
-              "type_parents": [
-                "Federal Reserve Account",
-                "deposit",
-                0
-              ]
-            },
-            {
-              "name": "GSE Investment",
+              "value": "GSE Investment",
               "date_range": [
                 "2008-11-24",
                 "2012-06-29"
@@ -2079,7 +2053,20 @@
               ]
             },
             {
-              "name": "Treasury Department programs",
+              "value": "GSE Dividends",
+              "date_range": [
+                "2008-12-31",
+                "2013-06-28"
+              ],
+              "parent_item": "Other Deposits",
+              "type_parents": [
+                "Federal Reserve Account",
+                "deposit",
+                0
+              ]
+            },
+            {
+              "value": "Treasury Department programs",
               "date_range": [
                 "2009-09-04",
                 "2013-07-26"
@@ -2092,7 +2079,20 @@
               ]
             },
             {
-              "name": "GSE Obligations HFA Initiative",
+              "value": "National Highway Traffic Safety Admin",
+              "date_range": [
+                "2009-08-27",
+                "2011-09-30"
+              ],
+              "parent_item": "Other Withdrawals",
+              "type_parents": [
+                "Federal Reserve Account",
+                "withdrawal",
+                0
+              ]
+            },
+            {
+              "value": "GSE Obligations HFA Initiative",
               "date_range": [
                 "2009-12-23",
                 "2009-12-30"
@@ -2105,31 +2105,7 @@
               ]
             },
             {
-              "name": "Change in Balance of Uncollected Funds",
-              "date_range": [
-                "2010-10-01",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "Federal Reserve Account",
-                "deposit",
-                0
-              ]
-            },
-            {
-              "name": "GSE MBS Purchase Program Income",
-              "date_range": [
-                "2011-04-13",
-                "2012-09-28"
-              ],
-              "type_parents": [
-                "Federal Reserve Account",
-                "deposit",
-                0
-              ]
-            },
-            {
-              "name": "Farm Credit Insurance Corp",
+              "value": "Farm Credit Insurance Corp",
               "date_range": [
                 "2010-04-19",
                 "2012-05-15"
@@ -2142,7 +2118,31 @@
               ]
             },
             {
-              "name": "Asian Development Bank Payment",
+              "value": "Change in Balance of Uncollected Funds",
+              "date_range": [
+                "2010-10-01",
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "Federal Reserve Account",
+                "deposit",
+                0
+              ]
+            },
+            {
+              "value": "GSE MBS Purchase Program Income",
+              "date_range": [
+                "2011-04-13",
+                "2012-09-28"
+              ],
+              "type_parents": [
+                "Federal Reserve Account",
+                "deposit",
+                0
+              ]
+            },
+            {
+              "value": "Asian Development Bank Payment",
               "date_range": [
                 "2011-09-19",
                 "2013-05-13"
@@ -2195,7 +2195,7 @@
           "model": "DateModel",
           "date_range": [
             "2005-06-09",
-            "2013-07-30"
+            "2013-07-31"
           ]
         },
         "transaction_type": {
@@ -2204,17 +2204,17 @@
           "model": "TypeParentModel",
           "values": [
             {
-              "name": "redemption",
+              "value": "issue",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ]
             },
             {
-              "name": "issue",
+              "value": "redemption",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ]
             }
           ]
@@ -2234,10 +2234,10 @@
           "model": "ItemModel",
           "values": [
             {
-              "name": "Regular Series",
+              "value": "Cash Management Series",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "parent_item": "Bills",
               "type_parents": [
@@ -2247,10 +2247,22 @@
               ]
             },
             {
-              "name": "Cash Management Series",
+              "value": "Inflation Protected Securities Increment",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "issue",
+                "Marketable",
+                0
+              ]
+            },
+            {
+              "value": "Regular Series",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
               ],
               "parent_item": "Bills",
               "type_parents": [
@@ -2260,10 +2272,10 @@
               ]
             },
             {
-              "name": "Notes",
+              "value": "Bonds",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "issue",
@@ -2272,10 +2284,10 @@
               ]
             },
             {
-              "name": "Inflation Protected Securities Increment",
+              "value": "Notes",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "issue",
@@ -2284,34 +2296,10 @@
               ]
             },
             {
-              "name": "Federal Financing Bank",
+              "value": "Cash Issue Price",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "issue",
-                "Marketable",
-                0
-              ]
-            },
-            {
-              "name": "Bonds",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "issue",
-                "Marketable",
-                0
-              ]
-            },
-            {
-              "name": "Cash Issue Price",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "parent_item": "United States Savings Securities",
               "type_parents": [
@@ -2321,22 +2309,10 @@
               ]
             },
             {
-              "name": "Domestic Series",
+              "value": "Interest Increment",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "issue",
-                "Nonmarketable",
-                0
-              ]
-            },
-            {
-              "name": "Interest Increment",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "parent_item": "United States Savings Securities",
               "type_parents": [
@@ -2346,10 +2322,10 @@
               ]
             },
             {
-              "name": "State and Local Series",
+              "value": "Domestic Series",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "issue",
@@ -2358,10 +2334,10 @@
               ]
             },
             {
-              "name": "Foreign Series",
+              "value": "Foreign Series",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "issue",
@@ -2370,10 +2346,22 @@
               ]
             },
             {
-              "name": "Other",
+              "value": "Federal Financing Bank",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "issue",
+                "Marketable",
+                0
+              ]
+            },
+            {
+              "value": "Government Account Series",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
               ],
               "type_parents": [
                 "issue",
@@ -2382,10 +2370,10 @@
               ]
             },
             {
-              "name": "Government Account Series",
+              "value": "Other",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "issue",
@@ -2394,10 +2382,10 @@
               ]
             },
             {
-              "name": "Total Issues",
+              "value": "Total Issues",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "issue",
@@ -2406,10 +2394,46 @@
               ]
             },
             {
-              "name": "Net Change in Public Debt Outstanding",
+              "value": "Total Redemptions",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "redemption",
+                1,
+                "hasnull"
+              ]
+            },
+            {
+              "value": "State and Local Series",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "issue",
+                "Nonmarketable",
+                0
+              ]
+            },
+            {
+              "value": "Bills",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "redemption",
+                "Marketable",
+                0
+              ]
+            },
+            {
+              "value": "Net Change in Public Debt Outstanding",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
               ],
               "type_parents": [
                 "redemption",
@@ -2418,34 +2442,10 @@
               ]
             },
             {
-              "name": "Bills",
+              "value": "United States Savings Securities",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "redemption",
-                "Marketable",
-                0
-              ]
-            },
-            {
-              "name": "Total Redemptions",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "redemption",
-                1,
-                "hasnull"
-              ]
-            },
-            {
-              "name": "United States Savings Securities",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "redemption",
@@ -2454,10 +2454,10 @@
               ]
             },
             {
-              "name": "Hope Bonds",
+              "value": "Hope Bonds",
               "date_range": [
                 "2008-09-03",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "issue",
@@ -2506,7 +2506,7 @@
           "model": "DateModel",
           "date_range": [
             "2005-06-09",
-            "2013-07-30"
+            "2013-07-31"
           ]
         },
         "transaction_type": {
@@ -2515,17 +2515,17 @@
           "model": "TypeParentModel",
           "values": [
             {
-              "name": "Public Debt Cash Issues",
+              "value": "Public Debt Cash Issues",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ]
             },
             {
-              "name": "Public Debt Cash Redemptions",
+              "value": "Public Debt Cash Redemptions",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ]
             }
           ]
@@ -2545,10 +2545,10 @@
           "model": "ItemModel",
           "values": [
             {
-              "name": "Public Debt Issues ( Table III A )",
+              "value": "Public Debt Issues ( Table III A )",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Public Debt Cash Issues",
@@ -2556,22 +2556,10 @@
               ]
             },
             {
-              "name": "Bills",
+              "value": "Premium on New Issues",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
-              ],
-              "parent_item": "Discount on New Issues",
-              "type_parents": [
-                "Public Debt Cash Issues",
-                0
-              ]
-            },
-            {
-              "name": "Premium on New Issues",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Public Debt Cash Issues",
@@ -2579,10 +2567,10 @@
               ]
             },
             {
-              "name": "Bonds and Notes",
+              "value": "Bonds and Notes",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "parent_item": "Discount on New Issues",
               "type_parents": [
@@ -2591,10 +2579,10 @@
               ]
             },
             {
-              "name": "Federal Financing Bank",
+              "value": "Government Account Transactions",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Public Debt Cash Issues",
@@ -2602,10 +2590,10 @@
               ]
             },
             {
-              "name": "Government Account Transactions",
+              "value": "Federal Financing Bank",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Public Debt Cash Issues",
@@ -2613,10 +2601,44 @@
               ]
             },
             {
-              "name": "Total Public Debt Cash Issues Deposited in Federal Reserve Account",
+              "value": "Interest Increment on United States Savings Securities",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "Public Debt Cash Issues",
+                0
+              ]
+            },
+            {
+              "value": "Bills",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
+              ],
+              "parent_item": "Discount on New Issues",
+              "type_parents": [
+                "Public Debt Cash Issues",
+                0
+              ]
+            },
+            {
+              "value": "Inflation Protected Securities Increment",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "Public Debt Cash Issues",
+                0
+              ]
+            },
+            {
+              "value": "Total Public Debt Cash Issues Deposited in Federal Reserve Account",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
               ],
               "type_parents": [
                 "Public Debt Cash Issues",
@@ -2624,21 +2646,10 @@
               ]
             },
             {
-              "name": "Inflation Protected Securities Increment",
+              "value": "Public Debt Redemptions ( Table III A )",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "Public Debt Cash Issues",
-                0
-              ]
-            },
-            {
-              "name": "Premium on Debt Buyback Operation",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Public Debt Cash Redemptions",
@@ -2646,21 +2657,10 @@
               ]
             },
             {
-              "name": "Interest Increment on United States Savings Securities",
+              "value": "Discount on Debt Buyback Operation",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "Public Debt Cash Issues",
-                0
-              ]
-            },
-            {
-              "name": "Public Debt Redemptions ( Table III A )",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Public Debt Cash Redemptions",
@@ -2668,36 +2668,36 @@
               ]
             },
             {
-              "name": "Hope Bonds",
+              "value": "Total Public Debt Cash Redemptions Withdrawn from Federal Reserve Acct",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "Public Debt Cash Redemptions",
+                1
+              ]
+            },
+            {
+              "value": "Premium on Debt Buyback Operation",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "Public Debt Cash Redemptions",
+                0
+              ]
+            },
+            {
+              "value": "Hope Bonds",
               "date_range": [
                 "2008-09-03",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "Public Debt Cash Issues",
                 0
-              ]
-            },
-            {
-              "name": "Discount on Debt Buyback Operation",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "Public Debt Cash Redemptions",
-                0
-              ]
-            },
-            {
-              "name": "Total Public Debt Cash Redemptions Withdrawn from Federal Reserve Acct",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "Public Debt Cash Redemptions",
-                1
               ]
             }
           ]
@@ -2741,7 +2741,7 @@
           "model": "DateModel",
           "date_range": [
             "2005-06-09",
-            "2013-07-30"
+            "2013-07-31"
           ]
         },
         "is_total": {
@@ -2759,10 +2759,30 @@
           "model": "ItemModel",
           "values": [
             {
-              "name": "Unamortized Discount",
+              "value": "Debt Held by the Public",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
+              ],
+              "type_parents": [
+                0
+              ]
+            },
+            {
+              "value": "Intragovernmental Holdings",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
+              ],
+              "type_parents": [
+                0
+              ]
+            },
+            {
+              "value": "Other Debt",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
               ],
               "parent_item": "Debt Not Subject to Limit",
               "type_parents": [
@@ -2770,51 +2790,20 @@
               ]
             },
             {
-              "name": "Other Debt",
+              "value": "Total Public Debt Outstanding",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
-              ],
-              "parent_item": "Debt Not Subject to Limit",
-              "type_parents": [
-                0
-              ]
-            },
-            {
-              "name": "Total Public Debt Outstanding",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 1
               ]
             },
             {
-              "name": "Intragovernmental Holdings",
+              "value": "Federal Financing Bank",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                0
-              ]
-            },
-            {
-              "name": "Debt Held by the Public",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                0
-              ]
-            },
-            {
-              "name": "Federal Financing Bank",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "parent_item": "Debt Not Subject to Limit",
               "type_parents": [
@@ -2822,20 +2811,21 @@
               ]
             },
             {
-              "name": "Total Public Debt Subject to Limit",
+              "value": "Unamortized Discount",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
+              "parent_item": "Debt Not Subject to Limit",
               "type_parents": [
-                1
+                0
               ]
             },
             {
-              "name": "Guaranteed Debt of Government Agencies",
+              "value": "Guaranteed Debt of Government Agencies",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "parent_item": "Other Debt Subject to Limit",
               "type_parents": [
@@ -2843,17 +2833,27 @@
               ]
             },
             {
-              "name": "Statutory Debt Limit",
+              "value": "Total Public Debt Subject to Limit",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
+              ],
+              "type_parents": [
+                1
+              ]
+            },
+            {
+              "value": "Statutory Debt Limit",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
               ],
               "type_parents": [
                 0
               ]
             },
             {
-              "name": "Repurchase Agreements",
+              "value": "Repurchase Agreements",
               "date_range": [
                 "2006-03-27",
                 "2006-09-26"
@@ -2864,10 +2864,10 @@
               ]
             },
             {
-              "name": "Hope Bonds",
+              "value": "Hope Bonds",
               "date_range": [
                 "2008-09-03",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "parent_item": "Debt Not Subject to Limit",
               "type_parents": [
@@ -2924,7 +2924,7 @@
           "model": "DateModel",
           "date_range": [
             "2005-06-09",
-            "2013-07-30"
+            "2013-07-31"
           ]
         },
         "type": {
@@ -2933,17 +2933,17 @@
           "model": "TypeParentModel",
           "values": [
             {
-              "name": "use",
+              "value": "source",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ]
             },
             {
-              "name": "source",
+              "value": "use",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ]
             }
           ]
@@ -2963,10 +2963,10 @@
           "model": "ItemModel",
           "values": [
             {
-              "name": "Withheld Income and Employment Taxes",
+              "value": "Individual Income Taxes",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "source",
@@ -2974,10 +2974,10 @@
               ]
             },
             {
-              "name": "Excise Taxes",
+              "value": "Withheld Income and Employment Taxes",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "source",
@@ -2985,10 +2985,10 @@
               ]
             },
             {
-              "name": "Federal Unemployment Taxes",
+              "value": "Railroad Retirement Taxes",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "source",
@@ -2996,84 +2996,7 @@
               ]
             },
             {
-              "name": "Corporation Income Taxes",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "source",
-                0
-              ]
-            },
-            {
-              "name": "Railroad Retirement Taxes",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "source",
-                0
-              ]
-            },
-            {
-              "name": "Individual Income Taxes",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "source",
-                0
-              ]
-            },
-            {
-              "name": "Federal Reserve Account Depositaries",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "use",
-                0
-              ]
-            },
-            {
-              "name": "Federal Reserve Account Direct",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "use",
-                0
-              ]
-            },
-            {
-              "name": "Total",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "source",
-                1
-              ]
-            },
-            {
-              "name": "Estate and Gift Taxes Misc IRS Rcpts",
-              "date_range": [
-                "2005-06-09",
-                "2013-07-30"
-              ],
-              "type_parents": [
-                "source",
-                0
-              ]
-            },
-            {
-              "name": "Change in Balance of Unclassified Taxes",
+              "value": "Change in Balance of Unclassified Taxes",
               "date_range": [
                 "2005-06-09",
                 "2012-09-28"
@@ -3084,10 +3007,54 @@
               ]
             },
             {
-              "name": "Inter agency Transfers",
+              "value": "Excise Taxes",
               "date_range": [
                 "2005-06-09",
-                "2013-07-30"
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "source",
+                0
+              ]
+            },
+            {
+              "value": "Estate and Gift Taxes Misc IRS Rcpts",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "source",
+                0
+              ]
+            },
+            {
+              "value": "Federal Unemployment Taxes",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "source",
+                0
+              ]
+            },
+            {
+              "value": "Corporation Income Taxes",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "source",
+                0
+              ]
+            },
+            {
+              "value": "Inter agency Transfers",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
               ],
               "type_parents": [
                 "use",
@@ -3095,25 +3062,58 @@
               ]
             },
             {
-              "name": "Federal Reserve Account Total",
+              "value": "Federal Reserve Account Direct",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "use",
+                0
+              ]
+            },
+            {
+              "value": "Federal Reserve Account Depositaries",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "use",
+                0
+              ]
+            },
+            {
+              "value": "Tax and Loan Accounts",
+              "date_range": [
+                "2005-06-09",
+                "2012-09-28"
+              ],
+              "type_parents": [
+                "use",
+                0
+              ]
+            },
+            {
+              "value": "Total",
+              "date_range": [
+                "2005-06-09",
+                "2013-07-31"
+              ],
+              "type_parents": [
+                "source",
+                1
+              ]
+            },
+            {
+              "value": "Federal Reserve Account Total",
               "date_range": [
                 "2012-10-01",
-                "2013-07-30"
+                "2013-07-31"
               ],
               "type_parents": [
                 "use",
                 1
-              ]
-            },
-            {
-              "name": "Tax and Loan Accounts",
-              "date_range": [
-                "2005-06-09",
-                "2012-09-28"
-              ],
-              "type_parents": [
-                "use",
-                0
               ]
             }
           ]
@@ -3166,21 +3166,21 @@
           "model": "TypeParentModel",
           "values": [
             {
-              "name": "Deposits",
+              "value": "Deposits",
               "date_range": [
                 "2005-06-09",
                 "2012-03-30"
               ]
             },
             {
-              "name": "Withdrawals",
+              "value": "Withdrawals",
               "date_range": [
                 "2005-06-09",
                 "2012-03-30"
               ]
             },
             {
-              "name": "(blank)",
+              "value": "(blank)",
               "date_range": [
                 "2005-06-09",
                 "2012-03-30"
@@ -3203,7 +3203,7 @@
           "model": "ItemModel",
           "values": [
             {
-              "name": "Transfers to Depositaries",
+              "value": "Taxes Received ( Table IV )",
               "date_range": [
                 "2005-06-09",
                 "2012-03-30"
@@ -3214,18 +3214,7 @@
               ]
             },
             {
-              "name": "Taxes Received ( Table IV )",
-              "date_range": [
-                "2005-06-09",
-                "2012-03-30"
-              ],
-              "type_parents": [
-                "Deposits",
-                0
-              ]
-            },
-            {
-              "name": "Opening Balance Today",
+              "value": "Opening Balance Today",
               "date_range": [
                 "2005-06-09",
                 "2012-03-30"
@@ -3236,7 +3225,7 @@
               ]
             },
             {
-              "name": "Special Direct Investment",
+              "value": "Term Investment",
               "date_range": [
                 "2005-06-09",
                 "2012-03-30"
@@ -3247,7 +3236,29 @@
               ]
             },
             {
-              "name": "Depositary Initiated",
+              "value": "Special Direct Investment",
+              "date_range": [
+                "2005-06-09",
+                "2012-03-30"
+              ],
+              "type_parents": [
+                "Deposits",
+                0
+              ]
+            },
+            {
+              "value": "Transfers to Depositaries",
+              "date_range": [
+                "2005-06-09",
+                "2012-03-30"
+              ],
+              "type_parents": [
+                "Deposits",
+                0
+              ]
+            },
+            {
+              "value": "Treasury Initiated",
               "date_range": [
                 "2005-06-09",
                 "2012-03-30"
@@ -3258,7 +3269,18 @@
               ]
             },
             {
-              "name": "Closing Balance Today",
+              "value": "Depositary Initiated",
+              "date_range": [
+                "2005-06-09",
+                "2012-03-30"
+              ],
+              "type_parents": [
+                "Withdrawals",
+                0
+              ]
+            },
+            {
+              "value": "Closing Balance Today",
               "date_range": [
                 "2005-06-09",
                 "2012-03-30"
@@ -3269,35 +3291,13 @@
               ]
             },
             {
-              "name": "Repo Investment",
+              "value": "Repo Investment",
               "date_range": [
                 "2006-03-27",
                 "2012-03-30"
               ],
               "type_parents": [
                 "Deposits",
-                0
-              ]
-            },
-            {
-              "name": "Term Investment",
-              "date_range": [
-                "2005-06-09",
-                "2012-03-30"
-              ],
-              "type_parents": [
-                "Deposits",
-                0
-              ]
-            },
-            {
-              "name": "Treasury Initiated",
-              "date_range": [
-                "2005-06-09",
-                "2012-03-30"
-              ],
-              "type_parents": [
-                "Withdrawals",
                 0
               ]
             }
@@ -3351,7 +3351,7 @@
           "model": "DateModel",
           "date_range": [
             "2005-06-09",
-            "2013-07-29"
+            "2013-07-30"
           ]
         },
         "refund_method": {
@@ -3360,24 +3360,24 @@
           "model": "TypeParentModel",
           "values": [
             {
-              "name": "CHECKS",
+              "value": "CHECKS",
               "date_range": [
                 "2012-10-01",
-                "2013-07-29"
+                "2013-07-30"
               ]
             },
             {
-              "name": "EFT",
-              "date_range": [
-                "2012-10-01",
-                "2013-07-29"
-              ]
-            },
-            {
-              "name": "(blank)",
+              "value": "(blank)",
               "date_range": [
                 "2005-06-09",
                 "2012-09-28"
+              ]
+            },
+            {
+              "value": "EFT",
+              "date_range": [
+                "2012-10-01",
+                "2013-07-30"
               ]
             }
           ]
@@ -3388,20 +3388,20 @@
           "model": "ItemModel",
           "values": [
             {
-              "name": "Business",
+              "value": "Business",
               "date_range": [
                 "2005-06-09",
-                "2013-07-29"
+                "2013-07-30"
               ],
               "type_parents": [
                 "CHECKS"
               ]
             },
             {
-              "name": "Individual",
+              "value": "Individual",
               "date_range": [
                 "2005-06-09",
-                "2013-07-29"
+                "2013-07-30"
               ],
               "type_parents": [
                 "CHECKS"
