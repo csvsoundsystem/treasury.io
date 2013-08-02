@@ -266,6 +266,7 @@ $(function() {
 
     var models = {
       ColumnModel: null,
+      DateModel: null,
       TypeParentModel: null,
       ItemModel: null,
       IsTotalModel: null,
@@ -463,8 +464,24 @@ $(function() {
 
         
         // Fill that collection with the column values
-
-        if (t2.columns[column_name].model == 'TypeParentModel' || t2.columns[column_name].model == 'ItemModel'){
+        if (t2.columns[column_name].model == 'DateModel'){
+          column_value_collections[column_name] = new column_value_collections[column_name]([
+            new models.DateModel({ 
+              table_name: 't2',
+              column_name: 'date',
+              comparinator: '>',
+              value: t2.columns[column_name].date_range[0],
+              checked: true
+            }),
+            new models.DateModel({ 
+              table_name: 't2',
+              column_name: 'date',
+              comparinator: '<',
+              value: t2.columns[column_name].date_range[1],
+              checked: true
+            })
+          ]);
+        }else if (t2.columns[column_name].model == 'TypeParentModel' || t2.columns[column_name].model == 'ItemModel'){
 
           var column_values = [];
           _.each(t2.columns[column_name].values, function(value){
@@ -538,9 +555,94 @@ $(function() {
 
           return this;
         }
-
-
     });
+
+    var DatefieldView = Backbone.View.extend({
+        tagName: 'li',
+
+        template: _.template($('#OutputNumber-view-templ').html()),
+
+        events:{
+          'keyup': 'updateValue'
+          // 'change': 'updateValue'
+        },
+
+        initialize: function(){
+
+          // Set up event listeners. The change backbone event
+          // is raised when a property changes (like the checked field)
+          var model_data = this.model.toJSON();
+          _.extend(model_data, formatHelpers);
+          this.$el.html( this.template(model_data) );
+          this.$el.addClass('query-checkbox-item').addClass('queryable-item');
+
+          this.$el.find('input').datepicker();
+          // console.log(this.$el.find('input'))
+
+          this.listenTo(this.model, 'change', this.render);
+        },
+
+        render: function(){
+
+          // Update the HTML
+          this.$el.find('input').val( this.model.get('value') );
+
+          if (this.model.get('queryable')){
+            this.$el.show();
+          }else{
+            this.$el.hide();
+          }
+
+          // Returning the object is a good practice
+          // that makes chaining possible
+          return this;
+        },
+
+        updateValue: function(){
+          var value = this.$el.find('input').val();
+          this.model.updateValue(value);
+        }
+    });
+
+    var DatefieldSelectorView = Backbone.View.extend({
+        tagName: 'div',
+
+        template: _.template($('#TextfieldSelector-view-templ').html()),
+
+        events:{
+          'change': 'toggleQueryable'
+        },
+
+        initialize: function(){
+
+          // Set up event listeners. The change backbone event
+          // is raised when a property changes (like the checked field)
+          var model_data = this.model.toJSON();
+          _.extend(model_data, formatHelpers);
+          this.$el.html( this.template(model_data) );
+          this.$el.addClass('query-checkbox-controller');
+
+          this.listenTo(this.model, 'change', this.render);
+        },
+
+        render: function(){
+
+
+          // Create the HTML
+          this.$el.find('input').prop('checked', this.model.get('checked'));
+
+          // Returning the object is a good practice
+          // that makes chaining possible
+          return this;
+        },
+
+        toggleQueryable: function(e){
+
+          // e.preventDefault();
+          this.model.toggleQueryable();
+        }
+    });
+
 
     // This view turns an Value model into HTML. Will create LI elements.
     var CheckboxView = Backbone.View.extend({
@@ -549,12 +651,10 @@ $(function() {
         template: _.template($('#Checkbox-view-templ').html()),
 
         events:{
-          'click .checkbox-input': 'toggleItem'
+          'change': 'toggleItem'
         },
 
         initialize: function(){
-
-          // _.bindAll(this, 'change');
 
           // Set up event listeners. The change backbone event
           // is raised when a property changes (like the checked field)
@@ -563,9 +663,6 @@ $(function() {
           _.extend(model_data, formatHelpers);
           this.$el.html( this.template(model_data) );
           this.$el.addClass('queryable-item');
-
-          this.$el.find('input').addClass('checkbox-input'); // You have to add this class to the input element and then set the click even on that to preserve the proper behavior where the label simulates a click on the input.
-
 
           this.listenTo(this.model, 'change', this.render);
         },
@@ -601,8 +698,6 @@ $(function() {
 
         initialize: function(){
 
-          // _.bindAll(this, 'change');
-
           // Set up event listeners. The change backbone event
           // is raised when a property changes (like the checked field)
           var model_data = this.model.toJSON();
@@ -622,7 +717,7 @@ $(function() {
             this.$el.show();
           }else{
             this.$el.hide();
-          }
+          };
 
           // Returning the object is a good practice
           // that makes chaining possible
@@ -641,7 +736,7 @@ $(function() {
         template: _.template($('#TextfieldSelector-view-templ').html()),
 
         events:{
-          'click .checkbox-input': 'toggleQueryable'
+          'change': 'toggleQueryable'
         },
 
         initialize: function(){
@@ -654,8 +749,6 @@ $(function() {
           _.extend(model_data, formatHelpers);
           this.$el.html( this.template(model_data) );
           this.$el.addClass('query-checkbox-controller');
-
-          this.$el.find('input').addClass('checkbox-input'); // You have to add this class to the input element and then set the click even on that to preserve the proper behavior where the label simulates a click on the input.
 
           this.listenTo(this.model, 'change', this.render);
         },
@@ -718,11 +811,16 @@ $(function() {
                       item_value_view,
                       controller_view;
 
-                  if (model_type == 'TypeParentModel' || model_type == 'ItemModel' || model_type == 'IsTotalModel' ){
+                  if (model_type != 'OutputNumberModel' && model_type != 'DateModel' ){
                     item_value_view = new CheckboxView({ model: item });
-                  }else if (model_type == 'OutputNumberModel'){
-                    item_value_view = new TextfieldView({ model: item });
-                    controller_view = new TextfieldSelectorView({ model: item });
+                  }else{
+                    if (model_type == 'OutputNumberModel'){
+                      item_value_view = new TextfieldView({ model: item });
+                      controller_view = new TextfieldSelectorView({ model: item });
+                    }else{
+                      item_value_view = new DatefieldView({ model: item });
+                      controller_view = new DatefieldSelectorView({ model: item });
+                    }
                     $('#qc-col-ctnr-' + collection_name).find('.qc-col-controls').append(controller_view.render().el);
                   }
 
@@ -837,7 +935,6 @@ $(function() {
         column_obj[collection_name] = []
 
         // We only want to include queryable items
-        console.log(collection_name)
         if (collection_name != 'item'){
           queryable_models = column_value_collections[collection_name].getQueryableAndChecked();
         }else{

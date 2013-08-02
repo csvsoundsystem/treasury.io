@@ -131,6 +131,15 @@
       "label": "t2: Deposits and Withdrawals",
       "name": "t2",
       "columns": {
+        "date": {
+          "name": "date",
+          "type": "TEXT",
+          "model": "DateModel",
+          "date_range": [
+            "2005-06-09",
+            "2013-07-31"
+          ]
+        },
         "account": {
           "name": "account",
           "type": "TEXT",
