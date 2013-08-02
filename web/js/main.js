@@ -736,7 +736,7 @@ $(function() {
               var checked_models = collection.getQueryableAndChecked();
               _.each(checked_models, function(elem){
                 var name_to_add;
-                if (elem.get('value') != '( blank )'){ // TODO handle blanks better
+                if (elem.get('value') != '(blank)'){ // TODO handle blanks better
                   name_to_add = elem.get('value');
                 }else{
                   name_to_add = null;
@@ -747,7 +747,7 @@ $(function() {
           });
         },
 
-        unqueryify
+        // unqueryify
 
         toggleItem: function(e){
           // e.preventDefault();
