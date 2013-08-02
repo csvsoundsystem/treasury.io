@@ -264,6 +264,8 @@ $(function() {
 
   function initQueryBuilderBackbone(t2){
 
+    var active_parents = [];
+
     var models = {
       ColumnModel: null,
       DateModel: null,
@@ -456,6 +458,7 @@ $(function() {
           getQueryableAndChecked: function(){
             return this.where({queryable: true, checked: true});
           },
+
           getQueryableAndUnchecked: function(){
             return this.where({queryable: true, checked: false});
           },
@@ -690,6 +693,71 @@ $(function() {
           // e.preventDefault();
           this.model.toggleQueryable();
         }
+    });    
+
+    var TypeParentCheckboxView = Backbone.View.extend({
+        tagName: 'li',
+
+        template: _.template($('#Checkbox-view-templ').html()),
+
+        events:{
+          'change': 'toggleItem'
+        },
+
+        initialize: function(){
+
+          // Set up event listeners. The change backbone event
+          // is raised when a property changes (like the checked field)
+          // Create the HTML
+          var model_data = this.model.toJSON();
+          _.extend(model_data, formatHelpers);
+          this.$el.html( this.template(model_data) );
+          this.$el.addClass('queryable-item');
+          this.listenTo(this.model, 'change', this.render);
+        },
+
+        render: function(){
+
+          this.$el.find('input').prop('checked', this.model.get('checked'));
+          this.insertCheckedParents();
+
+          console.log(active_parents)
+
+          // Returning the object is a good practice
+          // that makes chaining possible
+          return this;
+        },
+
+        insertCheckedParents: function(){
+          active_parents = []; // Clear everything
+          _.each(column_value_collections, function(collection, column_name, collection_list){
+            var model_type = t2.columns[column_name].model;
+            if (model_type == 'TypeParentModel'){
+              var checked_models = collection.getQueryableAndChecked();
+              _.each(checked_models, function(elem){
+                var name_to_add;
+                if (elem.get('value') != '( blank )'){ // TODO handle blanks better
+                  name_to_add = elem.get('value');
+                }else{
+                  name_to_add = null;
+                };
+                active_parents.push(name_to_add);
+              });
+            }
+          });
+        },
+
+        unqueryify
+
+        toggleItem: function(e){
+          // e.preventDefault();
+          this.model.toggle();
+        },
+
+        toggleQueryable: function(e){
+          // e.preventDefault();
+          this.model.toggleQueryable();
+        }
     });
 
     var TextfieldView = Backbone.View.extend({
@@ -816,8 +884,13 @@ $(function() {
                       item_value_view,
                       controller_view;
 
+                  // TODO Make these into an object that you can access via a naming convention
                   if (model_type != 'OutputNumberModel' && model_type != 'DateModel' ){
-                    item_value_view = new CheckboxView({ model: item });
+                    if (model_type == 'TypeParentModel'){
+                      item_value_view = new TypeParentCheckboxView({ model: item });
+                    }else{
+                      item_value_view = new CheckboxView({ model: item });
+                    }
                   }else{
                     if (model_type == 'OutputNumberModel'){
                       item_value_view = new TextfieldView({ model: item });
@@ -841,11 +914,13 @@ $(function() {
           // BUILD JSON OBJECT FOR SQL STRING
           var filter_json = buildQueryJson(column_value_collections);
           var sql_string = JsonToSql(filter_json);
-          console.log(sql_string);
+          // console.log(sql_string);
 
           return this;
         }
     });
+
+    
 
     new App();
 
