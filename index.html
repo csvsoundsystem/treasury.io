@@ -378,8 +378,8 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
     </script>
 
     <script type="text/template" id="OutputNumber-view-templ">
-      <label for="<%= makeKeyFromName(column_name, table_name) %>-<%= comparinatorToText(comparinator) %>">
-        <%= comparinatorToText(comparinator) %>: <input type="text" value="<%= value %>" id="<%= makeKeyFromName(column_name, table_name) %>-<%= comparinatorToText(comparinator) %>"/>
+      <label class="qc-textfield-option" for="<%= makeKeyFromName(column_name, table_name) %>-<%= comparinatorToText(comparinator) %>">
+        <span class="textbox-label-text"><%= comparinatorToText(comparinator) %>:</span> <input type="text" value="<%= value %>" id="<%= makeKeyFromName(column_name, table_name) %>-<%= comparinatorToText(comparinator) %>"/>
       </label>
     </script>
 

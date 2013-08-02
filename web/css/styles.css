@@ -679,7 +679,24 @@ textarea:focus{
 .ui-widget{
   font-size: .6em !important;
 }
-
+.hasDatepicker{
+  width: 80px;
+} /* TK TODO CHANGE ONCE INPUT FIELDS HAVE MORE DESCRIPTIVE CLASSES */
+.qc-textfield-option img{
+  margin-left: 2px;
+  width: 15px;
+  position: relative;
+  top: 1px;
+  /* TODO ADD HOVER IMAGE TO CHANGE ON HOVER */
+}
+.qc-textfield-option img:hover{
+  cursor: pointer;
+  cursor: hand;
+}
+.textbox-label-text{
+  display: inline-block;
+  width: 25px;
+}
 /* end query builder styles*/
 @media screen and (max-width: 640px) {
   #container-fluid, #container-solid{

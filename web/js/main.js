@@ -579,7 +579,7 @@ $(function() {
           this.$el.find('input').datepicker({
             dateFormat: 'yy-mm-dd',
             showOn: "button",
-            buttonImage: "../images/calendar.gif",
+            buttonImage: "/web/css/thirdparty/images/calendar.png",
             buttonImageOnly: true
           });
           // console.log(this.$el.find('input'))
