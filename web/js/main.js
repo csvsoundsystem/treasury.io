@@ -443,16 +443,18 @@ $(function() {
         column_value_collections[column_name] = Backbone.Collection.extend({
           model: models[t2.columns[column_name].model],
 
-          majorityChecked: function(){
+          getCheckedCount: function(){
             var all_items = this.length,
                 checked_items = this.where({checked: true}).length,
                 compare = checked_items / all_items
 
             // TODO handle when all or none are checked
-            if (compare >= .5 && compare < 1){
-              return true
-            }else{
-              return false
+            if (compare == 1 || compare == 0) {
+              return 'all_none';
+            }else if (compare >= .5 && compare < 1){
+              return 'majority_checked';
+            }else if (compare < .5) {
+              return 'majority_unchecked';
             };
           },
 
@@ -598,7 +600,6 @@ $(function() {
 
         initialize: function(){
 
-          // I don't think I need this, maybe for it to load initially?
           this.listenTo(this.model, 'change', this.render) 
           var model_data = this.model.toJSON();
           _.extend(model_data, formatHelpers);
@@ -619,7 +620,6 @@ $(function() {
 
         events:{
           'keyup': 'updateValue'
-          // 'change': 'updateValue'
         },
 
         initialize: function(){
@@ -637,24 +637,20 @@ $(function() {
             buttonImage: "/web/css/thirdparty/images/calendar.png",
             buttonImageOnly: true
           });
-          // console.log(this.$el.find('input'))
 
           this.listenTo(this.model, 'change', this.render);
         },
 
         render: function(){
 
-          // Update the HTML
           this.$el.find('input').val( this.model.get('value') );
 
           if (this.model.get('queryable')){
             this.$el.show();
           }else{
             this.$el.hide();
-          }
+          };
 
-          // Returning the object is a good practice
-          // that makes chaining possible
           return this;
         },
 
@@ -687,18 +683,12 @@ $(function() {
 
         render: function(){
 
-
-          // Create the HTML
           this.$el.find('input').prop('checked', this.model.get('queryable'));
 
-          // Returning the object is a good practice
-          // that makes chaining possible
           return this;
         },
 
         toggleQueryable: function(e){
-
-          // e.preventDefault();
           this.model.toggleQueryable();
         }
     });
@@ -741,19 +731,14 @@ $(function() {
           this.$el.parent().find('li:visible').filter(':even').css({'background-color': '#c1e4f2'});
           this.$el.parent().find('li:visible').filter(':odd').css({'background-color': '#fff'});          
 
-          // Returning the object is a good practice
-          // that makes chaining possible
-
           return this;
         },
 
         toggleItem: function(e){
-          // e.preventDefault();
           this.model.toggle();
         },
 
         toggleQueryable: function(e){
-          // e.preventDefault();
           this.model.toggleQueryable();
         }
     });    
@@ -785,8 +770,6 @@ $(function() {
           this.setParentLimits();
 
           // console.log(active_parents)
-          // Returning the object is a good practice
-          // that makes chaining possible
           return this;
         },
 
@@ -838,12 +821,10 @@ $(function() {
         },
 
         toggleItem: function(e){
-          // e.preventDefault();
           this.model.toggle();
         },
 
         toggleQueryable: function(e){
-          // e.preventDefault();
           this.model.toggleQueryable();
         }
     });
@@ -859,8 +840,6 @@ $(function() {
 
         initialize: function(){
 
-          // Set up event listeners. The change backbone event
-          // is raised when a property changes (like the checked field)
           var model_data = this.model.toJSON();
           _.extend(model_data, formatHelpers);
           this.$el.html( this.template(model_data) );
@@ -871,7 +850,6 @@ $(function() {
 
         render: function(){
 
-          // Update the HTML
           this.$el.find('input').val( this.model.get('value') );
 
           if (this.model.get('queryable')){
@@ -880,8 +858,6 @@ $(function() {
             this.$el.hide();
           };
 
-          // Returning the object is a good practice
-          // that makes chaining possible
           return this;
         },
 
@@ -902,8 +878,6 @@ $(function() {
 
         initialize: function(){
 
-          // _.bindAll(this, 'change');
-
           // Set up event listeners. The change backbone event
           // is raised when a property changes (like the checked field)
           var model_data = this.model.toJSON();
@@ -915,14 +889,8 @@ $(function() {
         },
 
         render: function(){
-
-
-          // Create the HTML
           this.$el.find('input').prop('checked', this.model.get('checked'));
 
-          // console.log(this.$el.find('input').prop('checked'));
-          // Returning the object is a good practice
-          // that makes chaining possible
           return this;
         },
 
@@ -1021,7 +989,7 @@ $(function() {
         if (_.has(filter, col)) {
           var column_items = [];
           _.each(filter[col], function(column_item){
-            var column_item_string = '"' + col  + '"' + ' ' + column_item.comparinator + ' ' + quoteValIfString(column_item.value);
+            var column_item_string = '"' + col  + '"' + ' ' + ((column_item.value == '(blank)') ? 'IS NULL' : (column_item.comparinator + ' ' + quoteValIfString(column_item.value)) );
             column_items.push(column_item_string);
           });
           column_items_string = column_items.join(' OR ');
@@ -1099,24 +1067,37 @@ $(function() {
         column_obj = {};
         value_obj  = {};
 
-        var cmpr = '=';
+        var cmpr = '=',
+            marjority_status;
+
         column_obj[collection_name] = []
 
         // We only want to include queryable items
         if (collection_name != 'item'){
           queryable_models = column_value_collections[collection_name].getQueryableAndChecked();
+          addModelsToSqlJson(filters, collection_name, column_obj, queryable_models, queryable_models);
         }else{
-          if(column_value_collections[collection_name].majorityChecked()){ // If the majority of them are checked, then it's easier to only do a WHERE clause on the excluded items
+          majority_status = column_value_collections[collection_name].getCheckedCount();
+          if (majority_status == 'majority_checked'){ // If the majority of them are checked, then it's easier to only do a WHERE clause on the excluded items
             cmpr = '!='
             queryable_models = column_value_collections[collection_name].getQueryableAndUnchecked();
-          }else{
+            addModelsToSqlJson(filters, collection_name, column_obj, queryable_models, queryable_models);
+          }else if (majority_status == 'majority_unchecked') {
             queryable_models = column_value_collections[collection_name].getQueryableAndChecked();
+            addModelsToSqlJson(filters, collection_name, column_obj, queryable_models, queryable_models);
+          }else if(majority_status == 'all_none'){
+            // Don't include any of this column's info
+            // So don't addModels to nuthin'
+
           }
         };
-        // TODO put a check in there so that if all of the items are selected or that all of the items are deselected, it doesn't include that column
+      };
+    };
+    return filters;
 
+  };
 
-
+  function addModelsToSqlJson(filters, collection_name, column_obj, queryable_models){
         _.each(queryable_models, function(elem){
           if (collection_name != 'item'){
             cmpr = elem.get('comparinator')
@@ -1131,9 +1112,6 @@ $(function() {
         });
 
         filters.push(column_obj)
-      };
-    };
-    return filters;
 
   };
 
