@@ -136,6 +136,7 @@ $(function() {
       });
 
       $sql_query_textarea.keyup(function(){
+        console.log('change')
         var q_string = $sql_query_textarea.val();
         if (q_string.length > 0 ){
           enableBuilderBtnsAndChartOptions();
@@ -310,6 +311,9 @@ $(function() {
       },
       toggleQueryable: function(){
         this.set('queryable', !this.get('queryable'))
+      },
+      updateValue: function(value){
+        this.set('value', value);
       }
     });
 
@@ -506,7 +510,6 @@ $(function() {
             });
 
             return [models_to_queryableify, models_to_unqueryableify];
-            // console.log(this.where({ checked: x() }))
           },
 
           getQueryableAndChecked: function(){
@@ -638,12 +641,12 @@ $(function() {
             buttonImageOnly: true
           });
 
+          this.$el.find('input').val( this.model.get('value') );
           this.listenTo(this.model, 'change', this.render);
         },
 
         render: function(){
 
-          this.$el.find('input').val( this.model.get('value') );
 
           if (this.model.get('queryable')){
             this.$el.show();
@@ -845,12 +848,12 @@ $(function() {
           this.$el.html( this.template(model_data) );
           this.$el.addClass('query-checkbox-item').addClass('queryable-item');
 
+          this.$el.find('input').val( this.model.get('value') );
           this.listenTo(this.model, 'change', this.render);
         },
 
         render: function(){
 
-          this.$el.find('input').val( this.model.get('value') );
 
           if (this.model.get('queryable')){
             this.$el.show();
@@ -912,56 +915,54 @@ $(function() {
 
         initialize: function(){
 
-            // _.bindAll(this, 'change');
+          var that = this;
 
-            var that = this;
+          // Cache these selectors
 
-            // Cache these selectors
+          /* Do some crazy looping shit */
+          // Listen for the change event on the collection.
+          // This is equivalent to listening on every one of the 
+          // items objects in the collection.
+          for (var collection_name in column_collections){
+            if ( _.has(column_collections, collection_name)){
+              this.listenTo(column_collections[collection_name], 'change', this.render);
+              this.listenTo(column_value_collections[collection_name], 'change', this.render);
 
-            /* Do some crazy looping shit */
-            // Listen for the change event on the collection.
-            // This is equivalent to listening on every one of the 
-            // items objects in the collection.
-            for (var collection_name in column_collections){
-              if ( _.has(column_collections, collection_name)){
-                this.listenTo(column_collections[collection_name], 'change', this.render);
-                this.listenTo(column_value_collections[collection_name], 'change', this.render);
+              // Create views for every one of the items in the column collection
 
-                // Create views for every one of the items in the column collection
+              column_collections[collection_name].each( function(column){
+                var column_view = new ColumnView({model: column});
+                that.$el.append(column_view.render().el)
+              }, that); // "that" is the context in the callback
 
-                column_collections[collection_name].each( function(column){
-                  var column_view = new ColumnView({model: column});
-                  that.$el.append(column_view.render().el)
-                }, that); // "that" is the context in the callback
+              // // Create views for all of the items
+              column_value_collections[collection_name].each(function(item){
+                var model_type = t2.columns[collection_name].model,
+                    item_value_view,
+                    controller_view;
 
-                // // Create views for all of the items
-                column_value_collections[collection_name].each(function(item){
-                  var model_type = t2.columns[collection_name].model,
-                      item_value_view,
-                      controller_view;
-
-                  // TODO Make these into an object that you can access via a naming convention
-                  if (model_type != 'OutputNumberModel' && model_type != 'DateModel' ){
-                    if (model_type == 'TypeParentModel' || model_type == 'IsTotalModel'){
-                      item_value_view = new TypeParentCheckboxView({ model: item });
-                    }else{
-                      item_value_view = new CheckboxView({ model: item });
-                    }
+                // TODO Make these into an object that you can access via a naming convention
+                if (model_type != 'OutputNumberModel' && model_type != 'DateModel' ){
+                  if (model_type == 'TypeParentModel' || model_type == 'IsTotalModel'){
+                    item_value_view = new TypeParentCheckboxView({ model: item });
                   }else{
-                    if (model_type == 'OutputNumberModel'){
-                      item_value_view = new TextfieldView({ model: item });
-                      controller_view = new TextfieldSelectorView({ model: item });
-                    }else{
-                      item_value_view = new DatefieldView({ model: item });
-                      controller_view = new DatefieldSelectorView({ model: item });
-                    }
-                    $('#qc-col-ctnr-' + collection_name).find('.qc-col-controls').append(controller_view.render().el);
+                    item_value_view = new CheckboxView({ model: item });
                   }
+                }else{
+                  if (model_type == 'OutputNumberModel'){
+                    item_value_view = new TextfieldView({ model: item });
+                    controller_view = new TextfieldSelectorView({ model: item });
+                  }else{
+                    item_value_view = new DatefieldView({ model: item });
+                    controller_view = new DatefieldSelectorView({ model: item });
+                  }
+                  $('#qc-col-ctnr-' + collection_name).find('.qc-col-controls').append(controller_view.render().el);
+                }
 
-                  $('#qc-col-ctnr-' + collection_name).find('ul.qc-values-ctnr').append(item_value_view.render().el);
-                }, that); // "that" is the context in the callback
-              };
+                $('#qc-col-ctnr-' + collection_name).find('ul.qc-values-ctnr').append(item_value_view.render().el);
+              }, that); // "that" is the context in the callback
             };
+          };
 
 
         },
@@ -970,7 +971,10 @@ $(function() {
           // BUILD JSON OBJECT FOR SQL STRING
           var filter_json = buildQueryJson(column_value_collections);
           var sql_string = JsonToSql(filter_json);
-          console.log(sql_string);
+
+          $sql_query_textarea.val(sql_string);
+          $sql_query_textarea.autogrow();
+          enableBuilderBtnsAndChartOptions();
 
           return this;
         }
@@ -983,6 +987,19 @@ $(function() {
   };
 
   function JsonToSql(filters){
+    var where_string = buildWhereQuery(filters),
+        select_string = buildSelectQuery(filters),
+        query = select_string + ' ' + where_string;
+
+    return query
+  };
+
+  function buildSelectQuery(filters){
+    var select_string = 'SELECT * FROM t2'
+    return select_string
+  };
+
+  function buildWhereQuery(filters){
     var column_group = [];
     _.each(filters, function(filter) {
       for (var col in filter) {

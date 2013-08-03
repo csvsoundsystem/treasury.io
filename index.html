@@ -91,53 +91,52 @@
                 <option value="t5" >Where did the government invest cash it didn't immediately need? (Table 5)</option>
                 <option value="t6" >How much money did the government refund to businesses and individuals? (Table 6)</option>
               </select>
-              <div id="qb-table-builders">
-                <!-- <div id="items"></div> -->
-              </div>
+              <div id="qb-table-builders"></div>
              <!--  <div id="rqb">&nbsp;</div> -->
-<!--               <div id="query-string-wrapper">
+              <div id="query-string-wrapper">
                 <fieldset>
                   <span>SQL Query, view as:* </span>
                   <span id="query-encoding-options">
                     <input type="radio" name="encoding" value="false" checked> Plain-text 
                     <input type="radio" name="encoding" value="true"> URL-Encoded
-                  </span>
+                 </span>
                   <div id="query-string">
                     <textarea id="sql" class="placeholder-textfield" title="Select from the dropdown menu above or type your own query..."></textarea>
                   </div>
                 </fieldset>
-              </div> -->
-<!--             <div id="builder-btns" class="btn-group">
-              <div id="builder-btns-overlay"></div>
-              <span class="btn disabled piwik_ignore" id="download-browser">Preview query**</span>
-              <a class="btn disabled piwik_ignore" id="download-json" target="_blank" href="#">View JSON</a>
-              <span class="btn disabled piwik_ignore download-as-csv-btn" id="download-csv" data-query-link="">Download CSV</span>
-              <div class="clearfix"></div>
-              <div  id="chart-builder-options" class="disabled">
-                <div class="chart-builder-title">Chart options</div>
-                <div class="chart-builder-option-box">
-                  <p class="chart-builder-option-box-title">Which fields hold the...</p>
-                  <input id="cb-series-col" type="text" class="placeholder-textfield chart-builder-input-text" title="Series names ">
-                  <input id="cb-x-col" type="text" class="placeholder-textfield chart-builder-input-text" title="X-axis data ">
-                  <input id="cb-y-col" type="text" class="placeholder-textfield chart-builder-input-text" title="Y-axis data ">
-                  <span class="clearfix"></span>
-                </div>
-                <div class="chart-builder-option-box">
-                  <p class="chart-builder-option-box-title">The chart's x-axis holds...</p>
-                  <input type="radio" name="chart-type" value="datetime" checked> <span class="radio-btn-text"><span class="radio-btn-fixed-width">Dates</span> (line graph)</span><br/>
-                  <input type="radio" name="chart-type" value="categorical"> <span class="radio-btn-text"><span class="radio-btn-fixed-width">Categories</span> (bar graph)</span>
-                </div>
-                <div class="chart-builder-submit">
-                  <div class="btn disabled">View chart</div>
+              </div>
+              <div id="builder-btns" class="btn-group">
+                <div id="builder-btns-overlay"></div>
+                <span class="btn disabled piwik_ignore" id="download-browser">Preview query**</span>
+                <a class="btn disabled piwik_ignore" id="download-json" target="_blank" href="#">View JSON</a>
+                <span class="btn disabled piwik_ignore download-as-csv-btn" id="download-csv" data-query-link="">Download CSV</span>
+                <div class="clearfix"></div>
+                <div id="chart-builder-options" style="display:none;" class="disabled">
+                  <div class="chart-builder-title">Chart options</div>
+                  <div class="chart-builder-option-box">
+                    <p class="chart-builder-option-box-title">Which fields hold the...</p>
+                    <input id="cb-series-col" type="text" class="placeholder-textfield chart-builder-input-text" title="Series names ">
+                    <input id="cb-x-col" type="text" class="placeholder-textfield chart-builder-input-text" title="X-axis data ">
+                    <input id="cb-y-col" type="text" class="placeholder-textfield chart-builder-input-text" title="Y-axis data ">
+                    <span class="clearfix"></span>
+                  </div>
+                  <div class="chart-builder-option-box">
+                    <p class="chart-builder-option-box-title">The chart's x-axis holds...</p>
+                    <input type="radio" name="chart-type" value="datetime" checked> <span class="radio-btn-text"><span class="radio-btn-fixewidth">Dates</span> (line graph)</span><br/>
+                    <input type="radio" name="chart-type" value="categorical"> <span class="radio-btn-text"><span class="radio-btn-fixed-wid">Categories</span> (bar graph)</span>
+                  </div>
+                  <div class="chart-builder-submit">
+                    <div class="btn disabled">View chart</div>
+                  </div>
                 </div>
               </div>
-            </div> -->
+            </div>
 <!--             <div id="query-asterisk-field">
                 <p>Note: If using "is before" or "is after" for "Date" field, make sure your dates is in YYYY-MM-DD format (<a href="https://en.wikipedia.org/wiki/ISO_8601" target="_blank">ISO-8601</a>/<a href="https://tools.ietf.org/html/rfc3339">RFC3339</a>).</p>
                 <p>* Use these radio buttons as a shortcut when accessing the API programatically or for testing. All queries are URL-encoded when you select "View JSON" or "Download CSV."</p>
                 <p>** This will put <code class="inline-code">LIMIT 10</code> on the end of your query, so best not to add your own <code class="inline-code">LIMIT</code>.</p>
             </div>
- -->        </div>
+ -->        
       </div>
       <div id="chart-container" class="section" style="display: none;">
         <div class="show-hide-chart" data-state="hide">Hide chart</div>
