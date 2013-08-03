@@ -784,7 +784,7 @@ $(function() {
           this.$el.find('input').prop('checked', this.model.get('checked'));
           this.setParentLimits();
 
-          console.log(active_parents)
+          // console.log(active_parents)
           // Returning the object is a good practice
           // that makes chaining possible
           return this;
@@ -1002,7 +1002,7 @@ $(function() {
           // BUILD JSON OBJECT FOR SQL STRING
           var filter_json = buildQueryJson(column_value_collections);
           var sql_string = JsonToSql(filter_json);
-          // console.log(sql_string);
+          console.log(sql_string);
 
           return this;
         }
