@@ -656,7 +656,7 @@ textarea:focus{
   padding: 3px;
 }
 .qc-values-ctnr li:nth-child(odd) {
-  background-color: rgb(193, 228, 242);
+  background-color: #c1e4f2;
 }
 .qc-values-ctnr li:nth-child(even) {
   background-color: white;

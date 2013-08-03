@@ -264,7 +264,7 @@ $(function() {
 
   function initQueryBuilderBackbone(t2){
 
-    var active_parents = [];
+    var active_parents = {};
 
     var models = {
       ColumnModel: null,
@@ -349,7 +349,7 @@ $(function() {
           value: 'item',
           comparinator: '=',
           date_range: ['1970-01-01', '2013-11-05'],
-          type_parents: null,
+          type_parents: {},
           parent_item: null,
           checked: true,
           queryable: true
@@ -448,11 +448,63 @@ $(function() {
                 checked_items = this.where({checked: true}).length,
                 compare = checked_items / all_items
 
-            if (compare > .5 && compare < 1){
+            // TODO handle when all or none are checked
+            if (compare >= .5 && compare < 1){
               return true
             }else{
               return false
             };
+          },
+
+          getLimitedByParents: function(){
+            var that = this;
+            var json = that.toJSON(),
+                names_to_queryableify = [],
+                names_to_unqueryableify = [],
+                models_to_queryableify = [],
+                models_to_unqueryableify = [];
+
+            // Get each model
+            _.each(json, function(model){
+              var type_parents = model.type_parents;
+
+              // For each of its parents, it needs at least one in all of its categories.
+              // So, if it had one in account, two in transaction_type and one in is_total
+              // It would need at least three `true`s for it to be visible
+              // It other words, it needs a yes from each column.
+              var results = []
+              _.each(type_parents, function(required_parents, column_name, list){
+                var column_active_parents = active_parents[column_name];
+                var overlap = _.intersection(column_active_parents, required_parents);
+                if (overlap.length > 0){
+                  results.push(0);
+                }else{
+                  results.push(1);
+                };
+              });
+              var sum_results = _.reduce(results, function(memo, num){ return memo + num; }, 0);
+
+              if (sum_results > 0){
+               // Fail
+               names_to_unqueryableify.push(model.value)
+              }else{
+               // Pass
+               names_to_queryableify.push(model.value)
+              };
+
+            });
+            
+
+            _.each(names_to_queryableify, function(name){
+              models_to_queryableify.push(that.where({ value: name }))
+            });
+
+            _.each(names_to_unqueryableify, function(name){
+              models_to_unqueryableify.push(that.where({ value: name }))
+            });
+
+            return [models_to_queryableify, models_to_unqueryableify];
+            // console.log(this.where({ checked: x() }))
           },
 
           getQueryableAndChecked: function(){
@@ -637,7 +689,7 @@ $(function() {
 
 
           // Create the HTML
-          this.$el.find('input').prop('checked', this.model.get('checked'));
+          this.$el.find('input').prop('checked', this.model.get('queryable'));
 
           // Returning the object is a good practice
           // that makes chaining possible
@@ -678,6 +730,17 @@ $(function() {
         render: function(){
 
           this.$el.find('input').prop('checked', this.model.get('checked'));
+
+          if (this.model.get('queryable')){
+            this.$el.show();
+          }else{
+            this.$el.hide();
+          };
+
+          // Make sure it stays alternating colors
+          this.$el.parent().find('li:visible').filter(':even').css({'background-color': '#c1e4f2'});
+          this.$el.parent().find('li:visible').filter(':odd').css({'background-color': '#fff'});          
+
           // Returning the object is a good practice
           // that makes chaining possible
 
@@ -719,20 +782,28 @@ $(function() {
         render: function(){
 
           this.$el.find('input').prop('checked', this.model.get('checked'));
-          this.insertCheckedParents();
+          this.setParentLimits();
 
           console.log(active_parents)
-
           // Returning the object is a good practice
           // that makes chaining possible
           return this;
         },
 
+        setParentLimits: function(){
+          this.insertCheckedParents();
+          this.setQueryablity();
+        },
+
         insertCheckedParents: function(){
-          active_parents = []; // Clear everything
+          active_parents = {}; // Clear everything
           _.each(column_value_collections, function(collection, column_name, collection_list){
             var model_type = t2.columns[column_name].model;
-            if (model_type == 'TypeParentModel'){
+            if (model_type == 'TypeParentModel' || model_type == 'IsTotalModel'){
+              // Make an empty array for this type_parent, but only if it doesn't already exist
+              if (active_parents[column_name] == undefined){
+                active_parents[column_name] = []
+              };
               var checked_models = collection.getQueryableAndChecked();
               _.each(checked_models, function(elem){
                 var name_to_add;
@@ -741,13 +812,30 @@ $(function() {
                 }else{
                   name_to_add = null;
                 };
-                active_parents.push(name_to_add);
+                active_parents[column_name].push(name_to_add)
               });
             }
           });
         },
 
-        // unqueryify
+        setQueryablity: function(){
+          _.each(column_value_collections, function(collection, column_name, collection_list){
+            var model_type = t2.columns[column_name].model;
+            if (model_type == 'ItemModel'){
+              var models_to_alter = collection.getLimitedByParents(),
+                  models_to_queryableify = models_to_alter[0],
+                  models_to_unqueryableify = models_to_alter[1];
+
+
+              _.each(models_to_queryableify, function(elem){
+                elem[0].set('queryable', true);
+              });
+              _.each(models_to_unqueryableify, function(elem){
+                elem[0].set('queryable', false);
+              });
+            };
+          });
+        },
 
         toggleItem: function(e){
           // e.preventDefault();
@@ -886,7 +974,7 @@ $(function() {
 
                   // TODO Make these into an object that you can access via a naming convention
                   if (model_type != 'OutputNumberModel' && model_type != 'DateModel' ){
-                    if (model_type == 'TypeParentModel'){
+                    if (model_type == 'TypeParentModel' || model_type == 'IsTotalModel'){
                       item_value_view = new TypeParentCheckboxView({ model: item });
                     }else{
                       item_value_view = new CheckboxView({ model: item });
