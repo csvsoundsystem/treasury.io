@@ -972,9 +972,7 @@ $(function() {
           var filter_json = buildQueryJson(column_value_collections);
           var sql_string = JsonToSql(filter_json);
 
-          $sql_query_textarea.val(sql_string);
-          $sql_query_textarea.autogrow();
-          enableBuilderBtnsAndChartOptions();
+          loadUiWithSqlString(sql_string)
 
           return this;
         }
@@ -984,6 +982,17 @@ $(function() {
 
     new App();
 
+  };
+
+  function loadUiWithSqlString(sql_string){
+    if (encoding == 'true'){
+      sql_string = encodeURI(sql_string);
+    };
+
+    $sql_query_textarea.val(sql_string);
+    $sql_query_textarea.autogrow();
+    loadBtnAttrsWithQueryLink(sql_string);
+    enableBuilderBtnsAndChartOptions();
   };
 
   function JsonToSql(filters){
@@ -1009,13 +1018,19 @@ $(function() {
             var column_item_string = '"' + col  + '"' + ' ' + ((column_item.value == '(blank)') ? 'IS NULL' : (column_item.comparinator + ' ' + quoteValIfString(column_item.value)) );
             column_items.push(column_item_string);
           });
-          column_items_string = column_items.join(' OR ');
+
+          // If it's a textfield value then it will have a `<` or a `>`, and those should be a "between" query, so use "AND"
+          if (filter[col][0].comparinator == '>' || filter[col][0].comparinator == '<'){
+            column_items_string = column_items.join(' AND ');
+          }else{
+            column_items_string = column_items.join(' OR ');
+          };
           column_group.push(column_items_string);
         };
       };
 
     });
-    var column_group_string = wrapElsWithParens(column_group).join(' AND ');
+    var column_group_string = wrapElsWithParens(column_group).join('\nAND \n');
     return 'WHERE ' + column_group_string;
 
   };
@@ -1115,33 +1130,33 @@ $(function() {
   };
 
   function addModelsToSqlJson(filters, collection_name, column_obj, queryable_models){
-        _.each(queryable_models, function(elem){
-          if (collection_name != 'item'){
-            cmpr = elem.get('comparinator')
-          }else{
-            cmpr = cmpr
-          }
-          value_obj = {
-            comparinator: cmpr,
-            value: elem.get('value')
-          };
-          column_obj[collection_name].push(value_obj);
-        });
+    _.each(queryable_models, function(elem){
+      if (collection_name != 'item'){
+        cmpr = elem.get('comparinator')
+      }else{
+        cmpr = cmpr
+      }
+      value_obj = {
+        comparinator: cmpr,
+        value: elem.get('value')
+      };
+      column_obj[collection_name].push(value_obj);
+    });
 
-        filters.push(column_obj)
+    filters.push(column_obj)
 
   };
 
   function drawQueryBuilder(table_name, table_cols){
-      var table_info    = {
-        table_name: table_name,
-        table_cols: table_cols
-      };
+    var table_info    = {
+      table_name: table_name,
+      table_cols: table_cols
+    };
 
-      _.extend(table_info, formatHelpers, table_name);
-      var table_builder = queryTableBuilderTemplFactory(table_info);
+    _.extend(table_info, formatHelpers, table_name);
+    var table_builder = queryTableBuilderTemplFactory(table_info);
 
-      $qb_table_builders.append(table_builder);
+    $qb_table_builders.append(table_builder);
 
   };
 
@@ -1204,15 +1219,15 @@ $(function() {
  
     $textfield.focus(function(srcc){
       if ($(this).val() == $(this)[0].title){
-          $(this).removeClass("placeholder-textfield-active");
-          $(this).val("");
+        $(this).removeClass("placeholder-textfield-active");
+        $(this).val("");
       };
     });
  
     $textfield.blur(function(){
       if ($(this).val() == ""){
-          $(this).addClass("placeholder-textfield-active");
-          $(this).val($(this)[0].title);
+        $(this).addClass("placeholder-textfield-active");
+        $(this).val($(this)[0].title);
       }
     });
  
