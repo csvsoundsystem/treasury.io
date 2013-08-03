@@ -998,17 +998,18 @@ $(function() {
   function JsonToSql(filters){
     var where_string = buildWhereQuery(filters),
         select_string = buildSelectQuery(filters),
-        query = select_string + ' ' + where_string;
+        query = select_string + '\n' + where_string;
 
     return query
   };
 
   function buildSelectQuery(filters){
-    var select_string = 'SELECT * FROM t2'
+    var select_string = 'SELECT *\nFROM\nt2'
     return select_string
   };
 
   function buildWhereQuery(filters){
+    // TODO, omit if there are no values
     var column_group = [];
     _.each(filters, function(filter) {
       for (var col in filter) {
@@ -1051,7 +1052,7 @@ $(function() {
     var queryable_models,
         checked_models,
         column_obj = {},
-        filters = []; // The structure of this object will be an array of objects that are arrays of objects. BOOM.
+        filters = []; // The structure of this object will be an array of objects that are arrays of objects.
 
         /*  var filters = [
               {
@@ -1104,19 +1105,20 @@ $(function() {
 
         column_obj[collection_name] = []
 
+        console.log(cmpr)
         // We only want to include queryable items
         if (collection_name != 'item'){
           queryable_models = column_value_collections[collection_name].getQueryableAndChecked();
-          addModelsToSqlJson(filters, collection_name, column_obj, queryable_models, queryable_models);
+          addModelsToSqlJson(filters, collection_name, column_obj, queryable_models, cmpr);
         }else{
           majority_status = column_value_collections[collection_name].getCheckedCount();
           if (majority_status == 'majority_checked'){ // If the majority of them are checked, then it's easier to only do a WHERE clause on the excluded items
             cmpr = '!='
             queryable_models = column_value_collections[collection_name].getQueryableAndUnchecked();
-            addModelsToSqlJson(filters, collection_name, column_obj, queryable_models, queryable_models);
+            addModelsToSqlJson(filters, collection_name, column_obj, queryable_models, cmpr);
           }else if (majority_status == 'majority_unchecked') {
             queryable_models = column_value_collections[collection_name].getQueryableAndChecked();
-            addModelsToSqlJson(filters, collection_name, column_obj, queryable_models, queryable_models);
+            addModelsToSqlJson(filters, collection_name, column_obj, queryable_models, cmpr);
           }else if(majority_status == 'all_none'){
             // Don't include any of this column's info
             // So don't addModels to nuthin'
@@ -1129,17 +1131,17 @@ $(function() {
 
   };
 
-  function addModelsToSqlJson(filters, collection_name, column_obj, queryable_models){
+  function addModelsToSqlJson(filters, collection_name, column_obj, queryable_models, cmpr){
+    console.log('cmpr')
     _.each(queryable_models, function(elem){
-      if (collection_name != 'item'){
-        cmpr = elem.get('comparinator')
+      value_obj['value'] = elem.get('value');
+
+      if (elem.get('comparinator') == '='){
+       value_obj['comparinator'] = cmpr;
       }else{
-        cmpr = cmpr
-      }
-      value_obj = {
-        comparinator: cmpr,
-        value: elem.get('value')
+        value_obj['comparinator'] = elem.get('comparinator');
       };
+
       column_obj[collection_name].push(value_obj);
     });
 
