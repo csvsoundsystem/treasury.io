@@ -1116,9 +1116,9 @@ $(function() {
             cmpr = '!='
             queryable_models = column_value_collections[collection_name].getQueryableAndUnchecked();
           }else if (majority_status == 'majority_unchecked') {
-            add_model = false;
             queryable_models = column_value_collections[collection_name].getQueryableAndChecked();
           }else if(majority_status == 'all_none'){
+            add_model = false;
             // Don't include any of this column's info if all of them are selected or none are selected
             // So don't addModels to nuthin'
 
