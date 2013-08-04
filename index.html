@@ -361,6 +361,9 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
         <div class="qc-col-header">
           <div class="qc-col-name">
             <strong><%= name %></strong> <span><%= normalizeFormatType(type) %></span>
+            <% if ((type == 'TEXT' && name != 'date') || name == 'is_total') { %>
+              <div class="qc-col-control-all"><input type="checkbox" class="qc-select-all" data-collection-name="<%= name %>" checked="true"></div>
+            <% } %>
           </div>
           <div class="qc-col-controls"></div>
         </div>

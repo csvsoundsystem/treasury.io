@@ -628,7 +628,7 @@ textarea:focus{
   border-bottom: 1px dotted #303030;
   overflow: auto;
 }
-.qc-col-control{
+.qc-col-control-all{
   float: right;
   text-align: right;
   padding-right: 1px;

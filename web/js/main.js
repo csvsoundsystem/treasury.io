@@ -430,7 +430,8 @@ $(function() {
 
           getQueryable: function(){
               return this.where({queryable: true});
-          }
+          },
+
         });
 
         // Fill each collection with the information for that column
@@ -601,6 +602,10 @@ $(function() {
 
         template: _.template($('#ColumnView-templ').html()),
 
+        events: {
+          'change .qc-select-all': 'checkUncheckAll'
+        },
+
         initialize: function(){
 
           this.listenTo(this.model, 'change', this.render) 
@@ -613,6 +618,19 @@ $(function() {
           $(this.el).attr('id','qc-col-ctnr-' + this.model.get('name')).addClass('qc-col-ctnr');
 
           return this;
+        },
+
+        checkUncheckAll: function(e){
+          var $checkbox = this.$el.find('.qc-select-all')
+          var collection_name = $checkbox.data('collection-name');
+          var checked_state = $checkbox.prop('checked');
+
+          column_value_collections[collection_name].each(function(elem){
+            elem.set('checked', checked_state);
+          });
+
+
+
         }
     });
 
@@ -728,6 +746,7 @@ $(function() {
             this.$el.show();
           }else{
             this.$el.hide();
+            this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('checked',false)
           };
 
           // Make sure it stays alternating colors
