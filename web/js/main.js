@@ -447,9 +447,9 @@ $(function() {
         column_value_collections[column_name] = Backbone.Collection.extend({
           model: models[t2.columns[column_name].model],
 
-          getCheckedCount: function(){
+          getCheckedCountAndQueryable: function(){
             var all_items = this.length,
-                checked_items = this.where({checked: true}).length,
+                checked_items = this.where({checked: true, queryable: true}).length,
                 compare = checked_items / all_items
 
             // TODO handle when all or none are checked
@@ -1020,13 +1020,15 @@ $(function() {
             column_items.push(column_item_string);
           });
 
-          // If it's a textfield value then it will have a `<` or a `>`, and those should be a "between" query, so use "AND"
-          if (filter[col][0].comparinator == '>' || filter[col][0].comparinator == '<'){
-            column_items_string = column_items.join(' AND ');
-          }else{
-            column_items_string = column_items.join(' OR ');
+          if(filter[col][0]){
+            // If it's a textfield value then it will have a `<` or a `>`, and those should be a "between" query, so use "AND"
+            if (filter[col][0].comparinator == '>' || filter[col][0].comparinator == '<'){
+              column_items_string = column_items.join(' AND ');
+            }else{
+              column_items_string = column_items.join(' OR ');
+            };
+            column_group.push(column_items_string);
           };
-          column_group.push(column_items_string);
         };
       };
 
@@ -1098,54 +1100,50 @@ $(function() {
         // For every column...
         // TODO: ADD `IF COLLECTION (column) IS QUERYABLE`
         column_obj = {};
-        value_obj  = {};
 
         var cmpr = '=',
-            marjority_status;
+            majority_status,
+            add_model = true;
 
-        column_obj[collection_name] = []
+        column_obj[collection_name] = [];
 
-        console.log(cmpr)
         // We only want to include queryable items
         if (collection_name != 'item'){
           queryable_models = column_value_collections[collection_name].getQueryableAndChecked();
-          addModelsToSqlJson(filters, collection_name, column_obj, queryable_models, cmpr);
         }else{
-          majority_status = column_value_collections[collection_name].getCheckedCount();
           if (majority_status == 'majority_checked'){ // If the majority of them are checked, then it's easier to only do a WHERE clause on the excluded items
+            majority_status = column_value_collections[collection_name].getCheckedCountAndQueryable();
             cmpr = '!='
             queryable_models = column_value_collections[collection_name].getQueryableAndUnchecked();
-            addModelsToSqlJson(filters, collection_name, column_obj, queryable_models, cmpr);
           }else if (majority_status == 'majority_unchecked') {
+            add_model = false;
             queryable_models = column_value_collections[collection_name].getQueryableAndChecked();
-            addModelsToSqlJson(filters, collection_name, column_obj, queryable_models, cmpr);
           }else if(majority_status == 'all_none'){
-            // Don't include any of this column's info
+            // Don't include any of this column's info if all of them are selected or none are selected
             // So don't addModels to nuthin'
 
-          }
+          };
+        };
+
+        if (add_model){
+          _.each(queryable_models, function(elem, ind){
+            var value_obj = {};
+            value_obj['value'] = elem.get('value');
+
+            if (elem.get('comparinator') == '='){
+             value_obj['comparinator'] = cmpr;
+            }else{
+              value_obj['comparinator'] = elem.get('comparinator');
+            };
+
+            column_obj[collection_name].push(value_obj);
+          });
+
+          filters.push(column_obj);
         };
       };
     };
     return filters;
-
-  };
-
-  function addModelsToSqlJson(filters, collection_name, column_obj, queryable_models, cmpr){
-    console.log('cmpr')
-    _.each(queryable_models, function(elem){
-      value_obj['value'] = elem.get('value');
-
-      if (elem.get('comparinator') == '='){
-       value_obj['comparinator'] = cmpr;
-      }else{
-        value_obj['comparinator'] = elem.get('comparinator');
-      };
-
-      column_obj[collection_name].push(value_obj);
-    });
-
-    filters.push(column_obj)
 
   };
 
