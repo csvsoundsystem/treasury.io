@@ -463,6 +463,20 @@ $(function() {
             };
           },
 
+          getQueryableCount: function(){
+            var all_items = this.length,
+                queryable_items = this.where({queryable: true}).length,
+                compare = queryable_items / all_items;
+
+            if (compare == 0){
+              return 'none_queryable'
+            }else if (compare == 1){
+              return 'all_queryable'
+            }else{
+              return 'some_querable'
+            };
+          },
+
           getLimitedByParents: function(){
             var that = this;
             var json = that.toJSON(),
@@ -744,10 +758,16 @@ $(function() {
 
           if (this.model.get('queryable')){
             this.$el.show();
+            this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('disabled', false)
           }else{
             this.$el.hide();
-            this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('checked',false)
+            var queryable_count = column_value_collections.item.getQueryableCount();
+            if (queryable_count == 'none_queryable'){
+              this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('disabled', true);
+            };
           };
+
+
 
           // Make sure it stays alternating colors
           this.$el.parent().find('li:visible').filter(':even').css({'background-color': '#c1e4f2'});
