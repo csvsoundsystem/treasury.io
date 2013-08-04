@@ -1111,8 +1111,8 @@ $(function() {
         if (collection_name != 'item'){
           queryable_models = column_value_collections[collection_name].getQueryableAndChecked();
         }else{
+          majority_status = column_value_collections[collection_name].getCheckedCountAndQueryable();
           if (majority_status == 'majority_checked'){ // If the majority of them are checked, then it's easier to only do a WHERE clause on the excluded items
-            majority_status = column_value_collections[collection_name].getCheckedCountAndQueryable();
             cmpr = '!='
             queryable_models = column_value_collections[collection_name].getQueryableAndUnchecked();
           }else if (majority_status == 'majority_unchecked') {
