@@ -615,7 +615,7 @@ textarea:focus{
 }
 .qc-col-ctnr{
   display: inline-block;
-  width: 155px;
+  width: 160px;
   margin: 0 10px 10px 0;
   vertical-align: top;
   background-color: #F9FDFF;
@@ -697,6 +697,34 @@ textarea:focus{
   display: inline-block;
   width: 25px;
 }
+.help-text-ctnr{
+  position:relative;
+}
+.help-text-flag{
+  font-size: 8px;
+  vertical-align: super;
+  padding: 2px 1px 0 1px;
+  /*text-decoration: underline;*/
+  /*border-bottom: 1px dotted #303030;*/
+}
+.help-text-flag:hover{
+  cursor: hand;
+  cursor: pointer;
+  background-color: #000;
+  color: #fff;
+  /*border-bottom: 1px solid #303030;*/
+}
+#qb-help-text-hover{
+  position: absolute;
+  display: none;
+  background-color: #000;
+  color: #fff;
+  padding: 3px 5px 3px 10px;
+  max-width: 100px; /* TODO adjust this once we have all the blurbs, TK */
+  font-family: 'droid sans';
+  font-size: 12px;
+}
+
 /* end query builder styles*/
 @media screen and (max-width: 640px) {
   #container-fluid, #container-solid{

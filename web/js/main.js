@@ -15,7 +15,8 @@ $(function() {
       $chart_container           = $('#chart-container');
       $chart_canvas              = $('#chart-canvas'),
       $builder_table_select      = $('#builder-table-select'),
-      $qb_table_builders         = $('#qb-table-builders');
+      $qb_table_builders         = $('#qb-table-builders'),
+      $help_hover                = $('#qb-help-text-hover');
 
   function bindHandlers(db_schema){
       /* NAV MENU BEHAVIOR */
@@ -736,7 +737,9 @@ $(function() {
         template: _.template($('#Checkbox-view-templ').html()),
 
         events:{
-          'change': 'toggleItem'
+          'change': 'toggleItem',
+          'mouseover .help-text-flag': 'showHelpText',
+          'mouseleave .help-text-flag': 'hideHelpText'
         },
 
         initialize: function(){
@@ -767,8 +770,6 @@ $(function() {
             };
           };
 
-
-
           // Make sure it stays alternating colors
           this.$el.parent().find('li:visible').filter(':even').css({'background-color': '#c1e4f2'});
           this.$el.parent().find('li:visible').filter(':odd').css({'background-color': '#fff'});          
@@ -782,6 +783,25 @@ $(function() {
 
         toggleQueryable: function(e){
           this.model.toggleQueryable();
+        },
+
+        showHelpText: function(e){
+          var $help_text = $(e.target),
+              help_text = $help_text.data('help-text'),
+              offset = $(e.target).offset(),
+              offset_top = offset.top,
+              offset_left = offset.left;
+
+
+          $help_hover.css({
+            top: offset_top,
+            left: offset_left + 6
+          }).html(help_text).show();
+
+        },
+
+        hideHelpText: function(){
+          $help_hover.hide();
         }
     });    
 
@@ -791,7 +811,9 @@ $(function() {
         template: _.template($('#Checkbox-view-templ').html()),
 
         events:{
-          'change': 'toggleItem'
+          'change': 'toggleItem',
+          'mouseover .help-text-flag': 'showHelpText',
+          'mouseleave .help-text-flag': 'hideHelpText'
         },
 
         initialize: function(){
@@ -813,6 +835,10 @@ $(function() {
 
           // console.log(active_parents)
           return this;
+        },
+
+        showHelpText: function(){
+          console.log('here')
         },
 
         setParentLimits: function(){
@@ -868,6 +894,25 @@ $(function() {
 
         toggleQueryable: function(e){
           this.model.toggleQueryable();
+        },
+
+        showHelpText: function(e){
+          var $help_text = $(e.target),
+              help_text = $help_text.data('help-text'),
+              offset = $(e.target).offset(),
+              offset_top = offset.top,
+              offset_left = offset.left;
+
+
+          $help_hover.css({
+            top: offset_top,
+            left: offset_left + 6
+          }).html(help_text).show();
+
+        },
+
+        hideHelpText: function(){
+          $help_hover.hide();
         }
     });
 

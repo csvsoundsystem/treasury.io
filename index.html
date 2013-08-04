@@ -356,6 +356,7 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
       <p>By <a href="http://www.twitter.com/brianabelson" target="_blank">Brian Abelson</a>, <a href="http://www.twitter.com/jbialer" target="_blank">Jake Bialer</a>, <a href="http://www.twitter.com/bjdewilde" target="_blank">Burton DeWilde</a>, <a href="http://www.twitter.com/mhkeller" target="_blank">Michael Keller</a>, <a href="http://www.twitter.com/thomaslevine" target="_blank">Thomas Levine</a> &amp; <a href="http://www.twitter.com/cezary" target="_blank">Cezary Podkul</a>. With an assist from <a href="http://www.twitter.com/ag_dubs" target="_blank">Ashley Williams</a>.</p>
       <p></p>
     </footer>
+    <div id="qb-help-text-hover"></div>
 
     <script type="text/template" id="ColumnView-templ">
         <div class="qc-col-header">
@@ -373,9 +374,9 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
 
     <script type="text/template" id="Checkbox-view-templ">
       <% if (column_name != 'is_total' ) { %>
-        <label for="<%= makeKeyFromName(table_name, value) %>"><input type="checkbox" id="<%= makeKeyFromName(table_name, value) %>" checked/> <%= value %></label>
+        <label for="<%= makeKeyFromName(table_name, value) %>"><input type="checkbox" id="<%= makeKeyFromName(table_name, value) %>" checked/> <%= value %> <span class="help-text-flag" data-help-text="help-text">?</span></label>
       <% } else { %>
-        <label for="<%= makeKeyFromName(column_name, table_name) %>-<%= formatBinaryToText(value) %>"><input type="checkbox" value="<%= value %>" id="<%= makeKeyFromName(column_name, table_name) %>-<%= formatBinaryToText(value) %>" checked/> <%= value %> (<%= formatBinaryToText(value) %>)</label>
+        <label for="<%= makeKeyFromName(column_name, table_name) %>-<%= formatBinaryToText(value) %>"><input type="checkbox" value="<%= value %>" id="<%= makeKeyFromName(column_name, table_name) %>-<%= formatBinaryToText(value) %>" checked/> <%= value %> (<%= formatBinaryToText(value) %>) <span class="help-text-flag" data-help-text="help-text">?</span></label>
       <% } %>
     </script>
 
