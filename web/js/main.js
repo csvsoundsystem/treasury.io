@@ -268,17 +268,39 @@ $(function() {
 
     var active_parents = {};
 
-    var models = {
-      ColumnModel: null,
-      DateModel: null,
-      TypeParentModel: null,
-      ItemModel: null,
-      IsTotalModel: null,
-      OutputNumberModel: null
-    };
+    // var models = {
+    //   ColumnModel: null,
+    //   DateModel: null,
+    //   TypeParentModel: null,
+    //   ItemModel: null,
+    //   IsTotalModel: null,
+    //   OutputNumberModel: null
+    // };
 
     /********** M O D E L ************/
 
+    var element_model = Backbone.Model.extend({
+      defaults: {
+        table_name: 't1',
+        name: 'column',
+        column_type: 'text',
+        queryable: true,
+        checked: true,
+        elements: []
+      },
+
+      toggle: function(){
+        this.set('checked', !this.get('checked'));
+      },
+      toggleQueryable: function(){
+        this.set('queryable', !this.get('queryable'));
+      },
+      updateValue: function(value){
+        this.set('value', value);
+      }
+    });
+
+/*
     models.ColumnModel = Backbone.Model.extend({
       defaults: {
         table_name: 't1',
@@ -412,7 +434,7 @@ $(function() {
 
     });
 
-
+*/
     /********** C O L L E C T I O N S ************/
 
     // Create an object to hold each collection of items (a collection corresponds to a column in the database)
