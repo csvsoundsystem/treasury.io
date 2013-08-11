@@ -268,37 +268,134 @@ $(function() {
 
     var active_parents = {};
 
-    // var models = {
-    //   ColumnModel: null,
-    //   DateModel: null,
-    //   TypeParentModel: null,
-    //   ItemModel: null,
-    //   IsTotalModel: null,
-    //   OutputNumberModel: null
-    // };
 
+    function delegateModelEvents(from, to, eventKey) {
+        from.bind('all', function(eventName) {
+            var args = _.toArray(arguments);
+            if (eventKey) {
+                args[0] = eventKey + ':' + args[0];
+            }
+            to.trigger.apply(to, args);
+        });
+    };
+     
+    function getUpdateOp(model) {
+        return (model instanceof Backbone.Collection) ? 'reset' : 'set';
+    };
+     
+    Backbone.RelationalModel = Backbone.Model.extend({
+        relations: {},
+        set: function(attrs, options) {
+            _.each(this.relations, function(constructor, key) {
+                var relation = this[key];
+     
+                // set up relational model if it's not there yet
+                if ( !relation) {
+                    relation = this[key] = new constructor();
+     
+                    // makes it so relation events are triggered out
+                    // e.g. 'add' on a relation called 'collection' would
+                    // trigger event 'collection:add' on this model
+                    delegateModelEvents(relation, this, key);
+                }
+     
+                // check to see if incoming set will affect relation
+                if (attrs[key]) {
+                    // perform update on relation model
+                    relation[ getUpdateOp(relation) ](attrs[key], options);
+     
+                    // remove from attr hash, prevents duplication of data +
+                    // keeps models out of attributes, which should be only used for
+                    // dumb JSON attributes
+                    delete attrs[key];
+                }
+            }, this);
+     
+            return Backbone.Model.prototype.set.call(this, attrs, options);
+        }
+    });
     /********** M O D E L ************/
 
-    var element_model = Backbone.Model.extend({
+    var ElementModel = Backbone.Model.extend({
       defaults: {
-        table_name: 't1',
-        name: 'column',
-        column_type: 'text',
+        table_name: 't',
+        name: 'c',
+        column_type: 't',
+        comparinator: '=',
         queryable: true,
         checked: true,
-        elements: []
+        value: 0
       },
 
-      toggle: function(){
+      toggleChecked: function(){
         this.set('checked', !this.get('checked'));
       },
+
       toggleQueryable: function(){
         this.set('queryable', !this.get('queryable'));
       },
+
       updateValue: function(value){
         this.set('value', value);
       }
+
     });
+
+    // var ColumnModel = Backbone.Model.extend({
+
+    //   defaults: {
+    //     table_name: 't',
+    //     name: 'c',
+    //     column_type: 't',
+    //     queryable: true
+    //   },
+
+    //   toggleQueryable: function(){
+    //     this.set('queryable', !this.get('queryable'));
+    //   }
+    // });
+
+    var ElementCollection = Backbone.Collection.extend({
+      model: ElementModel
+    });
+
+    var Column = Backbone.RelationalModel.extend({
+        relations: {
+            item_values: ElementCollection
+        }
+    });
+
+    var column_models = {};
+
+    // Instantiate column models
+    _.each(t2.columns, function(column_info, column_name, columns){
+      // To save space, not every item has its parent table and colum information
+      // These are those values to add
+      var parent_object_info = {
+        table_name: 't2',
+        column_name: column_info.name, // This line could be either column_name or column_info.name since the key is repeated, purely to keep it consistent with .type, use column_info.name
+        column_type: column_info.type
+      };
+      // Loop through each item_value and add that info by _.extending()
+      _.each(column_info.item_values, function(item_value){
+        _.extend(item_value, parent_object_info);
+      });
+      column_models[column_name] = new Column(column_info);
+
+    });
+
+    var column_collections = {};
+    // Instantiate column collections
+    // It craetes a collection object and then creates an instance of that collection object with a model
+    _.each(column_models, function(model, model_name, model_list){
+      column_collections[model_name] = Backbone.Collection.extend({
+        model: ElementModel
+      });
+      column_collections[model_name] = new column_collections[model_name](model);
+    });
+
+
+
 
 /*
     models.ColumnModel = Backbone.Model.extend({
@@ -436,200 +533,201 @@ $(function() {
 
 */
     /********** C O L L E C T I O N S ************/
+    // var column_collections = {};
 
-    // Create an object to hold each collection of items (a collection corresponds to a column in the database)
-    var column_collections       = {};
-    var column_value_collections = {};
-    var values;
+    // // Create an object to hold each collection of items (a collection corresponds to a column in the database)
+    // var column_collections       = {};
+    // var column_value_collections = {};
+    // var values;
 
     // Loop through each column name in the table
-    for (var column_name in t2.columns){
-      if ( _.has(t2.columns, column_name)) {
+    // for (var column_name in t2.columns){
+    //   if ( _.has(t2.columns, column_name)) {
 
-        /**** COLUMN_COLLECTIONS ****/
-        // Create a new collection for each column
-        column_collections[column_name] = Backbone.Collection.extend({
-          model: models.ColumnModel,
+    //     /**** COLUMN_COLLECTIONS ****/
+    //     // Create a new collection for each column
+    //     column_collections[column_name] = Backbone.Collection.extend({
+    //       model: models.ColumnModel,
 
-          getQueryable: function(){
-              return this.where({queryable: true});
-          },
+    //       getQueryable: function(){
+    //           return this.where({queryable: true});
+    //       },
 
-        });
+    //     });
 
-        // Fill each collection with the information for that column
-        column_collections[column_name] = new column_collections[column_name]([
-          new models.ColumnModel({ 
-            table_name: 't2',
-            name: t2.columns[column_name].name,
-            type: t2.columns[column_name].type,
-          })
-        ]);
+    //     // Fill each collection with the information for that column
+    //     column_collections[column_name] = new column_collections[column_name]([
+    //       new models.ColumnModel({ 
+    //         table_name: 't2',
+    //         name: t2.columns[column_name].name,
+    //         type: t2.columns[column_name].type,
+    //       })
+    //     ]);
 
-        /**** VALUE_COLLECTIONS ****/
-        // Create a collection for that column's values
-        column_value_collections[column_name] = Backbone.Collection.extend({
-          model: models[t2.columns[column_name].model],
+    //     /**** VALUE_COLLECTIONS ****/
+    //     // Create a collection for that column's values
+    //     column_value_collections[column_name] = Backbone.Collection.extend({
+    //       model: models[t2.columns[column_name].model],
 
-          getCheckedCountAndQueryable: function(){
-            var all_items = this.length,
-                checked_items = this.where({checked: true, queryable: true}).length,
-                compare = checked_items / all_items
+    //       getCheckedCountAndQueryable: function(){
+    //         var all_items = this.length,
+    //             checked_items = this.where({checked: true, queryable: true}).length,
+    //             compare = checked_items / all_items
 
-            // TODO handle when all or none are checked
-            if (compare == 1 || compare == 0) {
-              return 'all_none';
-            }else if (compare >= .5 && compare < 1){
-              return 'majority_checked';
-            }else if (compare < .5) {
-              return 'majority_unchecked';
-            };
-          },
+    //         // TODO handle when all or none are checked
+    //         if (compare == 1 || compare == 0) {
+    //           return 'all_none';
+    //         }else if (compare >= .5 && compare < 1){
+    //           return 'majority_checked';
+    //         }else if (compare < .5) {
+    //           return 'majority_unchecked';
+    //         };
+    //       },
 
-          getQueryableCount: function(){
-            var all_items = this.length,
-                queryable_items = this.where({queryable: true}).length,
-                compare = queryable_items / all_items;
+    //       getQueryableCount: function(){
+    //         var all_items = this.length,
+    //             queryable_items = this.where({queryable: true}).length,
+    //             compare = queryable_items / all_items;
 
-            if (compare == 0){
-              return 'none_queryable'
-            }else if (compare == 1){
-              return 'all_queryable'
-            }else{
-              return 'some_querable'
-            };
-          },
+    //         if (compare == 0){
+    //           return 'none_queryable'
+    //         }else if (compare == 1){
+    //           return 'all_queryable'
+    //         }else{
+    //           return 'some_querable'
+    //         };
+    //       },
 
-          getLimitedByParents: function(){
-            var that = this;
-            var json = that.toJSON(),
-                names_to_queryableify = [],
-                names_to_unqueryableify = [],
-                models_to_queryableify = [],
-                models_to_unqueryableify = [];
+    //       getLimitedByParents: function(){
+    //         var that = this;
+    //         var json = that.toJSON(),
+    //             names_to_queryableify = [],
+    //             names_to_unqueryableify = [],
+    //             models_to_queryableify = [],
+    //             models_to_unqueryableify = [];
 
-            // Get each model
-            _.each(json, function(model){
-              var type_parents = model.type_parents;
+    //         // Get each model
+    //         _.each(json, function(model){
+    //           var type_parents = model.type_parents;
 
-              // For each of its parents, it needs at least one in all of its categories.
-              // So, if it had one in account, two in transaction_type and one in is_total
-              // It would need at least three `true`s for it to be visible
-              // It other words, it needs a yes from each column.
-              var results = []
-              _.each(type_parents, function(required_parents, column_name, list){
-                var column_active_parents = active_parents[column_name];
-                var overlap = _.intersection(column_active_parents, required_parents);
-                if (overlap.length > 0){
-                  results.push(0);
-                }else{
-                  results.push(1);
-                };
-              });
-              var sum_results = _.reduce(results, function(memo, num){ return memo + num; }, 0);
+    //           // For each of its parents, it needs at least one in all of its categories.
+    //           // So, if it had one in account, two in transaction_type and one in is_total
+    //           // It would need at least three `true`s for it to be visible
+    //           // It other words, it needs a yes from each column.
+    //           var results = []
+    //           _.each(type_parents, function(required_parents, column_name, list){
+    //             var column_active_parents = active_parents[column_name];
+    //             var overlap = _.intersection(column_active_parents, required_parents);
+    //             if (overlap.length > 0){
+    //               results.push(0);
+    //             }else{
+    //               results.push(1);
+    //             };
+    //           });
+    //           var sum_results = _.reduce(results, function(memo, num){ return memo + num; }, 0);
 
-              if (sum_results > 0){
-               // Fail
-               names_to_unqueryableify.push(model.value)
-              }else{
-               // Pass
-               names_to_queryableify.push(model.value)
-              };
+    //           if (sum_results > 0){
+    //            // Fail
+    //            names_to_unqueryableify.push(model.value)
+    //           }else{
+    //            // Pass
+    //            names_to_queryableify.push(model.value)
+    //           };
 
-            });
+    //         });
             
 
-            _.each(names_to_queryableify, function(name){
-              models_to_queryableify.push(that.where({ value: name }))
-            });
+    //         _.each(names_to_queryableify, function(name){
+    //           models_to_queryableify.push(that.where({ value: name }))
+    //         });
 
-            _.each(names_to_unqueryableify, function(name){
-              models_to_unqueryableify.push(that.where({ value: name }))
-            });
+    //         _.each(names_to_unqueryableify, function(name){
+    //           models_to_unqueryableify.push(that.where({ value: name }))
+    //         });
 
-            return [models_to_queryableify, models_to_unqueryableify];
-          },
+    //         return [models_to_queryableify, models_to_unqueryableify];
+    //       },
 
-          getQueryableAndChecked: function(){
-            return this.where({queryable: true, checked: true});
-          },
+    //       getQueryableAndChecked: function(){
+    //         return this.where({queryable: true, checked: true});
+    //       },
 
-          getQueryableAndUnchecked: function(){
-            return this.where({queryable: true, checked: false});
-          },
+    //       getQueryableAndUnchecked: function(){
+    //         return this.where({queryable: true, checked: false});
+    //       },
 
-        });
+    //     });
 
         
-        // Fill that collection with the column values
-        if (t2.columns[column_name].model == 'DateModel'){
-          column_value_collections[column_name] = new column_value_collections[column_name]([
-            new models.DateModel({ 
-              table_name: 't2',
-              column_name: 'date',
-              comparinator: '>',
-              value: t2.columns[column_name].date_range[0],
-              checked: true
-            }),
-            new models.DateModel({ 
-              table_name: 't2',
-              column_name: 'date',
-              comparinator: '<',
-              value: t2.columns[column_name].date_range[1],
-              checked: true
-            })
-          ]);
-        }else if (t2.columns[column_name].model == 'TypeParentModel' || t2.columns[column_name].model == 'ItemModel'){
+    //     // Fill that collection with the column values
+    //     if (t2.columns[column_name].model == 'DateModel'){
+    //       column_value_collections[column_name] = new column_value_collections[column_name]([
+    //         new models.DateModel({ 
+    //           table_name: 't2',
+    //           column_name: 'date',
+    //           comparinator: '>',
+    //           value: t2.columns[column_name].date_range[0],
+    //           checked: true
+    //         }),
+    //         new models.DateModel({ 
+    //           table_name: 't2',
+    //           column_name: 'date',
+    //           comparinator: '<',
+    //           value: t2.columns[column_name].date_range[1],
+    //           checked: true
+    //         })
+    //       ]);
+    //     }else if (t2.columns[column_name].model == 'TypeParentModel' || t2.columns[column_name].model == 'ItemModel'){
 
-          var column_values = [];
-          _.each(t2.columns[column_name].values, function(value){
-             _.extend(value, {table_name: 't2', column_name: column_name, type: t2.columns[column_name].type });
-             var column_value = new models[t2.columns[column_name].model](value);
-             column_values.push(column_value);
+    //       var column_values = [];
+    //       _.each(t2.columns[column_name].values, function(value){
+    //          _.extend(value, {table_name: 't2', column_name: column_name, type: t2.columns[column_name].type });
+    //          var column_value = new models[t2.columns[column_name].model](value);
+    //          column_values.push(column_value);
 
-          });
+    //       });
 
-          column_value_collections[column_name] = new column_value_collections[column_name](column_values);
+    //       column_value_collections[column_name] = new column_value_collections[column_name](column_values);
 
-        }else if (t2.columns[column_name].model == 'IsTotalModel'){
-          // Fill each collection with the information for that column, in this case two checkboxes, both selected, one 0 and one 1.
-          column_value_collections[column_name] = new column_value_collections[column_name]([
-            new models.IsTotalModel({ 
-              table_name: 't2',
-              column_name: 'is_total',
-              value: 0,
-              checked: true
-            }),
-            new models.IsTotalModel({ 
-              table_name: 't2',
-              column_name: 'is_total',
-              value: 1,
-              checked: true
-            })
-          ]);
-        }else if (t2.columns[column_name].model == 'OutputNumberModel'){
-          column_value_collections[column_name] = new column_value_collections[column_name]([
-            new models.OutputNumberModel({ 
-              table_name: 't2',
-              column_name: column_name,
-              comparinator: '>',
-              value: t2.columns[column_name].values[0],
-              checked: true
-            }),
-            new models.OutputNumberModel({ 
-              table_name: 't2',
-              column_name: column_name,
-              comparinator: '<',
-              value: t2.columns[column_name].values[1],
-              checked: true
-            })
-          ]);
-        }else{
-          // console.log(t2.columns[column_name].model)
-        }
+    //     }else if (t2.columns[column_name].model == 'IsTotalModel'){
+    //       // Fill each collection with the information for that column, in this case two checkboxes, both selected, one 0 and one 1.
+    //       column_value_collections[column_name] = new column_value_collections[column_name]([
+    //         new models.IsTotalModel({ 
+    //           table_name: 't2',
+    //           column_name: 'is_total',
+    //           value: 0,
+    //           checked: true
+    //         }),
+    //         new models.IsTotalModel({ 
+    //           table_name: 't2',
+    //           column_name: 'is_total',
+    //           value: 1,
+    //           checked: true
+    //         })
+    //       ]);
+    //     }else if (t2.columns[column_name].model == 'OutputNumberModel'){
+    //       column_value_collections[column_name] = new column_value_collections[column_name]([
+    //         new models.OutputNumberModel({ 
+    //           table_name: 't2',
+    //           column_name: column_name,
+    //           comparinator: '>',
+    //           value: t2.columns[column_name].values[0],
+    //           checked: true
+    //         }),
+    //         new models.OutputNumberModel({ 
+    //           table_name: 't2',
+    //           column_name: column_name,
+    //           comparinator: '<',
+    //           value: t2.columns[column_name].values[1],
+    //           checked: true
+    //         })
+    //       ]);
+    //     }else{
+    //       // console.log(t2.columns[column_name].model)
+    //     }
 
-      };
-    };
+    //   };
+    // };
 
 
     /********** V I E W S ************/
@@ -736,7 +834,7 @@ $(function() {
           this.$el.html( this.template(model_data) );
           this.$el.addClass('query-checkbox-controller');
 
-          this.listenTo(this.model, 'change', this.render);
+            this.listenTo(this.model, 'change', this.render);
         },
 
         render: function(){
@@ -750,7 +848,6 @@ $(function() {
           this.model.toggleQueryable();
         }
     });
-
 
     // This view turns an Value model into HTML. Will create LI elements.
     var CheckboxView = Backbone.View.extend({
@@ -1011,6 +1108,25 @@ $(function() {
     });
 
 
+    // var ColumnView = Backbone.View.extend({    
+    //     initialize: function(){
+    //      var attrs = this.model.toJSON(),
+    //          items_values = this.model.item_values.toJSON();
+                      
+    //      console.log(attrs, items_values);
+    //     }
+    // });
+
+    // var App = Backbone.View.extend({
+    //     el: '#hey',
+        
+    //     initialize: function(){
+    //         var column_view = new ColumnView({model: column})   
+    //     }
+    // });
+
+    // new App();
+
 
     /********** A P P  V I E W ************/
     // The main view of the application
@@ -1022,17 +1138,24 @@ $(function() {
         initialize: function(){
 
           var that = this;
-
-          // Cache these selectors
-
-          /* Do some crazy looping shit */
           // Listen for the change event on the collection.
           // This is equivalent to listening on every one of the 
           // items objects in the collection.
-          for (var collection_name in column_collections){
+          console.log(column_collections)
+          _.each(column_collections, function(collection, collection_name, collections){
+            // that.listenTo(collection, 'change', this.render);
+
+            console.log(collection)
+            collection.each( function(column_data){
+              var column_view = new ColumnView( {model: column_data} );
+              that.$el.append(column_view.render().el);
+            })
+          });
+
+          /*for (var collection_name in column_collections){
             if ( _.has(column_collections, collection_name)){
               this.listenTo(column_collections[collection_name], 'change', this.render);
-              this.listenTo(column_value_collections[collection_name], 'change', this.render);
+              // this.listenTo(column_value_collections[collection_name], 'change', this.render);
 
               // Create views for every one of the items in the column collection
 
@@ -1069,7 +1192,7 @@ $(function() {
               }, that); // "that" is the context in the callback
             };
           };
-
+          */
 
         },
 
