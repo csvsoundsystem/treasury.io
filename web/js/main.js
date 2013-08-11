@@ -1166,20 +1166,26 @@ $(function() {
         // Base the view on an existing element
         el: '#qb-table-builders',
 
+        template: $('#qc-table-col-buckets').html(),
+
         initialize: function(){
 
           var that = this;
           // Listen for the change event on the collection.
           // This is equivalent to listening on every one of the 
           // items objects in the collection.
-          // console.log(column_collections)
+          that.$el.html( this.template );
+
           _.each(column_collections, function(collection, collection_name, collections){
             // that.listenTo(collection, 'change', this.render);
 
             // console.log(collection)
             collection.each( function(column_data){
+              var column_type = that.normalizeColumnTypes( column_data.toJSON().column_type );
+
+              console.log(column_type)
               var column_view = new ColumnView( {model: column_data} );
-              that.$el.append(column_view.render().el);
+              that.$el.find('#qc-col-bucket-'+column_type).append(column_view.render().el);
             })
           });
 
@@ -1235,6 +1241,15 @@ $(function() {
           loadUiWithSqlString(sql_string)
 
           return this;
+        },
+
+        normalizeColumnTypes: function(column_type){
+          // For now, let's lump is_total in with the rest of the parent categories
+          if (column_type == 'is_total'){
+            return 'parent';
+          } else{
+            return column_type;
+          };
         }
     });
 
