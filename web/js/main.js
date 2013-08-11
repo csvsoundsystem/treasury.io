@@ -346,15 +346,26 @@ $(function() {
     });
 
     var Column = Backbone.RelationalModel.extend({
+
+        defaults: {
+          queryable: true
+        },
+
         relations: {
             item_values: ElementCollection
+        },
+
+        toggleQueryable: function(){
+          this.set('queryable', !this.get('queryable'));
         }
+
     });
 
     var column_models = {};
 
     // Instantiate column models
     _.each(t2.columns, function(column_info, column_name, columns){
+
       // To save space, not every item has its parent table and colum information
       // These are those values to add
       var parent_object_info = {
@@ -362,18 +373,21 @@ $(function() {
         column_name: column_info.name, // This line could be either column_name or column_info.name since the key is repeated, purely to keep it consistent with .type, use column_info.name
         column_type: column_info.type
       };
-      // Loop through each item_value and add that info by _.extending()
+      // Loop through each item_value and add that parent_object_info by _.extending()
       _.each(column_info.item_values, function(item_value){
         _.extend(item_value, parent_object_info);
       });
+
+      // Create a model for each column
       column_models[column_name] = new Column(column_info);
 
     });
 
-    var column_collections = {};
     // Instantiate column collections
-    // It craetes a collection object and then creates an instance of that collection object with a model
+    var column_collections = {};
+    // Create a collection object and then creates an instance of that collection object with a model
     _.each(column_models, function(model, model_name, model_list){
+
       column_collections[model_name] = Backbone.Collection.extend({
         model: ElementModel,
         // TODO add collection methods
@@ -1065,7 +1079,8 @@ $(function() {
 
         events: {
           'change .qc-select-all': 'checkUncheckAll',
-          'click .col-filter': 'toggleFilters'
+          'click .col-filter': 'toggleFilters',
+          'change .qc-toggle-col': 'toggleColumn'
         },
 
         initialize: function(){
@@ -1135,28 +1150,12 @@ $(function() {
           $target.toggleClass('active');
           $target.parents('.qc-col-ctnr').find('.qc-values-ctnr').toggle()
 
+        },
+
+        toggleColumn: function(){
+          this.model.toggleQueryable()
         }
     });
-
-
-    // var ColumnView = Backbone.View.extend({    
-    //     initialize: function(){
-    //      var attrs = this.model.toJSON(),
-    //          items_values = this.model.item_values.toJSON();
-                      
-    //      console.log(attrs, items_values);
-    //     }
-    // });
-
-    // var App = Backbone.View.extend({
-    //     el: '#hey',
-        
-    //     initialize: function(){
-    //         var column_view = new ColumnView({model: column})   
-    //     }
-    // });
-
-    // new App();
 
 
     /********** A P P  V I E W ************/
@@ -1171,72 +1170,32 @@ $(function() {
         initialize: function(){
 
           var that = this;
-          // Listen for the change event on the collection.
-          // This is equivalent to listening on every one of the 
-          // items objects in the collection.
+
+          // Load the bucket divs for each type of column
           that.$el.html( this.template );
 
           _.each(column_collections, function(collection, collection_name, collections){
-            // that.listenTo(collection, 'change', this.render);
+            // Listen for the change event on the collection.
+            // This is equivalent to listening on every one of the 
+            // items objects in the collection.
+            that.listenTo(collection, 'change', that.render);
 
-            // console.log(collection)
             collection.each( function(column_data){
-              var column_type = that.normalizeColumnTypes( column_data.toJSON().column_type );
 
-              console.log(column_type)
+              var column_type = that.normalizeColumnTypes( column_data.toJSON().column_type );
               var column_view = new ColumnView( {model: column_data} );
-              that.$el.find('#qc-col-bucket-'+column_type).append(column_view.render().el);
+
+              // Append this column to the appropriate column bucket
+              that.$el.find('#qc-col-bucket-' + column_type).append( column_view.render().el );
             })
           });
-
-          /*for (var collection_name in column_collections){
-            if ( _.has(column_collections, collection_name)){
-              this.listenTo(column_collections[collection_name], 'change', this.render);
-              // this.listenTo(column_value_collections[collection_name], 'change', this.render);
-
-              // Create views for every one of the items in the column collection
-
-              column_collections[collection_name].each( function(column){
-                var column_view = new ColumnView({model: column});
-                that.$el.append(column_view.render().el)
-              }, that); // "that" is the context in the callback
-
-              // // Create views for all of the items
-              column_value_collections[collection_name].each(function(item){
-                var model_type = t2.columns[collection_name].model,
-                    item_value_view,
-                    controller_view;
-
-                // TODO Make these into an object that you can access via a naming convention
-                if (model_type != 'OutputNumberModel' && model_type != 'DateModel' ){
-                  if (model_type == 'TypeParentModel' || model_type == 'IsTotalModel'){
-                    item_value_view = new TypeParentCheckboxView({ model: item });
-                  }else{
-                    item_value_view = new CheckboxView({ model: item });
-                  }
-                }else{
-                  if (model_type == 'OutputNumberModel'){
-                    item_value_view = new TextfieldView({ model: item });
-                    controller_view = new TextfieldSelectorView({ model: item });
-                  }else{
-                    item_value_view = new DatefieldView({ model: item });
-                    controller_view = new DatefieldSelectorView({ model: item });
-                  }
-                  $('#qc-col-ctnr-' + collection_name).find('.qc-col-controls').append(controller_view.render().el);
-                }
-
-                $('#qc-col-ctnr-' + collection_name).find('ul.qc-values-ctnr').append(item_value_view.render().el);
-              }, that); // "that" is the context in the callback
-            };
-          };
-          */
 
         },
 
         render: function(){
           // BUILD JSON OBJECT FOR SQL STRING
-          var filter_json = buildQueryJson(column_value_collections);
-          var sql_string = JsonToSql(filter_json);
+          var columns_and_where_filters = buildQueryJson(column_collections);
+          var sql_string = JsonToSql(columns_and_where_filters);
 
           loadUiWithSqlString(sql_string)
 
@@ -1270,16 +1229,19 @@ $(function() {
     enableBuilderBtnsAndChartOptions();
   };
 
-  function JsonToSql(filters){
-    var where_string = buildWhereQuery(filters),
-        select_string = buildSelectQuery(filters),
+  function JsonToSql(columns_and_where_filters){
+    var column_names = columns_and_where_filters[0],
+        filters = columns_and_where_filters[1];
+
+    var select_string = buildSelectQuery(column_names),
+        where_string = buildWhereQuery(filters),
         query = select_string + '\n' + where_string;
 
     return query
   };
 
-  function buildSelectQuery(filters){
-    var select_string = 'SELECT *\nFROM\nt2'
+  function buildSelectQuery(column_names){
+    var select_string = 'SELECT ' + column_names.join(', ') + '\nFROM\nt2'
     return select_string
   };
 
@@ -1325,100 +1287,120 @@ $(function() {
     };
   };
 
-  function buildQueryJson(column_value_collections){
+  function buildQueryJson(column_collections){
     var queryable_models,
         checked_models,
         column_obj = {},
-        filters = []; // The structure of this object will be an array of objects that are arrays of objects.
+        filters = [], // The structure of this object will be an array of objects that are arrays of objects. Fun, right?
+        queryable_columns = [];
 
-        /*  var filters = [
-              {
-                "type": [
-                  {
-                    "comparinator": "=",
-                    "value": "withdrawal"
-                  },
-                  {
-                    "comparinator": "=",
-                    "value": "deposit"
-                  }
-                ]
-              },
-              {
-                "item": [
-                  {
-                    "comparinator": "=",
-                    "value": "Medicare"
-                  },
-                  {
-                    "comparinator": "=",
-                    "value": "Medicaid"
-                  }
-                ]
-              },
-              {
-                "is_total":[
-                  {
-                    "comparinator": "=",
-                    "value": "0"
-                  }
-                ]
-              
-              }
-            ];
+        /*  
+          var filters = [
+            {
+              "type": [
+                {
+                  "comparinator": "=",
+                  "value": "withdrawal"
+                },
+                {
+                  "comparinator": "=",
+                  "value": "deposit"
+                }
+              ]
+            },
+            {
+              "item": [
+                {
+                  "comparinator": "=",
+                  "value": "Medicare"
+                },
+                {
+                  "comparinator": "=",
+                  "value": "Medicaid"
+                }
+              ]
+            },
+            {
+              "is_total":[
+                {
+                  "comparinator": "=",
+                  "value": "0"
+                }
+              ]
+            
+            }
+          ];
         */
 
 
-    // Loop through every collection
-    for (var collection_name in column_value_collections){
-      if ( _.has(column_value_collections, collection_name)){
-        // For every column...
-        // TODO: ADD `IF COLLECTION (column) IS QUERYABLE`
-        column_obj = {};
+    // For every collection...
+    _.each(column_collections, function(collection, collection_name, collection_list){
+      // For each column
+      collection.each( function(elem){
 
-        var cmpr = '=',
-            majority_status,
-            add_model = true;
-
-        column_obj[collection_name] = [];
-
-        // We only want to include queryable items
-        if (collection_name != 'item'){
-          queryable_models = column_value_collections[collection_name].getQueryableAndChecked();
-        }else{
-          majority_status = column_value_collections[collection_name].getCheckedCountAndQueryable();
-          if (majority_status == 'majority_checked'){ // If the majority of them are checked, then it's easier to only do a WHERE clause on the excluded items
-            cmpr = '!='
-            queryable_models = column_value_collections[collection_name].getQueryableAndUnchecked();
-          }else if (majority_status == 'majority_unchecked') {
-            queryable_models = column_value_collections[collection_name].getQueryableAndChecked();
-          }else if(majority_status == 'all_none'){
-            add_model = false;
-            // Don't include any of this column's info if all of them are selected or none are selected
-            // So don't addModels to nuthin'
-
-          };
+        // If that column is checked
+        var queryable = elem.get('queryable');
+        if (queryable){
+          queryable_columns.push( elem.get('name') );
+          // Loop through the item_value collection on every queryable column
+          // elem.item_values.each( function(item_value){
+          //   console.log(item_value.get('queryable'))
+          // });
         };
+       
+      })
+    });
 
-        if (add_model){
-          _.each(queryable_models, function(elem, ind){
-            var value_obj = {};
-            value_obj['value'] = elem.get('value');
 
-            if (elem.get('comparinator') == '='){
-             value_obj['comparinator'] = cmpr;
-            }else{
-              value_obj['comparinator'] = elem.get('comparinator');
-            };
+    // for (var collection_name in column_value_collections){
+    //   if ( _.has(column_value_collections, collection_name)){
+    //     // For every column...
+    //     // TODO: ADD `IF COLLECTION (column) IS QUERYABLE`
+    //     column_obj = {};
 
-            column_obj[collection_name].push(value_obj);
-          });
+    //     var cmpr = '=',
+    //         majority_status,
+    //         add_model = true;
 
-          filters.push(column_obj);
-        };
-      };
-    };
-    return filters;
+    //     column_obj[collection_name] = [];
+
+    //     // We only want to include queryable items
+    //     if (collection_name != 'item'){
+    //       queryable_models = column_value_collections[collection_name].getQueryableAndChecked();
+    //     }else{
+    //       majority_status = column_value_collections[collection_name].getCheckedCountAndQueryable();
+    //       if (majority_status == 'majority_checked'){ // If the majority of them are checked, then it's easier to only do a WHERE clause on the excluded items
+    //         cmpr = '!='
+    //         queryable_models = column_value_collections[collection_name].getQueryableAndUnchecked();
+    //       }else if (majority_status == 'majority_unchecked') {
+    //         queryable_models = column_value_collections[collection_name].getQueryableAndChecked();
+    //       }else if(majority_status == 'all_none'){
+    //         add_model = false;
+    //         // Don't include any of this column's info if all of them are selected or none are selected
+    //         // So don't addModels to nuthin'
+
+    //       };
+    //     };
+
+    //     if (add_model){
+    //       _.each(queryable_models, function(elem, ind){
+    //         var value_obj = {};
+    //         value_obj['value'] = elem.get('value');
+
+    //         if (elem.get('comparinator') == '='){
+    //          value_obj['comparinator'] = cmpr;
+    //         }else{
+    //           value_obj['comparinator'] = elem.get('comparinator');
+    //         };
+
+    //         column_obj[collection_name].push(value_obj);
+    //       });
+
+    //       filters.push(column_obj);
+    //     };
+    //   };
+    // };
+    return [queryable_columns, filters];
 
   };
 
