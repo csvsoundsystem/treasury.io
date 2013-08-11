@@ -80,7 +80,7 @@
           <div id="query" class="section">
             <h2><a href="#query"><span class="bullet">$</span> <span class="internal-link">Query tour</span></a></h2>
             <div id="builder">
-              <select id="builder-table-select">
+              <select id="builder-table-select" class="builder-item">
                 <option >What do you want to know?</option>
                 <option value="t1" >How much cash does the federal government have on hand? (Table 1)</option>
                 <option value="t2" >What programs are making deposits and withdrawals? (Table 2)</option>
@@ -91,9 +91,9 @@
                 <option value="t5" >Where did the government invest cash it didn't immediately need? (Table 5)</option>
                 <option value="t6" >How much money did the government refund to businesses and individuals? (Table 6)</option>
               </select>
-              <div id="qb-table-builders"></div>
+              <div id="qb-table-builders" class="builder-item"></div>
              <!--  <div id="rqb">&nbsp;</div> -->
-              <div id="query-string-wrapper">
+              <div id="query-string-wrapper" class="builder-item">
                 <fieldset>
                   <span>SQL Query, view as:* </span>
                   <span id="query-encoding-options">
@@ -105,7 +105,7 @@
                   </div>
                 </fieldset>
               </div>
-              <div id="builder-btns" class="btn-group">
+              <div id="builder-btns" class="btn-group builder-item">
                 <div id="builder-btns-overlay"></div>
                 <span class="btn disabled piwik_ignore" id="download-browser">Preview query**</span>
                 <a class="btn disabled piwik_ignore" id="download-json" target="_blank" href="#">View JSON</a>
@@ -363,8 +363,12 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
           <div class="qc-col-name">
             <strong><%= name %></strong> <span><%= normalizeFormatType(type) %></span>
             <% if ((type == 'TEXT' && name != 'date') || name == 'is_total') { %>
-              <div class="qc-col-control-all"><input type="checkbox" class="qc-select-all" data-collection-name="<%= name %>" checked="true"></div>
+              <!--<div class="qc-col-control-all"><input type="checkbox" class="qc-select-all" data-collection-name="<%= name %>" checked="true"></div>-->
             <% } %>
+          </div>
+          <div class="qc-col-main-controls">
+            <span class="col-enabler"><label for="<%= name %>"><input type="checkbox" id="<%= name %>" checked/> Enabled</label></span>
+            <span class="col-filter" >Filters</span>
           </div>
           <div class="qc-col-controls"></div>
         </div>

@@ -1064,7 +1064,8 @@ $(function() {
         template: _.template( $('#ColumnView-templ').html() ),
 
         events: {
-          'change .qc-select-all': 'checkUncheckAll'
+          'change .qc-select-all': 'checkUncheckAll',
+          'click .col-filter': 'toggleFilters'
         },
 
         initialize: function(){
@@ -1127,7 +1128,12 @@ $(function() {
             elem.set('checked', checked_state);
           });
 
+        },
 
+        toggleFilters: function(e){
+          $target = $(e.target);
+          $target.toggleClass('active');
+          $target.parents('.qc-col-ctnr').find('.qc-values-ctnr').toggle()
 
         }
     });

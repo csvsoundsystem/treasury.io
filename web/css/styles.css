@@ -331,9 +331,12 @@ form {
   padding: 20px;
 }
 #builder, #results-table-container {
-  background: rgba(255,255,255,.5);
-  padding: 20px;
+  background: rgba(255, 255, 255, .5); /* TK TODO remove rgba for better browser compatibility */
+  padding: 10px;
   color: #000;
+}
+.builder-item{
+  padding: 10px;
 }
 #results-table-holder{
   width:100%;
@@ -619,14 +622,15 @@ textarea:focus{
   margin: 0 10px 10px 0;
   vertical-align: top;
   background-color: #F9FDFF;
-  padding:5px;
+  box-shadow:0px 0 12px rgba(0,0,0,.25);
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
           box-sizing: border-box;
 }
 .qc-col-header{
-  border-bottom: 1px dotted #303030;
   overflow: auto;
+  padding: 5px;
+  line-height: 15px;
 }
 .qc-col-control-all{
   float: right;
@@ -649,23 +653,56 @@ textarea:focus{
 .qc-values-ctnr{
   max-height: 180px;
   overflow-y: scroll;
+  box-shadow: inset 0 20px 7px -20px #666666;
+  display: none;
+  /*border-top: 1px dotted #303030;*/
 }
 .qc-values-ctnr li{
   line-height: 14px;
   font-size: 11px;
-  padding: 3px;
+  padding: 7px 5px 5px 5px;
 }
 .qc-values-ctnr li:nth-child(odd) {
-  background-color: #c1e4f2;
+  background-color: rgba(9, 146, 204, 0.25); /* TK TODO, make this a better color so it is more viewable on bad monitors*/
 }
 .qc-values-ctnr li:nth-child(even) {
-  background-color: white;
+  /*background-color: white;*/
 }
 .qc-values-ctnr li{
   display: none;
 }
 .qc-values-ctnr li.queryable-item{
   display: block;
+}
+.qc-col-main-controls{
+  font-size: 11px;
+  color: #7E7E7E;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.qc-col-main-controls span{
+  padding: 1px 1px 1px 1px;
+  /*margin-right: 10px;*/
+  display: inline-block;
+}
+.qc-col-main-controls .col-filter{
+  float: right;
+}
+.qc-col-main-controls span:hover, .qc-col-main-controls label:hover{
+  cursor: pointer !important;
+  cursor: hand !important;
+}
+.qc-col-main-controls .col-filter:hover{
+  text-decoration: underline;
+
+}
+.qc-col-main-controls span.active{
+  color: #fff;
+  background-color: #000;
 }
 .qc-col-controls{
   line-height: 0px;
