@@ -341,20 +341,6 @@ $(function() {
 
     });
 
-    // var ColumnModel = Backbone.Model.extend({
-
-    //   defaults: {
-    //     table_name: 't',
-    //     name: 'c',
-    //     column_type: 't',
-    //     queryable: true
-    //   },
-
-    //   toggleQueryable: function(){
-    //     this.set('queryable', !this.get('queryable'));
-    //   }
-    // });
-
     var ElementCollection = Backbone.Collection.extend({
       model: ElementModel
     });
@@ -389,7 +375,8 @@ $(function() {
     // It craetes a collection object and then creates an instance of that collection object with a model
     _.each(column_models, function(model, model_name, model_list){
       column_collections[model_name] = Backbone.Collection.extend({
-        model: ElementModel
+        model: ElementModel,
+        // TODO add collection methods
       });
       column_collections[model_name] = new column_collections[model_name](model);
     });
@@ -731,44 +718,6 @@ $(function() {
 
 
     /********** V I E W S ************/
-    //This view turns a Column model into HTML. Will create DIV elements and a UL for the ItemView LIs to be appended to.
-    var ColumnView = Backbone.View.extend({
-        tagName : 'div',
-
-        template: _.template($('#ColumnView-templ').html()),
-
-        events: {
-          'change .qc-select-all': 'checkUncheckAll'
-        },
-
-        initialize: function(){
-
-          this.listenTo(this.model, 'change', this.render) 
-          var model_data = this.model.toJSON();
-          _.extend(model_data, formatHelpers);
-          this.$el.html( this.template(model_data) );
-        },
-
-        render: function(){
-          $(this.el).attr('id','qc-col-ctnr-' + this.model.get('name')).addClass('qc-col-ctnr');
-
-          return this;
-        },
-
-        checkUncheckAll: function(e){
-          var $checkbox = this.$el.find('.qc-select-all')
-          var collection_name = $checkbox.data('collection-name');
-          var checked_state = $checkbox.prop('checked');
-
-          column_value_collections[collection_name].each(function(elem){
-            elem.set('checked', checked_state);
-          });
-
-
-
-        }
-    });
-
     var DatefieldView = Backbone.View.extend({
         tagName: 'li',
 
@@ -961,51 +910,51 @@ $(function() {
         },
 
         setParentLimits: function(){
-          this.insertCheckedParents();
-          this.setQueryablity();
+          // this.insertCheckedParents();
+          // this.setQueryablity();
         },
 
-        insertCheckedParents: function(){
-          active_parents = {}; // Clear everything
-          _.each(column_value_collections, function(collection, column_name, collection_list){
-            var model_type = t2.columns[column_name].model;
-            if (model_type == 'TypeParentModel' || model_type == 'IsTotalModel'){
-              // Make an empty array for this type_parent, but only if it doesn't already exist
-              if (active_parents[column_name] == undefined){
-                active_parents[column_name] = []
-              };
-              var checked_models = collection.getQueryableAndChecked();
-              _.each(checked_models, function(elem){
-                var name_to_add;
-                if (elem.get('value') != '(blank)'){ // TODO handle blanks better
-                  name_to_add = elem.get('value');
-                }else{
-                  name_to_add = null;
-                };
-                active_parents[column_name].push(name_to_add)
-              });
-            }
-          });
-        },
+        // insertCheckedParents: function(){
+        //   active_parents = {}; // Clear everything
+        //   _.each(column_value_collections, function(collection, column_name, collection_list){
+        //     var model_type = t2.columns[column_name].model;
+        //     if (model_type == 'TypeParentModel' || model_type == 'IsTotalModel'){
+        //       // Make an empty array for this type_parent, but only if it doesn't already exist
+        //       if (active_parents[column_name] == undefined){
+        //         active_parents[column_name] = []
+        //       };
+        //       var checked_models = collection.getQueryableAndChecked();
+        //       _.each(checked_models, function(elem){
+        //         var name_to_add;
+        //         if (elem.get('value') != '(blank)'){ // TODO handle blanks better
+        //           name_to_add = elem.get('value');
+        //         }else{
+        //           name_to_add = null;
+        //         };
+        //         active_parents[column_name].push(name_to_add)
+        //       });
+        //     }
+        //   });
+        // },
 
-        setQueryablity: function(){
-          _.each(column_value_collections, function(collection, column_name, collection_list){
-            var model_type = t2.columns[column_name].model;
-            if (model_type == 'ItemModel'){
-              var models_to_alter = collection.getLimitedByParents(),
-                  models_to_queryableify = models_to_alter[0],
-                  models_to_unqueryableify = models_to_alter[1];
+        // setQueryablity: function(){
+        //   _.each(column_value_collections, function(collection, column_name, collection_list){
+        //     var model_type = t2.columns[column_name].model;
+        //     if (model_type == 'ItemModel'){
+        //       var models_to_alter = collection.getLimitedByParents(),
+        //           models_to_queryableify = models_to_alter[0],
+        //           models_to_unqueryableify = models_to_alter[1];
 
 
-              _.each(models_to_queryableify, function(elem){
-                elem[0].set('queryable', true);
-              });
-              _.each(models_to_unqueryableify, function(elem){
-                elem[0].set('queryable', false);
-              });
-            };
-          });
-        },
+        //       _.each(models_to_queryableify, function(elem){
+        //         elem[0].set('queryable', true);
+        //       });
+        //       _.each(models_to_unqueryableify, function(elem){
+        //         elem[0].set('queryable', false);
+        //       });
+        //     };
+        //   });
+        // },
 
         toggleItem: function(e){
           this.model.toggle();
@@ -1108,6 +1057,82 @@ $(function() {
     });
 
 
+        //This view turns a Column model into HTML. Will create DIV elements and a UL for the ItemView LIs to be appended to.
+    var ColumnView = Backbone.View.extend({
+        tagName : 'div',
+
+        template: _.template( $('#ColumnView-templ').html() ),
+
+        events: {
+          'change .qc-select-all': 'checkUncheckAll'
+        },
+
+        initialize: function(){
+
+          var that = this;
+
+          // This will call this.render() whenever the column model changes
+          that.listenTo(this.model, 'change', this.render);
+
+          // Get the attributes of the column model, this won't include the item_values collection because those aren't stored in the attributes hash
+          var model_data = this.model.toJSON();
+          _.extend(model_data, formatHelpers);
+          var column_markup = this.template(model_data);
+
+          that.$el.html(column_markup)
+
+
+          var subview_type = this.pickWhichSubview( this.model.get('column_type') );
+          var subview_collection = this.model.item_values;
+          
+          subview_collection.each( function(subview_data){
+            var subview = new subview_type( {model: subview_data} );
+            var subview_markup = subview.render().el;
+            that.$el.find('.qc-values-ctnr').append(subview_markup)
+          });
+
+          // console.log(subview)
+          // this.$el.html( this.template(model_data) );
+        },
+
+        render: function(){
+          $(this.el).attr('id','qc-col-ctnr-' + this.model.get('name')).addClass('qc-col-ctnr');
+
+          return this;
+        },
+
+        pickWhichSubview: function(column_type){
+          if (column_type == 'date'){
+            return DatefieldView;
+          }else if (column_type == 'is_total'){
+            return TypeParentCheckboxView;
+          }else if (column_type == 'parent'){
+            return TypeParentCheckboxView;
+          }else if (column_type == 'item'){
+            return CheckboxView
+          }else if (column_type == 'numeric'){
+            return TextfieldView
+          }else{
+            alert("Error, unknown column type.")
+          };
+          
+        },
+
+        checkUncheckAll: function(e){
+          var $checkbox = this.$el.find('.qc-select-all')
+          var collection_name = $checkbox.data('collection-name');
+          var checked_state = $checkbox.prop('checked');
+
+          column_value_collections[collection_name].each(function(elem){
+            elem.set('checked', checked_state);
+          });
+
+
+
+        }
+    });
+
+
     // var ColumnView = Backbone.View.extend({    
     //     initialize: function(){
     //      var attrs = this.model.toJSON(),
@@ -1141,11 +1166,11 @@ $(function() {
           // Listen for the change event on the collection.
           // This is equivalent to listening on every one of the 
           // items objects in the collection.
-          console.log(column_collections)
+          // console.log(column_collections)
           _.each(column_collections, function(collection, collection_name, collections){
             // that.listenTo(collection, 'change', this.render);
 
-            console.log(collection)
+            // console.log(collection)
             collection.each( function(column_data){
               var column_view = new ColumnView( {model: column_data} );
               that.$el.append(column_view.render().el);
