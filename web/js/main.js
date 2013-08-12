@@ -324,7 +324,7 @@ $(function() {
         comparinator: '=',
         queryable: true,
         checked: true,
-        value: 0
+        value: 0,
       },
 
       toggleChecked: function(){
@@ -435,7 +435,8 @@ $(function() {
     var Column = Backbone.RelationalModel.extend({
 
         defaults: {
-          queryable: true
+          queryable: true,
+          filtered: false
         },
 
         relations: {
@@ -1196,7 +1197,10 @@ $(function() {
         toggleFilters: function(e){
           $target = $(e.target);
           $target.toggleClass('active');
-          $target.parents('.qc-col-ctnr').find('.qc-values-ctnr').toggle()
+          $target.parents('.qc-col-ctnr').find('.qc-values-ctnr').toggle();
+
+          var current_filter_status = this.model.get('filtered');
+          this.model.set('filtered', !current_filter_status);
 
         },
 
@@ -1300,31 +1304,35 @@ $(function() {
 
   function buildWhereQuery(filters){
     // TODO, omit if there are no values
-    var column_group = [];
-    _.each(filters, function(filter) {
-      for (var col in filter) {
-        if (_.has(filter, col)) {
-          var column_items = [];
-          _.each(filter[col], function(column_item){
-            var column_item_string = '"' + col  + '"' + ' ' + ((column_item.value == '(blank)') ? 'IS NULL' : (column_item.comparinator + ' ' + quoteValIfString(column_item.value)) );
-            column_items.push(column_item_string);
-          });
+    if (filters.length > 0){
+      var column_group = [];
+      _.each(filters, function(filter) {
+        for (var col in filter) {
+          if (_.has(filter, col)) {
+            var column_items = [];
+            _.each(filter[col], function(column_item){
+              var column_item_string = '"' + col  + '"' + ' ' + ((column_item.value == '(blank)') ? 'IS NULL' : (column_item.comparinator + ' ' + quoteValIfString(column_item.value)) );
+              column_items.push(column_item_string);
+            });
 
-          if(filter[col][0]){
-            // If it's a textfield value then it will have a `<` or a `>`, and those should be a "between" query, so use "AND"
-            if (filter[col][0].comparinator == '>' || filter[col][0].comparinator == '<'){
-              column_items_string = column_items.join(' AND ');
-            }else{
-              column_items_string = column_items.join(' OR ');
+            if(filter[col][0]){
+              // If it's a textfield value then it will have a `<` or a `>`, and those should be a "between" query, so use "AND"
+              if (filter[col][0].comparinator == '>' || filter[col][0].comparinator == '<'){
+                column_items_string = column_items.join(' AND ');
+              }else{
+                column_items_string = column_items.join(' OR ');
+              };
+              column_group.push(column_items_string);
             };
-            column_group.push(column_items_string);
           };
         };
-      };
 
-    });
-    var column_group_string = wrapElsWithParens(column_group).join('\nAND \n');
-    return 'WHERE ' + column_group_string;
+      });
+      var column_group_string = wrapElsWithParens(column_group).join('\nAND \n');
+      return 'WHERE ' + column_group_string;
+    }else{
+      return ''
+    }
 
   };
 
@@ -1393,52 +1401,55 @@ $(function() {
 
         // If that column is checked
         var queryable = column.get('queryable');
+        var filtered = column.get('filtered');
         if (queryable){
           var column_name = column.get('name');
           queryable_columns.push( column_name );
 
+          if (filtered){
+            // Loop through the item_value collection on every queryable column
+            column_obj = {}
 
-          // Loop through the item_value collection on every queryable column
-          column_obj = {}
+            var cmpr = '=',
+                add_model = true,
+                majority_status;
 
-          var cmpr = '=',
-              add_model = true,
-              majority_status;
+            column_obj[collection_name] = [];
 
-          column_obj[collection_name] = [];
-
-          if (column_name != 'item'){
-            queryable_models = column.item_values.getQueryableAndChecked()
-          }else{
-            majority_status = column.item_values.getCheckedCountAndQueryable();
-            if (majority_status == 'majority_checked'){ // If the majority of them are checked, then it's easier to only do a WHERE clause on the excluded items
-              cmpr = '!='
-              queryable_models = column.item_values.getQueryableAndUnchecked();
-            }else if (majority_status == 'majority_unchecked') {
-              queryable_models = column.item_values.getQueryableAndChecked();
-            }else if(majority_status == 'all_none'){
-              add_model = false;
-              // Don't include any of this column's info if all of them are selected or none are selected
-              // So don't addModels to nuthin'
-            };
-          };
-          
-          if (add_model){
-            _.each(queryable_models, function(elem, ind){
-              var value_obj = {};
-              value_obj['value'] = elem.get('value');
-
-              if (elem.get('comparinator') == '='){
-               value_obj['comparinator'] = cmpr;
-              }else{
-                value_obj['comparinator'] = elem.get('comparinator');
+            if (column_name != 'item'){
+              queryable_models = column.item_values.getQueryableAndChecked()
+            }else{
+              majority_status = column.item_values.getCheckedCountAndQueryable();
+              if (majority_status == 'majority_checked'){ // If the majority of them are checked, then it's easier to only do a WHERE clause on the excluded items
+                cmpr = '!='
+                queryable_models = column.item_values.getQueryableAndUnchecked();
+              }else if (majority_status == 'majority_unchecked') {
+                queryable_models = column.item_values.getQueryableAndChecked();
+              }else if(majority_status == 'all_none'){
+                add_model = false;
+                // Don't include any of this column's info if all of them are selected or none are selected
+                // So don't addModels to nuthin'
               };
+            };
+            
+            if (add_model){
+              _.each(queryable_models, function(elem, ind){
+                var value_obj = {};
+                value_obj['value'] = elem.get('value');
 
-              column_obj[collection_name].push(value_obj);
-            });
+                if (elem.get('comparinator') == '='){
+                 value_obj['comparinator'] = cmpr;
+                }else{
+                  value_obj['comparinator'] = elem.get('comparinator');
+                };
 
-            filters.push(column_obj);
-          };
+                column_obj[collection_name].push(value_obj);
+              });
+
+              filters.push(column_obj);
+            };
+            
+          }
         };
        
       });
