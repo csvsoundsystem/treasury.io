@@ -366,6 +366,21 @@ $(function() {
         };
       },
 
+      getCheckedCountAndQueryable: function(){
+        var all_items = this.length,
+            checked_items = this.where({checked: true, queryable: true}).length,
+            compare = checked_items / all_items
+
+        // TODO handle when all or none are checked
+        if (compare == 1 || compare == 0) {
+          return 'all_none';
+        }else if (compare >= .5 && compare < 1){
+          return 'majority_checked';
+        }else if (compare < .5) {
+          return 'majority_unchecked';
+        };
+      },
+
       getLimitedByParents: function(){
         var that = this;
         var json = that.toJSON(),
@@ -932,7 +947,7 @@ $(function() {
         },
 
         toggleItem: function(e){
-          this.model.toggle();
+          this.model.toggleChecked();
         },
 
         toggleQueryable: function(e){
@@ -1459,14 +1474,54 @@ $(function() {
         // If that column is checked
         var queryable = column.get('queryable');
         if (queryable){
-          queryable_columns.push( column.get('name') );
+          var column_name = column.get('name');
+          queryable_columns.push( column_name );
+
+
           // Loop through the item_value collection on every queryable column
-          // elem.item_values.each( function(item_value){
-          //   console.log(item_value.get('queryable'))
-          // });
+          column_obj = {}
+          
+          var cmpr = '=',
+              add_model = true,
+              majority_status;
+
+          column_obj[collection_name] = [];
+
+          if (column_name != 'item'){
+            queryable_models = column.item_values.getQueryableAndChecked()
+          }else{
+            majority_status = column.item_values.getCheckedCountAndQueryable();
+            if (majority_status == 'majority_checked'){ // If the majority of them are checked, then it's easier to only do a WHERE clause on the excluded items
+              cmpr = '!='
+              queryable_models = column.item_values.getQueryableAndUnchecked();
+            }else if (majority_status == 'majority_unchecked') {
+              queryable_models = column.item_values.getQueryableAndChecked();
+            }else if(majority_status == 'all_none'){
+              add_model = false;
+              // Don't include any of this column's info if all of them are selected or none are selected
+              // So don't addModels to nuthin'
+            };
+          };
+          
+          if (add_model){
+            _.each(queryable_models, function(elem, ind){
+              var value_obj = {};
+              value_obj['value'] = elem.get('value');
+
+              if (elem.get('comparinator') == '='){
+               value_obj['comparinator'] = cmpr;
+              }else{
+                value_obj['comparinator'] = elem.get('comparinator');
+              };
+
+              column_obj[collection_name].push(value_obj);
+            });
+
+            filters.push(column_obj);
+          };
         };
        
-      })
+      });
     });
 
 
@@ -1518,6 +1573,8 @@ $(function() {
     //     };
     //   };
     // };
+
+    console.log(filters)
     return [queryable_columns, filters];
 
   };
