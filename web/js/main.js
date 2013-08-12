@@ -658,92 +658,8 @@ $(function() {
     //     column_value_collections[column_name] = Backbone.Collection.extend({
     //       model: models[t2.columns[column_name].model],
 
-    //       getCheckedCountAndQueryable: function(){
-    //         var all_items = this.length,
-    //             checked_items = this.where({checked: true, queryable: true}).length,
-    //             compare = checked_items / all_items
 
-    //         // TODO handle when all or none are checked
-    //         if (compare == 1 || compare == 0) {
-    //           return 'all_none';
-    //         }else if (compare >= .5 && compare < 1){
-    //           return 'majority_checked';
-    //         }else if (compare < .5) {
-    //           return 'majority_unchecked';
-    //         };
-    //       },
 
-    //       getQueryableCount: function(){
-    //         var all_items = this.length,
-    //             queryable_items = this.where({queryable: true}).length,
-    //             compare = queryable_items / all_items;
-
-    //         if (compare == 0){
-    //           return 'none_queryable'
-    //         }else if (compare == 1){
-    //           return 'all_queryable'
-    //         }else{
-    //           return 'some_querable'
-    //         };
-    //       },
-
-    //       getLimitedByParents: function(){
-    //         var that = this;
-    //         var json = that.toJSON(),
-    //             names_to_queryableify = [],
-    //             names_to_unqueryableify = [],
-    //             models_to_queryableify = [],
-    //             models_to_unqueryableify = [];
-
-    //         // Get each model
-    //         _.each(json, function(model){
-    //           var type_parents = model.type_parents;
-
-    //           // For each of its parents, it needs at least one in all of its categories.
-    //           // So, if it had one in account, two in transaction_type and one in is_total
-    //           // It would need at least three `true`s for it to be visible
-    //           // It other words, it needs a yes from each column.
-    //           var results = []
-    //           _.each(type_parents, function(required_parents, column_name, list){
-    //             var column_active_parents = active_parents[column_name];
-    //             var overlap = _.intersection(column_active_parents, required_parents);
-    //             if (overlap.length > 0){
-    //               results.push(0);
-    //             }else{
-    //               results.push(1);
-    //             };
-    //           });
-    //           var sum_results = _.reduce(results, function(memo, num){ return memo + num; }, 0);
-
-    //           if (sum_results > 0){
-    //            // Fail
-    //            names_to_unqueryableify.push(model.value)
-    //           }else{
-    //            // Pass
-    //            names_to_queryableify.push(model.value)
-    //           };
-
-    //         });
-            
-
-    //         _.each(names_to_queryableify, function(name){
-    //           models_to_queryableify.push(that.where({ value: name }))
-    //         });
-
-    //         _.each(names_to_unqueryableify, function(name){
-    //           models_to_unqueryableify.push(that.where({ value: name }))
-    //         });
-
-    //         return [models_to_queryableify, models_to_unqueryableify];
-    //       },
-
-    //       getQueryableAndChecked: function(){
-    //         return this.where({queryable: true, checked: true});
-    //       },
-
-    //       getQueryableAndUnchecked: function(){
-    //         return this.where({queryable: true, checked: false});
-    //       },
 
     //     });
 
@@ -915,7 +831,6 @@ $(function() {
 
           // Set up event listeners. The change backbone event
           // is raised when a property changes (like the checked field)
-          // Create the HTML
           var model_data = this.model.toJSON();
           _.extend(model_data, formatHelpers);
           this.$el.html( this.template(model_data) );
@@ -1313,6 +1228,11 @@ $(function() {
             // items objects in the collection.
             that.listenTo(collection, 'change', that.render);
 
+            // Listen to the collection on the model for changes as well
+            collection.each( function(model){
+              that.listenTo(model.item_values, 'change', that.render)
+            });
+
             collection.each( function(column_data){
 
               var column_type = that.normalizeColumnTypes( column_data.toJSON().column_type );
@@ -1480,7 +1400,7 @@ $(function() {
 
           // Loop through the item_value collection on every queryable column
           column_obj = {}
-          
+
           var cmpr = '=',
               add_model = true,
               majority_status;
@@ -1524,57 +1444,6 @@ $(function() {
       });
     });
 
-
-    // for (var collection_name in column_value_collections){
-    //   if ( _.has(column_value_collections, collection_name)){
-    //     // For every column...
-    //     // TODO: ADD `IF COLLECTION (column) IS QUERYABLE`
-    //     column_obj = {};
-
-    //     var cmpr = '=',
-    //         majority_status,
-    //         add_model = true;
-
-    //     column_obj[collection_name] = [];
-
-    //     // We only want to include queryable items
-    //     if (collection_name != 'item'){
-    //       queryable_models = column_value_collections[collection_name].getQueryableAndChecked();
-    //     }else{
-    //       majority_status = column_value_collections[collection_name].getCheckedCountAndQueryable();
-    //       if (majority_status == 'majority_checked'){ // If the majority of them are checked, then it's easier to only do a WHERE clause on the excluded items
-    //         cmpr = '!='
-    //         queryable_models = column_value_collections[collection_name].getQueryableAndUnchecked();
-    //       }else if (majority_status == 'majority_unchecked') {
-    //         queryable_models = column_value_collections[collection_name].getQueryableAndChecked();
-    //       }else if(majority_status == 'all_none'){
-    //         add_model = false;
-    //         // Don't include any of this column's info if all of them are selected or none are selected
-    //         // So don't addModels to nuthin'
-
-    //       };
-    //     };
-
-    //     if (add_model){
-    //       _.each(queryable_models, function(elem, ind){
-    //         var value_obj = {};
-    //         value_obj['value'] = elem.get('value');
-
-    //         if (elem.get('comparinator') == '='){
-    //          value_obj['comparinator'] = cmpr;
-    //         }else{
-    //           value_obj['comparinator'] = elem.get('comparinator');
-    //         };
-
-    //         column_obj[collection_name].push(value_obj);
-    //       });
-
-    //       filters.push(column_obj);
-    //     };
-    //   };
-    // };
-
-    console.log(filters)
     return [queryable_columns, filters];
 
   };
