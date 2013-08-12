@@ -743,7 +743,8 @@ $(function() {
         template: _.template($('#OutputNumber-view-templ').html()),
 
         events:{
-          'keyup': 'updateValue'
+          'keyup': 'updateValue',
+          'change': 'updateValue'
         },
 
         initialize: function(){
