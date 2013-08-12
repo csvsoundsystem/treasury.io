@@ -666,7 +666,7 @@ $(function() {
 
         render: function(){
 
-          // this.$el.find('input').prop('checked', this.model.get('checked'));
+          this.$el.find('input').prop('checked', this.model.get('checked'));
           this.setParentLimits();
 
           // console.log(active_parents)
@@ -905,8 +905,10 @@ $(function() {
           var collection_name = $checkbox.data('collection-name');
           var checked_state = $checkbox.prop('checked');
 
-          column_value_collections[collection_name].each(function(elem){
-            elem.set('checked', checked_state);
+          column_collections[collection_name].each(function(collection){
+            collection.item_values.each( function(elem){
+              elem.set('checked', checked_state);
+            })
           });
 
         },
@@ -921,6 +923,18 @@ $(function() {
 
           var current_filter_status = this.model.get('filtered');
           this.model.set('filtered', !current_filter_status);
+
+          // If you disable filters for the column, then you should not limit the children of the parents in that column
+          // There might be a solution that will preserve the options that are selected
+          // But for now, just hit the toggle button so that they are all in view
+          // This only needs to be set when you are closing the filter window
+          if (current_filter_status){
+            var $this_toggle_btn = $target.parents('.qc-col-header').find('.qc-col-control-all input'),
+                is_checked = $this_toggle_btn.prop('checked');
+            if (!is_checked){
+              $this_toggle_btn.click();
+            };
+          };
 
         },
 
@@ -1022,9 +1036,26 @@ $(function() {
     return select_string
   };
 
+  function filtersExist(filters){
+    var has_filters = false
+    if (filters.length > 0){
+      _.each(filters, function(filter){
+        _.each(filter, function(filter_settings, filter_name, filter_list){
+          if (filter_settings.length > 0){
+            has_filters = true;
+          }
+        });
+      });
+    };
+
+    return has_filters
+
+  };
+
   function buildWhereQuery(filters){
     // TODO, omit if there are no values
-    if (filters.length > 0){
+    var filters_exist = filtersExist(filters);
+    if (filters_exist){
       var column_group = [];
       _.each(filters, function(filter) {
         for (var col in filter) {
