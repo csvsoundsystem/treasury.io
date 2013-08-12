@@ -342,7 +342,79 @@ $(function() {
     });
 
     var ElementCollection = Backbone.Collection.extend({
-      model: ElementModel
+      model: ElementModel,
+
+      getQueryableAndChecked: function(){
+        return this.where({queryable: true, checked: true});
+      },
+
+      getQueryableAndUnchecked: function(){
+        return this.where({queryable: true, checked: false});
+      },
+
+      getQueryableCount: function(){
+        var all_items = this.length,
+            queryable_items = this.where({queryable: true}).length,
+            compare = queryable_items / all_items;
+
+        if (compare == 0){
+          return 'none_queryable'
+        }else if (compare == 1){
+          return 'all_queryable'
+        }else{
+          return 'some_querable'
+        };
+      },
+
+      getLimitedByParents: function(){
+        var that = this;
+        var json = that.toJSON(),
+            names_to_queryableify = [],
+            names_to_unqueryableify = [],
+            models_to_queryableify = [],
+            models_to_unqueryableify = [];
+
+        // Get each model
+        _.each(json, function(model){
+          var type_parents = model.type_parents;
+
+          // For each of its parents, it needs at least one in all of its categories.
+          // So, if it had one in account, two in transaction_type and one in is_total
+          // It would need at least three `true`s for it to be visible
+          // It other words, it needs a yes from each column.
+          var results = []
+          _.each(type_parents, function(required_parents, column_name, list){
+            var column_active_parents = active_parents[column_name];
+            var overlap = _.intersection(column_active_parents, required_parents);
+            if (overlap.length > 0){
+              results.push(0);
+            }else{
+              results.push(1);
+            };
+          });
+          var sum_results = _.reduce(results, function(memo, num){ return memo + num; }, 0);
+
+          if (sum_results > 0){
+           // Fail
+           names_to_unqueryableify.push(model.value)
+          }else{
+           // Pass
+           names_to_queryableify.push(model.value)
+          };
+
+        });
+
+        _.each(names_to_queryableify, function(name){
+          models_to_queryableify.push(that.where({ value: name }))
+        });
+
+        _.each(names_to_unqueryableify, function(name){
+          models_to_unqueryableify.push(that.where({ value: name }))
+        });
+
+        return [models_to_queryableify, models_to_unqueryableify];
+      }
+
     });
 
     var Column = Backbone.RelationalModel.extend({
@@ -371,7 +443,7 @@ $(function() {
       var parent_object_info = {
         table_name: 't2',
         column_name: column_info.name, // This line could be either column_name or column_info.name since the key is repeated, purely to keep it consistent with .type, use column_info.name
-        column_type: column_info.type
+        column_type: column_info.column_type
       };
       // Loop through each item_value and add that parent_object_info by _.extending()
       _.each(column_info.item_values, function(item_value){
@@ -389,8 +461,9 @@ $(function() {
     _.each(column_models, function(model, model_name, model_list){
 
       column_collections[model_name] = Backbone.Collection.extend({
-        model: ElementModel,
-        // TODO add collection methods
+
+        model: ElementModel
+
       });
       column_collections[model_name] = new column_collections[model_name](model);
     });
@@ -763,11 +836,10 @@ $(function() {
 
         render: function(){
 
-
           if (this.model.get('queryable')){
-            this.$el.show();
+            this.$el.css('display','list-item');
           }else{
-            this.$el.hide();
+            this.$el.css('display','none');
           };
 
           return this;
@@ -842,11 +914,11 @@ $(function() {
           this.$el.find('input').prop('checked', this.model.get('checked'));
 
           if (this.model.get('queryable')){
-            this.$el.show();
+            this.$el.css('display','list-item');
             this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('disabled', false)
           }else{
-            this.$el.hide();
-            var queryable_count = column_value_collections.item.getQueryableCount();
+            this.$el.css('display','none');
+            var queryable_count = column_collections.item.models[0].item_values.getQueryableCount();
             if (queryable_count == 'none_queryable'){
               this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('disabled', true);
             };
@@ -890,7 +962,7 @@ $(function() {
     var TypeParentCheckboxView = Backbone.View.extend({
         tagName: 'li',
 
-        template: _.template($('#Checkbox-view-templ').html()),
+        template: _.template( $('#Checkbox-view-templ').html() ),
 
         events:{
           'change': 'toggleItem',
@@ -912,7 +984,8 @@ $(function() {
 
         render: function(){
 
-          this.$el.find('input').prop('checked', this.model.get('checked'));
+          // console.log('rendering')
+          // this.$el.find('input').prop('checked', this.model.get('checked'));
           this.setParentLimits();
 
           // console.log(active_parents)
@@ -924,54 +997,99 @@ $(function() {
         },
 
         setParentLimits: function(){
-          // this.insertCheckedParents();
-          // this.setQueryablity();
+          this.insertCheckedParents();
+          this.setQueryablity();
         },
 
-        // insertCheckedParents: function(){
-        //   active_parents = {}; // Clear everything
-        //   _.each(column_value_collections, function(collection, column_name, collection_list){
-        //     var model_type = t2.columns[column_name].model;
-        //     if (model_type == 'TypeParentModel' || model_type == 'IsTotalModel'){
-        //       // Make an empty array for this type_parent, but only if it doesn't already exist
-        //       if (active_parents[column_name] == undefined){
-        //         active_parents[column_name] = []
-        //       };
-        //       var checked_models = collection.getQueryableAndChecked();
-        //       _.each(checked_models, function(elem){
-        //         var name_to_add;
-        //         if (elem.get('value') != '(blank)'){ // TODO handle blanks better
-        //           name_to_add = elem.get('value');
-        //         }else{
-        //           name_to_add = null;
-        //         };
-        //         active_parents[column_name].push(name_to_add)
-        //       });
-        //     }
-        //   });
-        // },
+        insertCheckedParents: function(){
+          active_parents = {}; // Clear everything
+          _.each(column_collections, function(collection, column_name, collection_list){
+            collection.each( function(column){
 
-        // setQueryablity: function(){
-        //   _.each(column_value_collections, function(collection, column_name, collection_list){
-        //     var model_type = t2.columns[column_name].model;
-        //     if (model_type == 'ItemModel'){
-        //       var models_to_alter = collection.getLimitedByParents(),
-        //           models_to_queryableify = models_to_alter[0],
-        //           models_to_unqueryableify = models_to_alter[1];
+              // Loop through the item_value collection on every column
+              var checked_models = column.item_values.getQueryableAndChecked(),
+                  column_type = column.get('column_type');
+
+              // Make an empty array for this type_parent, but only if it doesn't already exist from a previous item
+              // Essentially, we're dynamically adding keys to a hash, and we want those keys to initialize as empty arrays 
+              // So, if that key is a new key, make it an empty array, if not, then push stuff into it
+              if (active_parents[column_name] == undefined){
+                active_parents[column_name] = []
+              };
+              _.each(checked_models, function(checked_model){
+                var name_to_add;
+
+                // If the value string is blank, then push a `null` since that's what the database likes to see
+                if (checked_model.get('value') != '(blank)'){ 
+                  name_to_add = checked_model.get('value');
+                }else{
+                  name_to_add = null;
+                };
+                active_parents[column_name].push(name_to_add)
+              });
+
+            });
+
+            // var column_type = t2.columns[column_name].column_type;
+            // if (column_type == 'parent' || column_type == 'is_total'){
+            //   // Make an empty array for this type_parent, but only if it doesn't already exist
+            //   if (active_parents[column_name] == undefined){
+            //     active_parents[column_name] = []
+            //   };
+            //   var checked_models = collection.getQueryableAndChecked();
+            //   _.each(checked_models, function(elem){
+            //     var name_to_add;
+            //     if (elem.get('value') != '(blank)'){ // TODO handle blanks better
+            //       name_to_add = elem.get('value');
+            //     }else{
+            //       name_to_add = null;
+            //     };
+            //     active_parents[column_name].push(name_to_add)
+            //   });
+            // }
+          });
+        },
+
+        setQueryablity: function(){
+          // TODO for now this is only setting queryability to false on the item models
+          // some parents have parents also so they should be set to false like everyone else
+
+          column_collections.item.each( function(collection){
+            var models_to_alter = collection.item_values.getLimitedByParents(),
+                models_to_queryableify = models_to_alter[0],
+                models_to_unqueryableify = models_to_alter[1];
+
+            _.each(models_to_queryableify, function(elem){
+              elem[0].set('queryable', true);
+            });
+            _.each(models_to_unqueryableify, function(elem){
+              elem[0].set('queryable', false);
+            });
+            
+          })
+
+          // _.each(column_collections, function(collection, column_name, collection_list){
+          //   var column_type = collection.get('column_type');
+
+          //   console.log(collection)
+          //   if (column_type == 'item'){
+          //     var models_to_alter = collection.getLimitedByParents(),
+          //         models_to_queryableify = models_to_alter[0],
+          //         models_to_unqueryableify = models_to_alter[1];
 
 
-        //       _.each(models_to_queryableify, function(elem){
-        //         elem[0].set('queryable', true);
-        //       });
-        //       _.each(models_to_unqueryableify, function(elem){
-        //         elem[0].set('queryable', false);
-        //       });
-        //     };
-        //   });
-        // },
+          //     _.each(models_to_queryableify, function(elem){
+          //       elem[0].set('queryable', true);
+          //     });
+          //     _.each(models_to_unqueryableify, function(elem){
+          //       elem[0].set('queryable', false);
+          //     });
+          //   };
+          // });
+        },
 
         toggleItem: function(e){
-          this.model.toggle();
+          this.model.toggleChecked();
         },
 
         toggleQueryable: function(e){
@@ -1022,9 +1140,9 @@ $(function() {
 
 
           if (this.model.get('queryable')){
-            this.$el.show();
+            this.$el.css('display','list-item');
           }else{
-            this.$el.hide();
+            this.$el.css('display','none');
           };
 
           return this;
@@ -1336,12 +1454,12 @@ $(function() {
     // For every collection...
     _.each(column_collections, function(collection, collection_name, collection_list){
       // For each column
-      collection.each( function(elem){
+      collection.each( function(column){
 
         // If that column is checked
-        var queryable = elem.get('queryable');
+        var queryable = column.get('queryable');
         if (queryable){
-          queryable_columns.push( elem.get('name') );
+          queryable_columns.push( column.get('name') );
           // Loop through the item_value collection on every queryable column
           // elem.item_values.each( function(item_value){
           //   console.log(item_value.get('queryable'))
