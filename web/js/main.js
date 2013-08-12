@@ -822,14 +822,12 @@ $(function() {
         },
 
         render: function(){
-          this.$el.find('input').prop('checked', this.model.get('checked'));
+          this.$el.find('input').prop('checked', this.model.get('queryable'));
 
           return this;
         },
 
         toggleQueryable: function(e){
-
-          // e.preventDefault();
           this.model.toggleQueryable();
         }
     });
@@ -859,22 +857,35 @@ $(function() {
           _.extend(model_data, formatHelpers);
           var column_markup = this.template(model_data);
 
-          console.log(model_data)
-
           that.$el.html(column_markup)
 
+          var column_type = this.model.get('column_type');
 
-          var subview_type = this.pickWhichSubview( this.model.get('column_type') );
+          var subview_type = this.pickWhichSubview( column_type );
           var subview_collection = this.model.item_values;
           
           subview_collection.each( function(subview_data){
             var subview = new subview_type( {model: subview_data} );
             var subview_markup = subview.render().el;
-            that.$el.find('.qc-values-ctnr').append(subview_markup)
+            that.$el.find('.qc-values-ctnr').append(subview_markup);
+
+            // For the date and value views, add a second view that is the checkboxes that show / hide those limiters
+            if (column_type == 'date' || column_type == 'numeric'){
+              var subview_two;
+
+              if (column_type == 'date'){
+                subview_two = new DatefieldSelectorView( {model: subview_data} );
+              }else if (column_type == 'numeric') {
+                subview_two = new TextfieldSelectorView( {model: subview_data} );
+              };
+
+              var subview_two_markup = subview_two.render().el;
+              that.$el.find('.qc-col-controls').append(subview_two_markup);
+
+            };
+
           });
 
-          // console.log(subview)
-          // this.$el.html( this.template(model_data) );
         },
 
         render: function(){
