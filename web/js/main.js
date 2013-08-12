@@ -436,7 +436,8 @@ $(function() {
 
         defaults: {
           queryable: true,
-          filtered: false
+          filtered: false,
+          table_name: 't2' // TODO replace with dynamic once this builder works for all columns
         },
 
         relations: {
@@ -858,6 +859,8 @@ $(function() {
           _.extend(model_data, formatHelpers);
           var column_markup = this.template(model_data);
 
+          console.log(model_data)
+
           that.$el.html(column_markup)
 
 
@@ -911,7 +914,10 @@ $(function() {
         toggleFilters: function(e){
           $target = $(e.target);
           $target.toggleClass('active');
+          // The ul
           $target.parents('.qc-col-ctnr').find('.qc-values-ctnr').toggle();
+          // The controls
+          $target.parents('.qc-col-ctnr').find('.qc-col-controls').toggle();
 
           var current_filter_status = this.model.get('filtered');
           this.model.set('filtered', !current_filter_status);
@@ -1045,7 +1051,7 @@ $(function() {
       var column_group_string = wrapElsWithParens(column_group).join('\nAND \n');
       return 'WHERE ' + column_group_string;
     }else{
-      return ''
+      return '';
     }
 
   };
@@ -1142,7 +1148,7 @@ $(function() {
               }else if(majority_status == 'all_none'){
                 add_model = false;
                 // Don't include any of this column's info if all of them are selected or none are selected
-                // So don't addModels to nuthin'
+                // So don't add models to nuthin'
               };
             };
             

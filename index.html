@@ -377,15 +377,18 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
         <div class="qc-col-header">
           <div class="qc-col-name">
             <strong><%= name %></strong> <span><%= normalizeFormatType(type) %></span>
-            <% if ((type == 'TEXT' && name != 'date') || name == 'is_total') { %>
-              <!--<div class="qc-col-control-all"><input type="checkbox" class="qc-select-all" data-collection-name="<%= name %>" checked="true"></div>-->
-            <% } %>
           </div>
           <div class="qc-col-main-controls">
-            <span class="col-enabler"><label for="<%= name %>"><input type="checkbox" id="<%= name %>" class="qc-toggle-col" checked/> Enabled</label></span>
+            <span class="col-enabler"><label for="enabler-<%= makeKeyFromName(table_name, name) %>"><input type="checkbox" id="enabler-<%= makeKeyFromName(table_name, name) %>" class="qc-toggle-col" checked/> Enabled</label></span>
             <span class="col-filter" >Filters</span>
           </div>
-          <div class="qc-col-controls"></div>
+          <div class="qc-col-controls">
+            <% if ((type == 'TEXT' && name != 'date') || name == 'is_total') { %>
+              <div class="qc-col-control-all">
+                <label for="toggle-<%= makeKeyFromName(table_name, name) %>">Toggle all <input id="toggle-<%= makeKeyFromName(table_name, name) %>" type="checkbox" class="qc-select-all" data-collection-name="<%= name %>" checked="true"></label>
+              </div>
+            <% } %>
+          </div>
         </div>
         <ul class="qc-values-ctnr">
         </ul>

@@ -642,8 +642,9 @@ textarea:focus{
 }
 .qc-col-header{
   overflow: auto;
-  padding: 5px;
+  padding: 5px 5px 3px 5px;
   line-height: 15px;
+  font-size: 10px;
 }
 .qc-col-control-all{
   float: right;
@@ -715,7 +716,7 @@ textarea:focus{
 .qc-col-main-controls .col-filter{
   float: right;
 }
-.qc-col-main-controls span:hover, .qc-col-main-controls label:hover{
+.qc-col-main-controls span:hover,label:hover{
   cursor: pointer !important;
   cursor: hand !important;
 }
@@ -729,6 +730,9 @@ textarea:focus{
 }
 .qc-col-controls{
   line-height: 0px;
+  margin-top: 4px;
+  display: none;
+  color: #7E7E7E;
 }
 .query-checkbox-controller{
   height: 18px;
