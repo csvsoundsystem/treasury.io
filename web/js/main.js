@@ -20,14 +20,14 @@ $(function() {
 
 
   var default_queries = {
-    t1: 'SELECT date, account, transaction_type, is_total, item, today, mtd, fytd FROM t2 GROUP BY transaction_type, year_month',
-    t2: 'SELECT date, account, transaction_type, is_total, item, today, mtd, fytd FROM t2 GROUP BY transaction_type, year_month',
-    t3a: 'SELECT date, account, transaction_type, is_total, item, today, mtd, fytd FROM t2 GROUP BY transaction_type, year_month',
-    t3b: 'SELECT date, account, transaction_type, is_total, item, today, mtd, fytd FROM t2 GROUP BY transaction_type, year_month',
-    t3c: 'SELECT date, account, transaction_type, is_total, item, today, mtd, fytd FROM t2 GROUP BY transaction_type, year_month',
-    t4: 'SELECT date, account, transaction_type, is_total, item, today, mtd, fytd FROM t2 GROUP BY transaction_type, year_month',
-    t5: 'SELECT date, account, transaction_type, is_total, item, today, mtd, fytd FROM t2 GROUP BY transaction_type, year_month',
-    t6: 'SELECT date, account, transaction_type, is_total, item, today, mtd, fytd FROM t2 GROUP BY transaction_type, year_month'
+    t1: '1',
+    t2: '2',
+    t3a: '3',
+    t3b: '4',
+    t3c: '5',
+    t4: '6',
+    t5: '7',
+    t6: '8'
   }
 
   function bindHandlers(db_schema){
@@ -194,6 +194,10 @@ $(function() {
 
         $('.qc-table-bucket').hide();
         $('#qc-table-bucket-'+table_selector).show();
+        app.render(table_selector);
+        // column_collections[table_selector].each( function(col){
+        //   col.render();
+        // });
 
       });
 
@@ -991,7 +995,7 @@ $(function() {
 
     /********** A P P  V I E W ************/
     // The main view of the application
-    var App = Backbone.View.extend({
+    App = Backbone.View.extend({
 
         // Base the view on an existing element
         el: '#qb-table-builders',
@@ -1028,15 +1032,16 @@ $(function() {
             })
           });
 
-          that.render();
+          that.render(table_name_schema);
 
         },
 
-        render: function(){
+        render: function(t_name){
+          console.log('rendering')
 
           // BUILD JSON OBJECT FOR SQL STRING
-          var columns_and_where_filters = buildQueryJson(column_collections[table_name_schema]);
-          var sql_string = JsonToSql(columns_and_where_filters, table_name_schema);
+          var columns_and_where_filters = buildQueryJson(column_collections[t_name]);
+          var sql_string = JsonToSql(columns_and_where_filters, t_name);
 
           loadUiWithSqlString(sql_string)
 
@@ -1055,7 +1060,7 @@ $(function() {
 
     
 
-    new App();
+    window.app = new App();
 
   };
 
