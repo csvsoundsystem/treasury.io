@@ -18,6 +18,18 @@ $(function() {
       $qb_table_builders         = $('#qb-table-builders'),
       $help_hover                = $('#qb-help-text-hover');
 
+
+  var default_queries = {
+    t1: 'SELECT date, account, transaction_type, is_total, item, today, mtd, fytd FROM t2 GROUP BY transaction_type, year_month',
+    t2: 'SELECT date, account, transaction_type, is_total, item, today, mtd, fytd FROM t2 GROUP BY transaction_type, year_month',
+    t3a: 'SELECT date, account, transaction_type, is_total, item, today, mtd, fytd FROM t2 GROUP BY transaction_type, year_month',
+    t3b: 'SELECT date, account, transaction_type, is_total, item, today, mtd, fytd FROM t2 GROUP BY transaction_type, year_month',
+    t3c: 'SELECT date, account, transaction_type, is_total, item, today, mtd, fytd FROM t2 GROUP BY transaction_type, year_month',
+    t4: 'SELECT date, account, transaction_type, is_total, item, today, mtd, fytd FROM t2 GROUP BY transaction_type, year_month',
+    t5: 'SELECT date, account, transaction_type, is_total, item, today, mtd, fytd FROM t2 GROUP BY transaction_type, year_month',
+    t6: 'SELECT date, account, transaction_type, is_total, item, today, mtd, fytd FROM t2 GROUP BY transaction_type, year_month'
+  }
+
   function bindHandlers(db_schema){
       /* NAV MENU BEHAVIOR */
       $('#navmenu').scrollSpy()
@@ -178,13 +190,10 @@ $(function() {
       $builder_table_select.change( function(){
         $this = $(this);
         disableFirstChoice($this);
-        var table_selector = $this.val(),
-            table_schema   = db_schema.tables[table_selector],
-            table_cols     = table_schema.columns;
-            // table_desc = table_schema.desc;
+        var table_selector = $this.val();
 
-        $('.qb-table-builder').removeClass('queryable-table');
-        $('#qb-table-builder-'+table_selector).addClass('queryable-table');
+        $('.qc-table-bucket').hide();
+        $('#qc-table-bucket-'+table_selector).show();
 
       });
 
@@ -264,8 +273,15 @@ $(function() {
        }
       };
 
-  function initQueryBuilderBackbone(t2){
+  function makeQueryBuilders(db_schema){
+    var tables = db_schema.tables;
+    // console.log(tables)
+    _.each(db_schema.tables, function(table_data, table_name_schema, table_list){
+      makeTableColumns(table_data, table_name_schema)
+    });
+  };
 
+  function makeTableColumns(table, table_name_schema){
     var active_parents = {};
 
 
@@ -437,7 +453,7 @@ $(function() {
         defaults: {
           queryable: true,
           filtered: false,
-          table_name: 't2' // TODO replace with dynamic once this builder works for all columns
+          table_name: table_name_schema // TODO replace with dynamic once this builder works for all columns
         },
 
         relations: {
@@ -453,12 +469,12 @@ $(function() {
     var column_models = {};
 
     // Instantiate column models
-    _.each(t2.columns, function(column_info, column_name, columns){
+    _.each(table.columns, function(column_info, column_name, columns){
 
       // To save space, not every item has its parent table and colum information
       // These are those values to add
       var parent_object_info = {
-        table_name: 't2',
+        table_name: table_name_schema,
         column_name: column_info.name, // This line could be either column_name or column_info.name since the key is repeated, purely to keep it consistent with .type, use column_info.name
         column_type: column_info.column_type
       };
@@ -473,16 +489,24 @@ $(function() {
     });
 
     // Instantiate column collections
-    var column_collections = {};
+    var column_collections = {
+      t1: {},
+      t2: {},
+      t3a: {},
+      t3b: {},
+      t3c: {},
+      t4: {},
+      t5: {},
+      t6: {},
+    };
     // Create a collection object and then creates an instance of that collection object with a model
     _.each(column_models, function(model, model_name, model_list){
-
-      column_collections[model_name] = Backbone.Collection.extend({
+      column_collections[table_name_schema][model_name] = Backbone.Collection.extend({
 
         model: ElementModel
 
       });
-      column_collections[model_name] = new column_collections[model_name](model);
+      column_collections[table_name_schema][model_name] = new column_collections[table_name_schema][model_name](model);
     });
 
 
@@ -600,7 +624,7 @@ $(function() {
             this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('disabled', false)
           }else{
             this.$el.css('display','none');
-            var queryable_count = column_collections.item.models[0].item_values.getQueryableCount();
+            var queryable_count = column_collections[table_name_schema].item.models[0].item_values.getQueryableCount();
             if (queryable_count == 'none_queryable'){
               this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('disabled', true);
             };
@@ -684,7 +708,7 @@ $(function() {
 
         insertCheckedParents: function(){
           active_parents = {}; // Clear everything
-          _.each(column_collections, function(collection, column_name, collection_list){
+          _.each(column_collections[table_name_schema], function(collection, column_name, collection_list){
             collection.each( function(column){
 
               // Loop through the item_value collection on every column
@@ -718,7 +742,17 @@ $(function() {
           // TODO for now this is only setting queryability to false on the item models
           // some parents have parents also so they should be set to false like everyone else
 
-          column_collections.item.each( function(collection){
+          var cols = {
+            t1: 'account',
+            t2: 'item',
+            t3a: 'item',
+            t3b: 'item',
+            t3c: 'item',
+            t4: 'classification',
+            t5: 'balance_transactions',
+            t6: 'refund_type'
+          };
+          column_collections[table_name_schema][cols[table_name_schema]].each( function(collection){
             var models_to_alter = collection.item_values.getLimitedByParents(),
                 models_to_queryableify = models_to_alter[0],
                 models_to_unqueryableify = models_to_alter[1];
@@ -916,7 +950,7 @@ $(function() {
           var collection_name = $checkbox.data('collection-name');
           var checked_state = $checkbox.prop('checked');
 
-          column_collections[collection_name].each(function(collection){
+          column_collections[table_name_schema][collection_name].each(function(collection){
             collection.item_values.each( function(elem){
               elem.set('checked', checked_state);
             })
@@ -968,10 +1002,12 @@ $(function() {
 
           var that = this;
 
+          var bucketMarkupFactory = _.template(this.template),
+              bucket_markup = bucketMarkupFactory( {table_name: table_name_schema} )
           // Load the bucket divs for each type of column
-          that.$el.html( this.template );
+          that.$el.append( bucket_markup )
 
-          _.each(column_collections, function(collection, collection_name, collections){
+          _.each(column_collections[table_name_schema], function(collection, collection_name, collections){
             // Listen for the change event on the collection.
             // This is equivalent to listening on every one of the 
             // items objects in the collection.
@@ -988,7 +1024,7 @@ $(function() {
               var column_view = new ColumnView( {model: column_data} );
 
               // Append this column to the appropriate column bucket
-              that.$el.find('#qc-col-bucket-' + column_type).append( column_view.render().el );
+              that.$el.find('#qc-col-bucket-' + table_name_schema + '-' + column_type).append( column_view.render().el );
             })
           });
 
@@ -997,9 +1033,10 @@ $(function() {
         },
 
         render: function(){
+
           // BUILD JSON OBJECT FOR SQL STRING
-          var columns_and_where_filters = buildQueryJson(column_collections);
-          var sql_string = JsonToSql(columns_and_where_filters);
+          var columns_and_where_filters = buildQueryJson(column_collections[table_name_schema]);
+          var sql_string = JsonToSql(columns_and_where_filters, table_name_schema);
 
           loadUiWithSqlString(sql_string)
 
@@ -1033,20 +1070,21 @@ $(function() {
     enableBuilderBtnsAndChartOptions();
   };
 
-  function JsonToSql(columns_and_where_filters){
+  function JsonToSql(columns_and_where_filters, table_name){
     var column_names = columns_and_where_filters[0],
         filters = columns_and_where_filters[1];
 
-    var select_string = buildSelectQuery(column_names),
-        where_string = '',
+    // var select_string = buildSelectQuery(column_names),
+    //     where_string = default_queries.table_name.,
         // where_string = buildWhereQuery(filters),
-        query = select_string + '\n' + where_string;
+        // query = select_string + '\n' + where_string;
+    var query = default_queries[table_name];
 
     return query
   };
 
   function buildSelectQuery(column_names){
-    var select_string = 'SELECT ' + column_names.join(', ') + '\nFROM\nt2'
+    var select_string = 'SELECT ' + column_names.join(', ') + '\nFROM\n'+table_name_schema
     return select_string
   };
 
@@ -1113,7 +1151,7 @@ $(function() {
     };
   };
 
-  function buildQueryJson(column_collections){
+  function buildQueryJson(this_col_collection){
     var queryable_models,
         checked_models,
         column_obj = {},
@@ -1160,7 +1198,7 @@ $(function() {
 
 
     // For every collection...
-    _.each(column_collections, function(collection, collection_name, collection_list){
+    _.each(this_col_collection, function(collection, collection_name, collection_list){
       // For each column
       collection.each( function(column){
 
@@ -1431,7 +1469,7 @@ $(function() {
 
   $.get('web/table_schema/db_schema.json', function(db_schema) {
 
-    initQueryBuilderBackbone(db_schema.tables.t2);
+    makeQueryBuilders(db_schema);;
     // drawQueryBuilders(db_schema);
     bindHandlers(db_schema);
   });

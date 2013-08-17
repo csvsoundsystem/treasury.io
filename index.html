@@ -359,17 +359,19 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
     <div id="qb-help-text-hover"></div>
 
     <script type='text/template' id="qc-table-col-buckets">
-      <div class="qc-col-bucket" id="qc-col-bucket-date">
-        <div class="qc-col-bucket-hed">Date</div>
-      </div>
-      <div class="qc-col-bucket" id="qc-col-bucket-parent">
-        <div class="qc-col-bucket-hed">Categories</div>
-      </div>
-      <div class="qc-col-bucket" id="qc-col-bucket-item">
-        <div class="qc-col-bucket-hed">Items</div>
-      </div>
-      <div class="qc-col-bucket" id="qc-col-bucket-numeric">
-        <div class="qc-col-bucket-hed">Values</div>
+      <div id="qc-table-bucket-<%= table_name %>" class="qc-table-bucket">
+        <div class="qc-col-bucket" id="qc-col-bucket-<%= table_name %>-date">
+          <div class="qc-col-bucket-hed">Date</div>
+        </div>
+        <div class="qc-col-bucket" id="qc-col-bucket-<%= table_name %>-parent">
+          <div class="qc-col-bucket-hed">Categories</div>
+        </div>
+        <div class="qc-col-bucket" id="qc-col-bucket-<%= table_name %>-item">
+          <div class="qc-col-bucket-hed">Items</div>
+        </div>
+        <div class="qc-col-bucket" id="qc-col-bucket-<%= table_name %>-numeric">
+          <div class="qc-col-bucket-hed">Values</div>
+        </div>
       </div>
     </script>
 
