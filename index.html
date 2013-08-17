@@ -95,12 +95,12 @@
              <!--  <div id="rqb">&nbsp;</div> -->
               <div id="query-string-wrapper" class="builder-item">
                 <fieldset>
-                  <span>SQL Query, view as:* </span>
+<!--                   <span>SQL Query, view as:* </span>
                   <span id="query-encoding-options">
                     <input type="radio" name="encoding" value="false" checked> Plain-text 
                     <input type="radio" name="encoding" value="true"> URL-Encoded
                  </span>
-                  <div id="query-string">
+ -->                  <div id="query-string">
                     <textarea id="sql" class="placeholder-textfield" title="Select from the dropdown menu above or type your own query..."></textarea>
                   </div>
                 </fieldset>
@@ -379,13 +379,11 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
             <strong><%= name %></strong> <span><%= normalizeFormatType(type) %></span>
           </div>
           <div class="qc-col-main-controls">
-            <span class="col-enabler"><label for="enabler-<%= makeKeyFromName(table_name, name) %>"><input type="checkbox" id="enabler-<%= makeKeyFromName(table_name, name) %>" class="qc-toggle-col" checked/> Enabled</label></span>
-            <span class="col-filter" >Filters</span>
+            <span class="col-filter" >Values</span>
           </div>
           <div class="qc-col-controls">
             <% if ((type == 'TEXT' && name != 'date') || name == 'is_total') { %>
               <div class="qc-col-control-all">
-                <label for="toggle-<%= makeKeyFromName(table_name, name) %>">Toggle all <input id="toggle-<%= makeKeyFromName(table_name, name) %>" type="checkbox" class="qc-select-all" data-collection-name="<%= name %>" checked="true"></label>
               </div>
             <% } %>
           </div>
@@ -396,21 +394,18 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
 
     <script type="text/template" id="Checkbox-view-templ">
       <% if (column_name != 'is_total' ) { %>
-        <label for="<%= makeKeyFromName(table_name, value) %>"><input type="checkbox" id="<%= makeKeyFromName(table_name, value) %>" checked/> <%= value %> <span class="help-text-flag" data-help-text="help-text">?</span></label>
+        <%= value %> <span class="help-text-flag" data-help-text="help-text">?</span>
       <% } else { %>
-        <label for="<%= makeKeyFromName(column_name, table_name) %>-<%= formatBinaryToText(value) %>"><input type="checkbox" value="<%= value %>" id="<%= makeKeyFromName(column_name, table_name) %>-<%= formatBinaryToText(value) %>" checked/> <%= value %> (<%= formatBinaryToText(value) %>) <span class="help-text-flag" data-help-text="help-text">?</span></label>
+        <%= value %> (<%= formatBinaryToText(value) %>) <span class="help-text-flag" data-help-text="help-text">?</span>
       <% } %>
     </script>
 
     <script type="text/template" id="OutputNumber-view-templ">
-      <label class="qc-textfield-option" for="<%= makeKeyFromName(column_name, table_name) %>-<%= comparinatorToText(comparinator) %>">
-        <span class="textbox-label-text"><%= comparinatorToText(comparinator) %>:</span> <input type="text" value="<%= value %>" id="<%= makeKeyFromName(column_name, table_name) %>-<%= comparinatorToText(comparinator) %>"/>
-      </label>
+      <span class="textbox-label-text"><%= comparinatorToText(comparinator) %>:</span> <%= value %>
     </script>
 
     <script type="text/template" id="TextfieldSelector-view-templ">
-      <label for="<%= makeKeyFromName(column_name, table_name) %>-<%= comparinatorToText(comparinator) %>-select">
-        <input type="checkbox" value="<%= comparinator %>" id="<%= makeKeyFromName(column_name, table_name) %>-<%= comparinatorToText(comparinator) %>-select" checked /> <%= comparinatorToText(comparinator) %></label>
+      <%= comparinatorToText(comparinator) %>
     </script>
 
     <script src="web/js/main.js"></script>

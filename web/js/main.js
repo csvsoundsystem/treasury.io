@@ -492,10 +492,10 @@ $(function() {
 
         template: _.template($('#OutputNumber-view-templ').html()),
 
-        events:{
-          'keyup': 'updateValue',
-          'change': 'updateValue'
-        },
+        // events:{
+        //   'keyup': 'updateValue',
+        //   'change': 'updateValue'
+        // },
 
         initialize: function(){
 
@@ -539,9 +539,9 @@ $(function() {
 
         template: _.template($('#TextfieldSelector-view-templ').html()),
 
-        events:{
-          'change': 'toggleQueryable'
-        },
+        // events:{
+        //   'change': 'toggleQueryable'
+        // },
 
         initialize: function(){
 
@@ -573,11 +573,11 @@ $(function() {
 
         template: _.template($('#Checkbox-view-templ').html()),
 
-        events:{
-          'change': 'toggleItem',
-          'mouseover .help-text-flag': 'showHelpText',
-          'mouseleave .help-text-flag': 'hideHelpText'
-        },
+        // events:{
+        //   'change': 'toggleItem',
+        //   'mouseover .help-text-flag': 'showHelpText',
+        //   'mouseleave .help-text-flag': 'hideHelpText'
+        // },
 
         initialize: function(){
 
@@ -646,11 +646,11 @@ $(function() {
 
         template: _.template( $('#Checkbox-view-templ').html() ),
 
-        events:{
-          'change': 'toggleItem',
-          'mouseover .help-text-flag': 'showHelpText',
-          'mouseleave .help-text-flag': 'hideHelpText'
-        },
+        // events:{
+        //   'change': 'toggleItem',
+        //   'mouseover .help-text-flag': 'showHelpText',
+        //   'mouseleave .help-text-flag': 'hideHelpText'
+        // },
 
         initialize: function(){
 
@@ -767,9 +767,9 @@ $(function() {
 
         template: _.template($('#OutputNumber-view-templ').html()),
 
-        events:{
-          'keyup': 'updateValue'
-        },
+        // events:{
+        //   'keyup': 'updateValue'
+        // },
 
         initialize: function(){
 
@@ -805,9 +805,9 @@ $(function() {
 
         template: _.template($('#TextfieldSelector-view-templ').html()),
 
-        events:{
-          'change': 'toggleQueryable'
-        },
+        // events:{
+        //   'change': 'toggleQueryable'
+        // },
 
         initialize: function(){
 
@@ -840,9 +840,9 @@ $(function() {
         template: _.template( $('#ColumnView-templ').html() ),
 
         events: {
-          'change .qc-select-all': 'checkUncheckAll',
+          // 'change .qc-select-all': 'checkUncheckAll',
           'click .col-filter': 'toggleFilters',
-          'change .qc-toggle-col': 'toggleColumn'
+          // 'change .qc-toggle-col': 'toggleColumn'
         },
 
         initialize: function(){
@@ -869,20 +869,20 @@ $(function() {
             var subview_markup = subview.render().el;
             that.$el.find('.qc-values-ctnr').append(subview_markup);
 
-            // For the date and value views, add a second view that is the checkboxes that show / hide those limiters
-            if (column_type == 'date' || column_type == 'numeric'){
-              var subview_two;
+            // // For the date and value views, add a second view that is the checkboxes that show / hide those limiters
+            // if (column_type == 'date' || column_type == 'numeric'){
+            //   var subview_two;
 
-              if (column_type == 'date'){
-                subview_two = new DatefieldSelectorView( {model: subview_data} );
-              }else if (column_type == 'numeric') {
-                subview_two = new TextfieldSelectorView( {model: subview_data} );
-              };
+            //   if (column_type == 'date'){
+            //     subview_two = new DatefieldSelectorView( {model: subview_data} );
+            //   }else if (column_type == 'numeric') {
+            //     subview_two = new TextfieldSelectorView( {model: subview_data} );
+            //   };
 
-              var subview_two_markup = subview_two.render().el;
-              that.$el.find('.qc-col-controls').append(subview_two_markup);
+            //   var subview_two_markup = subview_two.render().el;
+            //   that.$el.find('.qc-col-controls').append(subview_two_markup);
 
-            };
+            // };
 
           });
 
@@ -992,6 +992,8 @@ $(function() {
             })
           });
 
+          that.render();
+
         },
 
         render: function(){
@@ -1036,7 +1038,8 @@ $(function() {
         filters = columns_and_where_filters[1];
 
     var select_string = buildSelectQuery(column_names),
-        where_string = buildWhereQuery(filters),
+        where_string = '',
+        // where_string = buildWhereQuery(filters),
         query = select_string + '\n' + where_string;
 
     return query
@@ -1168,6 +1171,8 @@ $(function() {
           var column_name = column.get('name');
           queryable_columns.push( column_name );
 
+          // The rest of this is for the WHERE query so we can skip
+          /*
           if (filtered){
             // Loop through the item_value collection on every queryable column
             column_obj = {}
@@ -1211,7 +1216,8 @@ $(function() {
               filters.push(column_obj);
             };
             
-          }
+          };
+          */
         };
        
       });
