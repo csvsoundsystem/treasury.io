@@ -28,7 +28,8 @@ $(function() {
     t4: '6',
     t5: '7',
     t6: '8'
-  }
+  },
+  tables = {};
 
   function bindHandlers(db_schema){
       /* NAV MENU BEHAVIOR */
@@ -278,7 +279,9 @@ $(function() {
       };
 
   function makeQueryBuilders(db_schema){
-    var tables = db_schema.tables;
+    _.each(db_schema.tables, function(table, table_name, table_list){
+      tables[table_name] = table;
+    });
     // console.log(tables)
     var collections = {
       t1: {},
@@ -291,6 +294,8 @@ $(function() {
       t6: {}
     }
     makeTableColumns(tables.t1, 't1', collections);
+
+    // TODO dynamically add column names to that section in the DOM
 
     // _.each(db_schema.tables, function(table_data, table_name_schema, table_list){
     //   makeTableColumns(table_data, table_name_schema)
@@ -335,6 +340,18 @@ $(function() {
     });
 
     // Step two
+    // Create our platonic collection
+    var ElementCollection = Backbone.Collection.extend({
+      // Will hold objects of the ElementModel model
+      model: ElementModel,
+
+      // Return an array only with the checked services
+      getQueryableAndChecked: function(){
+          return this.where({queryable:true, checked:true});
+      }
+    });
+
+    // Step three
     // Make a collection of instances of this model based on how many checkbox groups we'll have in each question
     // Each checkbox group will be a collection
     // We should keep track of all of these collections though
@@ -364,13 +381,13 @@ $(function() {
 
       // Make collections
       // Create a platonic collection for this column
-      collections[t_name][column_info.name] = Backbone.Collection.extend({ model: ElementModel }); // Maybe add collection methods here
+      // collections[t_name][column_info.name] = Backbone.Collection.extend({ model: ElementModel }); // Maybe add collection methods here
       // Instantiate it with data
-      collections[t_name][column_info.name] = new collections[t_name][column_info.name](models)
+      collections[t_name][column_info.name] = new ElementCollection(models)
 
     });
 
-    // Step three
+    // Step four
     // Create the platonic forms of our views
 
     // Create the platonic CheckboxView
@@ -452,10 +469,10 @@ $(function() {
 
         template: _.template($('#OutputNumber-view-templ').html()),
 
-        // events:{
-        //   'keyup': 'updateValue',
-        //   'change': 'updateValue'
-        // },
+        events:{
+          'keyup': 'updateValue',
+          'change': 'updateValue'
+        },
 
         initialize: function(){
 
@@ -514,7 +531,7 @@ $(function() {
         this.$el.html( this.template(model_data) );
         // this.$el.addClass('query-checkbox-controller');
 
-          // this.listenTo(this.model, 'change', this.render);
+        // this.listenTo(this.model, 'change', this.updateQueryState);
       },
 
       render: function(){
@@ -531,7 +548,7 @@ $(function() {
   });  
 
 
-  // Step four
+  // Step five
   // This is where it all comes together
   // Our app will loop through this table's collections and create the appropriate view of that element
   // TODO add a siwtch so that it selects the proper view depending on whether it's a date column or a checkbox column
@@ -551,6 +568,9 @@ $(function() {
       main_context.$el.find('.sentence-option').append( main_context.template );
 
       _.each(collections[t_name], function(collection, collection_name, collection_list){
+
+        main_context.listenTo(collection, 'change', main_context.updateQueryState);
+
         collection.each( function(item){
           if (collection_name == 'date'){
             var v_el_date_select = new DatefieldSelectorView({model: item}),
@@ -560,16 +580,29 @@ $(function() {
                 value_item  = v_el_date_value.render().el;
 
             var sentence_wire = t_name + '-' + collection_name + '-select';
-            main_context.$el.find('.sentence-option.' + sentence_wire + ' .sentence-group').append( select_item );
+            this.$el.find('.sentence-option.' + sentence_wire + ' .sentence-group').append( select_item );
             
             sentence_wire = t_name + '-' + collection_name + '-value';
-            main_context.$el.find('.sentence-option.' + sentence_wire + ' .sentence-group').append( value_item );
+            this.$el.find('.sentence-option.' + sentence_wire + ' .sentence-group').append( value_item );
             
           }
 
         }, main_context); // Make sure you give it the right context of this, whatever the hell that is.
       });
+    },
+
+    updateQueryState: function(model){
+      var this_table_name = model.get('table_name');
+
+      // Build JSON object from collection attributes
+      var columns_and_where_filters = buildQueryJson(collections[this_table_name]);
+      // Build SQL string from JSON object
+      var sql_string = JsonToSql(columns_and_where_filters, this_table_name);
+      console.log(sql_string)
+      loadUiWithSqlString(sql_string)
+
     }
+
   });
 
     // The all-important one line that runs the app.
@@ -1418,22 +1451,19 @@ $(function() {
     enableBuilderBtnsAndChartOptions();
   };
 
-  function JsonToSql(columns_and_where_filters, table_name){
-    var column_names = columns_and_where_filters[0],
-        filters = columns_and_where_filters[1];
+  function JsonToSql(where_filters, table_name){
 
-    // var select_string = buildSelectQuery(column_names),
-    //     where_string = default_queries.table_name.,
-        // where_string = buildWhereQuery(filters),
-        // query = select_string + '\n' + where_string;
-    var query = default_queries[table_name];
+    var select_string     = buildSelectQuery(table_name),
+        where_string      = buildWhereQuery(where_filters),
+        query             = select_string + '\n' + where_string;
 
     return query
   };
 
-  function buildSelectQuery(column_names){
-    var select_string = 'SELECT ' + column_names.join(', ') + '\nFROM\n'+table_name_schema
-    return select_string
+  function buildSelectQuery(table_name){
+    // Get rid of footnotes, which will be
+    var select_string = 'SELECT ' + tables[table_name].all_cols.join(', ').replace(', footnote', '') + '\nFROM\n' + table_name;
+    return select_string;
   };
 
   function filtersExist(filters){
@@ -1502,9 +1532,7 @@ $(function() {
   function buildQueryJson(this_col_collection){
     var queryable_models,
         checked_models,
-        column_obj = {},
-        filters = [], // The structure of this object will be an array of objects that are arrays of objects. Fun, right?
-        queryable_columns = [];
+        filters = []; // The structure of this object will be an array of objects that are arrays of objects. Fun, right?
 
         /*  
           var filters = [
@@ -1545,21 +1573,39 @@ $(function() {
         */
 
 
-    // For every collection...
+    // For every collection in the table
+    var column_obj = {};
     _.each(this_col_collection, function(collection, collection_name, collection_list){
       // For each column
-      collection.each( function(column){
+      var queryable_and_checked_models;
 
-        // If that column is checked
-        var queryable = column.get('queryable');
-        var filtered = column.get('filtered');
-        if (queryable){
-          var column_name = column.get('name');
-          queryable_columns.push( column_name );
+      column_obj[collection_name] = [];
+
+      if (collection_name != 'item'){
+
+        queryable_and_checked_models = collection.getQueryableAndChecked();
+
+        _.each(queryable_and_checked_models, function(elem, ind){
+
+          var value_obj = {};
+          value_obj['value'] = elem.get('value');
+          value_obj['comparinator'] = elem.get('comparinator');
+
+          column_obj[collection_name].push(value_obj);
+
+        });
+
+        filters.push(column_obj);      
+      }else{
+
+      };
+
+
+
+      // collection.each( function(column){
 
           // The rest of this is for the WHERE query so we can skip
           /*
-          if (filtered){
             // Loop through the item_value collection on every queryable column
             column_obj = {}
 
@@ -1602,14 +1648,12 @@ $(function() {
               filters.push(column_obj);
             };
             
-          };
           */
-        };
        
-      });
+      // });
     });
 
-    return [queryable_columns, filters];
+    return filters;
 
   };
 

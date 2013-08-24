@@ -544,7 +544,7 @@ textarea:focus{
 .chart-builder-option-box{
   display: inline-block;
   margin-right: 20px;
-  float:left;
+  /*float:left;*/
   line-height:20px;
   max-width: 170px;
 }
@@ -562,7 +562,7 @@ textarea:focus{
 .chart-builder-submit{
   margin-top:5px;
   max-width: 170px;
-  float:left;
+  /*float:left;*/
   margin-right: 28px; /* Helps keep this inline with the radio buttons when window is resized */
 }
 .chart-builder-submit .btn{
@@ -646,6 +646,20 @@ padding: 0 6px 0 5px;
   cursor: pointer;
   cursor: hand;
 }
+/* BEGIN QUERY VIEWER CODE */
+#query-viewers-wrapper{
+  width: 100%;
+  overflow: visible;
+}
+.query-viewer{
+  width: 49%;
+  background-color: #f0c;
+  display: inline-block;
+}
+.query-preview-button-wrapper{
+  text-align: right;
+}
+/* end query viewer coe */
 
 /*#qb-table-builders{
   width:100%;

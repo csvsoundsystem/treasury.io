@@ -118,13 +118,65 @@
                   </div>
                 </fieldset>
               </div>
+              <div id="query-viewers-wrapper" class="builder-item">
+                <div id="query-preview-wrapper" class="query-viewer">
+                  <div class="query-preview-button-wrapper">
+                    <!-- BUTTON -->
+                    <button type="button" class="buttn disabled piwik_ignore" id="download-browser">Preview query*</button>
+                    <!-- CANVAS -->
+                    <div id="results-container" class="section" style="display: none;">
+                      <div class="show-hide-table" data-state="hide">Hide preview table</div>
+                      <div id="results-table-container">
+                        <div id="results-table-holder">
+                          <table id="results" cellspacing="5"></table>
+                        </div>
+                      </div>
+                    </div>                    
+                  </div>
+
+                </div>
+                <div id="query-chart-wrapper" class="query-viewer">
+                  <!-- BUTTON  -->
+                  <div class="query-preview-button-wrapper">
+                    <button type="button" class="buttn disabled">View chart</button>
+                  </div>
+                  <!-- OPTIONS -->
+                  <div id="chart-builder-options" class="disabled">
+                    <div class="chart-builder-title">Chart options</div>
+                    <div class="chart-builder-option-box">
+                      <p class="chart-builder-option-box-title">Which fields hold the...</p>
+                      <input id="cb-series-col" type="text" class="placeholder-textfield chart-builder-input-text" title="Series names ">
+                      <input id="cb-x-col" type="text" class="placeholder-textfield chart-builder-input-text" title="X-axis data ">
+                      <input id="cb-y-col" type="text" class="placeholder-textfield chart-builder-input-text" title="Y-axis data ">
+                      <span class="clearfix"></span>
+                    </div>
+                    <div class="chart-builder-option-box">
+                      <p class="chart-builder-option-box-title">The chart's x-axis holds...</p>
+                      <input type="radio" name="chart-type" value="datetime" checked> <span class="radio-btn-text"><span class="radio-btn-fixewidth">Dates</span> (line graph)</span><br/>
+                      <input type="radio" name="chart-type" value="categorical"> <span class="radio-btn-text"><span class="radio-btn-fixed-wid">Categories</span> (bar graph)</span>
+                    </div>
+                    <div class="chart-builder-submit">
+                      <!-- <div class="btn disabled">View chart</div> -->
+                    </div>
+                  </div>
+                  <!-- CANVAS -->
+                  <div id="chart-container" class="section" style="display: none;">
+                    <div class="show-hide-chart" data-state="hide">Hide chart</div>
+                    <div id="chart-canvas"></div>
+                    <div id="hover-templ"></div>
+                  </div>
+
+                </div>
+              </div>
+
               <div id="builder-btns" class="btn-group builder-item">
                 <div id="builder-btns-overlay"></div>
-                <span class="btn disabled piwik_ignore" id="download-browser">Preview query**</span>
+                <!-- <span class="btn disabled piwik_ignore" id="download-browser">Preview query**</span> -->
                 <a class="btn disabled piwik_ignore" id="download-json" target="_blank" href="#">View JSON</a>
                 <span class="btn disabled piwik_ignore download-as-csv-btn" id="download-csv" data-query-link="">Download CSV</span>
                 <div class="clearfix"></div>
-                <div id="chart-builder-options" style="display:none;" class="disabled">
+                
+<!--                 <div id="chart-builder-options" class="disabled">
                   <div class="chart-builder-title">Chart options</div>
                   <div class="chart-builder-option-box">
                     <p class="chart-builder-option-box-title">Which fields hold the...</p>
@@ -139,9 +191,10 @@
                     <input type="radio" name="chart-type" value="categorical"> <span class="radio-btn-text"><span class="radio-btn-fixed-wid">Categories</span> (bar graph)</span>
                   </div>
                   <div class="chart-builder-submit">
-                    <div class="btn disabled">View chart</div>
+                     <div class="btn disabled">View chart</div>
                   </div>
-                </div>
+                </div> -->
+
               </div>
             </div>
 <!--             <div id="query-asterisk-field">
@@ -151,20 +204,20 @@
             </div>
  -->        
       </div>
-      <div id="chart-container" class="section" style="display: none;">
+<!--       <div id="chart-container" class="section" style="display: none;">
         <div class="show-hide-chart" data-state="hide">Hide chart</div>
         <div id="chart-canvas"></div>
         <div id="hover-templ"></div>
 
       </div>
-      <div id="results-container" class="section" style="display: none;">
+ --><!--       <div id="results-container" class="section" style="display: none;">
         <div class="show-hide-table" data-state="hide">Hide preview table</div>
         <div id="results-table-container">
           <div id="results-table-holder">
             <table id="results" cellspacing="5"></table>
           </div>
         </div>
-      </div>
+      </div> -->
           <div class="section" id="about">
             <h2><a href="#about"><span class="bullet">$</span> <span class="internal-link">About</span></a></h2>
             <!-- Copied from http://www.bdatafest.computationalreporting.com/projects/fms-symphony -->
