@@ -1,0 +1,1 @@
+SELECT x1.item,x1.date, x2.today-x1.today as net FROM t2 AS x1 JOIN t2 as x2 ON x1.item=x2.item WHERE x1.date=x2.date AND x1.transaction_type='withdrawal' and x2.transaction_type='deposit' and x1.date='2013-06-27'

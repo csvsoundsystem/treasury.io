@@ -63,16 +63,16 @@
             <div id="subhead">A daily data feed for the U.S. Treasury</div>
         </div>
         <nav id="navmenu">
-            <ul id="menu">
-                <li class="nav-item" id="logo"><a class="btn" href="#hero"><img src="web/images/flag.png"></a></li>
-                <li class="nav-item active"><a class="btn" href="#query">Query</a></li>
-                <li class="nav-item"><a class="btn" href="#about">About</a></li>
-                <li class="nav-item"><a class="btn" href="#documentation">The Docs</a></li>
-                <li class="nav-item"><a class="btn" href="#usage">Usage</a></li>
-                <li class="nav-item"><a class="btn" href="#libraries">Libraries</a></li>
-                <li class="nav-item"><a class="btn" href="#the-robot">The Robot</a></li>
-                <li class="nav-item"><a class="btn" href="#contact">Contact</a></li>
-            <ul>
+          <ul id="menu">
+            <li class="nav-item" id="logo"><a class="btn" href="#hero"><img src="web/images/flag.png"></a></li>
+            <li class="nav-item active"><a class="btn" href="#query">Query</a></li>
+            <li class="nav-item"><a class="btn" href="#about">About</a></li>
+            <li class="nav-item"><a class="btn" href="#documentation">The Docs</a></li>
+            <li class="nav-item"><a class="btn" href="#usage">Usage</a></li>
+            <li class="nav-item"><a class="btn" href="#libraries">Libraries</a></li>
+            <li class="nav-item"><a class="btn" href="#the-robot">The Robot</a></li>
+            <li class="nav-item"><a class="btn" href="#contact">Contact</a></li>
+          <ul>
         </nav>
     </div>
     <div id="container-solid">
@@ -91,7 +91,20 @@
                 <option value="t5" >Where did the government invest cash it didn't immediately need? (Table 5)</option>
                 <option value="t6" >How much money did the government refund to businesses and individuals? (Table 6)</option>
               </select>
-              <div id="qb-table-builders" class="builder-item"></div>
+              <div id="qb-table-builders" class="builder-item">
+                <div class="qb-table-builder" id="t1-builder">
+                  <div class="qb-table-name">t1: Operating Cash Balance</div>
+                  <div class="qb-table-available-columns">Columns
+                    <pre>
+                      <code>table, url, date, year_month, year, month, day, weekday, account, account_raw, close_today, open_today, open_mo, footnote</code>
+                    </pre>
+                  </div>
+                  <div class="qb-table-sentence">
+                    <p>How much cash does the federal government have on hand <span class='sentence-option t1-date-select'></span> <span class='sentence-option t1-date-value'></span> ?</p>
+                  </div>
+                </div>
+
+              </div>
              <!--  <div id="rqb">&nbsp;</div> -->
               <div id="query-string-wrapper" class="builder-item">
                 <fieldset>
@@ -358,6 +371,11 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
     </footer>
     <div id="qb-help-text-hover"></div>
 
+    <script type="text/template" id="sentence-col-templ">
+      <ul class="sentence-group">
+      </ul>
+    </script>
+
     <script type='text/template' id="qc-table-col-buckets">
       <div id="qc-table-bucket-<%= table_name %>" class="qc-table-bucket">
         <div class="qc-col-bucket" id="qc-col-bucket-<%= table_name %>-date">
@@ -395,19 +413,19 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
     </script>
 
     <script type="text/template" id="Checkbox-view-templ">
-      <% if (column_name != 'is_total' ) { %>
-        <%= value %> <span class="help-text-flag" data-help-text="help-text">?</span>
-      <% } else { %>
+      
         <%= value %> (<%= formatBinaryToText(value) %>) <span class="help-text-flag" data-help-text="help-text">?</span>
-      <% } %>
     </script>
 
     <script type="text/template" id="OutputNumber-view-templ">
-      <span class="textbox-label-text"><%= comparinatorToText(comparinator) %>:</span> <%= value %>
+      <label class="qc-textfield-option" for="<%= makeKeyFromName(column_name, table_name) %>-<%= comparinatorToText(comparinator) %>">
+        <span class="textbox-label-text"><input type="text" value="<%= value %>" placeholder="<%= comparinatorToText(comparinator) %>" id="<%= makeKeyFromName(column_name, table_name) %>-<%= comparinatorToText(comparinator) %>"/>
+      </label>
     </script>
 
     <script type="text/template" id="TextfieldSelector-view-templ">
-      <%= comparinatorToText(comparinator) %>
+      <label for="<%= makeKeyFromName(table_name, column_name) %>-<%= comparinatorToText(comparinator) %>-select">
+        <input type="checkbox" value="<%= comparinator %>" id="<%= makeKeyFromName(table_name, column_name) %>-<%= comparinatorToText(comparinator) %>-select" checked /> <%= comparinatorToText(comparinator) %></label>
     </script>
 
     <script src="web/js/main.js"></script>

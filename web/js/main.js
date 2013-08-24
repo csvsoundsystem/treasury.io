@@ -270,9 +270,9 @@ $(function() {
        },
        comparinatorToText: function(comparinator){
         if (comparinator == '>'){
-          return 'min'
+          return 'after'
         }else{
-          return 'max'
+          return 'before'
         };
        }
       };
@@ -280,71 +280,44 @@ $(function() {
   function makeQueryBuilders(db_schema){
     var tables = db_schema.tables;
     // console.log(tables)
-    _.each(db_schema.tables, function(table_data, table_name_schema, table_list){
-      makeTableColumns(table_data, table_name_schema)
-    });
+    var collections = {
+      t1: {},
+      t2: {},
+      t3a: {},
+      t3b: {},
+      t3c: {},
+      t4: {},
+      t5: {},
+      t6: {}
+    }
+    makeTableColumns(tables.t1, 't1', collections);
+
+    // _.each(db_schema.tables, function(table_data, table_name_schema, table_list){
+    //   makeTableColumns(table_data, table_name_schema)
+    // });
   };
 
-  function makeTableColumns(table, table_name_schema){
-    var active_parents = {};
 
+  function makeTableColumns(table, t_name, collections){
 
-    function delegateModelEvents(from, to, eventKey) {
-        from.bind('all', function(eventName) {
-            var args = _.toArray(arguments);
-            if (eventKey) {
-                args[0] = eventKey + ':' + args[0];
-            }
-            to.trigger.apply(to, args);
-        });
-    };
-     
-    function getUpdateOp(model) {
-        return (model instanceof Backbone.Collection) ? 'reset' : 'set';
-    };
-     
-    Backbone.RelationalModel = Backbone.Model.extend({
-        relations: {},
-        set: function(attrs, options) {
-            _.each(this.relations, function(constructor, key) {
-                var relation = this[key];
-     
-                // set up relational model if it's not there yet
-                if ( !relation) {
-                    relation = this[key] = new constructor();
-     
-                    // makes it so relation events are triggered out
-                    // e.g. 'add' on a relation called 'collection' would
-                    // trigger event 'collection:add' on this model
-                    delegateModelEvents(relation, this, key);
-                }
-     
-                // check to see if incoming set will affect relation
-                if (attrs[key]) {
-                    // perform update on relation model
-                    relation[ getUpdateOp(relation) ](attrs[key], options);
-     
-                    // remove from attr hash, prevents duplication of data +
-                    // keeps models out of attributes, which should be only used for
-                    // dumb JSON attributes
-                    delete attrs[key];
-                }
-            }, this);
-     
-            return Backbone.Model.prototype.set.call(this, attrs, options);
-        }
-    });
-    /********** M O D E L ************/
-
+    // Okay, how's it going?
+    // Good
+    // Great
+    // Let's redo this query builder interface
+    // Okay!
+    // Step one
+    // Make a model, that will be the model for all of our items
     var ElementModel = Backbone.Model.extend({
       defaults: {
-        table_name: 't',
-        name: 'c',
-        column_type: 't',
-        comparinator: '=',
+        table_name: 'table_name_default',
+        display_name: 'display_name_default',
+        name: 'name_default',
+        column_type: 'column_type__default',
+        comparinator: 'comparinator_default',
         queryable: true,
         checked: true,
         value: 0,
+        children: []
       },
 
       toggleChecked: function(){
@@ -361,241 +334,46 @@ $(function() {
 
     });
 
-    var ElementCollection = Backbone.Collection.extend({
-      model: ElementModel,
+    // Step two
+    // Make a collection of instances of this model based on how many checkbox groups we'll have in each question
+    // Each checkbox group will be a collection
+    // We should keep track of all of these collections though
+    // So we made an object called collections up top there
+    // The structure of that object will be t1: { col_name: backbone_collection }
 
-      getQueryableAndChecked: function(){
-        return this.where({queryable: true, checked: true});
-      },
-
-      getQueryableAndUnchecked: function(){
-        return this.where({queryable: true, checked: false});
-      },
-
-      getQueryableCount: function(){
-        var all_items = this.length,
-            queryable_items = this.where({queryable: true}).length,
-            compare = queryable_items / all_items;
-
-        if (compare == 0){
-          return 'none_queryable'
-        }else if (compare == 1){
-          return 'all_queryable'
-        }else{
-          return 'some_querable'
-        };
-      },
-
-      getCheckedCountAndQueryable: function(){
-        var all_items = this.length,
-            checked_items = this.where({checked: true, queryable: true}).length,
-            compare = checked_items / all_items
-
-        // TODO handle when all or none are checked
-        if (compare == 1 || compare == 0) {
-          return 'all_none';
-        }else if (compare >= .5 && compare < 1){
-          return 'majority_checked';
-        }else if (compare < .5) {
-          return 'majority_unchecked';
-        };
-      },
-
-      getLimitedByParents: function(){
-        var that = this;
-        var json = that.toJSON(),
-            names_to_queryableify = [],
-            names_to_unqueryableify = [],
-            models_to_queryableify = [],
-            models_to_unqueryableify = [];
-
-        // Get each model
-        _.each(json, function(model){
-          var type_parents = model.type_parents;
-
-          // For each of its parents, it needs at least one in all of its categories.
-          // So, if it had one in account, two in transaction_type and one in is_total
-          // It would need at least three `true`s for it to be visible
-          // It other words, it needs a yes from each column.
-          var results = []
-          _.each(type_parents, function(required_parents, column_name, list){
-            var column_active_parents = active_parents[column_name];
-            var overlap = _.intersection(column_active_parents, required_parents);
-            if (overlap.length > 0){
-              results.push(0);
-            }else{
-              results.push(1);
-            };
-          });
-          var sum_results = _.reduce(results, function(memo, num){ return memo + num; }, 0);
-
-          if (sum_results > 0){
-           // Fail
-           names_to_unqueryableify.push(model.value)
-          }else{
-           // Pass
-           names_to_queryableify.push(model.value)
-          };
-
-        });
-
-        _.each(names_to_queryableify, function(name){
-          models_to_queryableify.push(that.where({ value: name }))
-        });
-
-        _.each(names_to_unqueryableify, function(name){
-          models_to_unqueryableify.push(that.where({ value: name }))
-        });
-
-        return [models_to_queryableify, models_to_unqueryableify];
-      }
-
-    });
-
-    var Column = Backbone.RelationalModel.extend({
-
-        defaults: {
-          queryable: true,
-          filtered: false,
-          table_name: table_name_schema // TODO replace with dynamic once this builder works for all columns
-        },
-
-        relations: {
-            item_values: ElementCollection
-        },
-
-        toggleQueryable: function(){
-          this.set('queryable', !this.get('queryable'));
-        }
-
-    });
-
-    var column_models = {};
-
-    // Instantiate column models
+    // But let's not get ahead of ourselves, first just instantiate a model for every item in the schema_json and add it to the models object
+    // Instantiate item models and collections
     _.each(table.columns, function(column_info, column_name, columns){
 
-      // To save space, not every item has its parent table and colum information
+      // Make models
+      var models = [];
+      // To save space, not every item has its table and column information
       // These are those values to add
       var parent_object_info = {
-        table_name: table_name_schema,
+        table_name: t_name,
         column_name: column_info.name, // This line could be either column_name or column_info.name since the key is repeated, purely to keep it consistent with .type, use column_info.name
         column_type: column_info.column_type
       };
       // Loop through each item_value and add that parent_object_info by _.extending()
+      // Turn them into instances of our models
       _.each(column_info.item_values, function(item_value){
         _.extend(item_value, parent_object_info);
+        var item_model_instances = new ElementModel(item_value);
+        models.push(item_model_instances);
       });
 
-      // Create a model for each column
-      column_models[column_name] = new Column(column_info);
+      // Make collections
+      // Create a platonic collection for this column
+      collections[t_name][column_info.name] = Backbone.Collection.extend({ model: ElementModel }); // Maybe add collection methods here
+      // Instantiate it with data
+      collections[t_name][column_info.name] = new collections[t_name][column_info.name](models)
 
     });
 
-    // Instantiate column collections
-    var column_collections = {
-      t1: {},
-      t2: {},
-      t3a: {},
-      t3b: {},
-      t3c: {},
-      t4: {},
-      t5: {},
-      t6: {},
-    };
-    // Create a collection object and then creates an instance of that collection object with a model
-    _.each(column_models, function(model, model_name, model_list){
-      column_collections[table_name_schema][model_name] = Backbone.Collection.extend({
+    // Step three
+    // Create the platonic forms of our views
 
-        model: ElementModel
-
-      });
-      column_collections[table_name_schema][model_name] = new column_collections[table_name_schema][model_name](model);
-    });
-
-
-    /********** V I E W S ************/
-    var DatefieldView = Backbone.View.extend({
-        tagName: 'li',
-
-        template: _.template($('#OutputNumber-view-templ').html()),
-
-        // events:{
-        //   'keyup': 'updateValue',
-        //   'change': 'updateValue'
-        // },
-
-        initialize: function(){
-
-          // Set up event listeners. The change backbone event
-          // is raised when a property changes (like the checked field)
-          var model_data = this.model.toJSON();
-          _.extend(model_data, formatHelpers);
-          this.$el.html( this.template(model_data) );
-          this.$el.addClass('query-checkbox-item').addClass('queryable-item');
-
-          this.$el.find('input').datepicker({
-            dateFormat: 'yy-mm-dd',
-            showOn: "button",
-            buttonImage: "/web/css/thirdparty/images/calendar.png",
-            buttonImageOnly: true
-          });
-
-          this.$el.find('input').val( this.model.get('value') );
-          this.listenTo(this.model, 'change', this.render);
-        },
-
-        render: function(){
-
-          if (this.model.get('queryable')){
-            this.$el.css('display','list-item');
-          }else{
-            this.$el.css('display','none');
-          };
-
-          return this;
-        },
-
-        updateValue: function(){
-          var value = this.$el.find('input').val();
-          this.model.updateValue(value);
-        }
-    });
-
-    var DatefieldSelectorView = Backbone.View.extend({
-        tagName: 'div',
-
-        template: _.template($('#TextfieldSelector-view-templ').html()),
-
-        // events:{
-        //   'change': 'toggleQueryable'
-        // },
-
-        initialize: function(){
-
-          // Set up event listeners. The change backbone event
-          // is raised when a property changes (like the checked field)
-          var model_data = this.model.toJSON();
-          _.extend(model_data, formatHelpers);
-          this.$el.html( this.template(model_data) );
-          this.$el.addClass('query-checkbox-controller');
-
-            this.listenTo(this.model, 'change', this.render);
-        },
-
-        render: function(){
-
-          this.$el.find('input').prop('checked', this.model.get('queryable'));
-
-          return this;
-        },
-
-        toggleQueryable: function(e){
-          this.model.toggleQueryable();
-        }
-    });
-
-    // This view turns an Value model into HTML. Will create LI elements.
+    // Create the platonic CheckboxView
     var CheckboxView = Backbone.View.extend({
         tagName: 'li',
 
@@ -614,29 +392,28 @@ $(function() {
           var model_data = this.model.toJSON();
           _.extend(model_data, formatHelpers);
           this.$el.html( this.template(model_data) );
-          this.$el.addClass('queryable-item');
 
-          this.listenTo(this.model, 'change', this.render);
+          
         },
 
         render: function(){
 
-          this.$el.find('input').prop('checked', this.model.get('checked'));
+          // this.$el.find('input').prop('checked', this.model.get('checked'));
 
-          if (this.model.get('queryable')){
-            this.$el.css('display','list-item');
-            this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('disabled', false)
-          }else{
-            this.$el.css('display','none');
-            var queryable_count = column_collections[table_name_schema].item.models[0].item_values.getQueryableCount();
-            if (queryable_count == 'none_queryable'){
-              this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('disabled', true);
-            };
-          };
+          // if (this.model.get('queryable')){
+          //   this.$el.css('display','list-item');
+          //   this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('disabled', false)
+          // }else{
+          //   this.$el.css('display','none');
+          //   var queryable_count = column_collections[table_name_schema].item.models[0].item_values.getQueryableCount();
+          //   if (queryable_count == 'none_queryable'){
+          //     this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('disabled', true);
+          //   };
+          // };
 
-          // Make sure it stays alternating colors
-          this.$el.parent().find('li:visible').filter(':even').css({'background-color': '#c1e4f2'});
-          this.$el.parent().find('li:visible').filter(':odd').css({'background-color': '#fff'});          
+          // // Make sure it stays alternating colors
+          // this.$el.parent().find('li:visible').filter(':even').css({'background-color': '#c1e4f2'});
+          // this.$el.parent().find('li:visible').filter(':odd').css({'background-color': '#fff'});          
 
           return this;
         },
@@ -667,161 +444,41 @@ $(function() {
         hideHelpText: function(){
           $help_hover.hide();
         }
-    });    
+    }); 
 
-    var TypeParentCheckboxView = Backbone.View.extend({
+    // Create the platonic DatefieldView
+    var DatefieldView = Backbone.View.extend({
         tagName: 'li',
 
-        template: _.template( $('#Checkbox-view-templ').html() ),
+        template: _.template($('#OutputNumber-view-templ').html()),
 
         // events:{
-        //   'change': 'toggleItem',
-        //   'mouseover .help-text-flag': 'showHelpText',
-        //   'mouseleave .help-text-flag': 'hideHelpText'
+        //   'keyup': 'updateValue',
+        //   'change': 'updateValue'
         // },
 
         initialize: function(){
 
           // Set up event listeners. The change backbone event
           // is raised when a property changes (like the checked field)
-          // Create the HTML
           var model_data = this.model.toJSON();
           _.extend(model_data, formatHelpers);
           this.$el.html( this.template(model_data) );
-          this.$el.addClass('queryable-item');
-          this.listenTo(this.model, 'change', this.render);
-        },
+          // this.$el.addClass('query-checkbox-item').addClass('queryable-item');
 
-        render: function(){
-
-          this.$el.find('input').prop('checked', this.model.get('checked'));
-          this.setParentLimits();
-
-          // console.log(active_parents)
-          return this;
-        },
-
-        showHelpText: function(){
-          console.log('here')
-        },
-
-        setParentLimits: function(){
-          this.insertCheckedParents();
-          this.setQueryablity();
-        },
-
-        insertCheckedParents: function(){
-          active_parents = {}; // Clear everything
-          _.each(column_collections[table_name_schema], function(collection, column_name, collection_list){
-            collection.each( function(column){
-
-              // Loop through the item_value collection on every column
-              var checked_models = column.item_values.getQueryableAndChecked(),
-                  column_type = column.get('column_type');
-
-              // Make an empty array for this type_parent, but only if it doesn't already exist from a previous item
-              // Essentially, we're dynamically adding keys to a hash, and we want those keys to initialize as empty arrays 
-              // So, if that key is a new key, make it an empty array, if not, then push stuff into it
-              if (active_parents[column_name] == undefined){
-                active_parents[column_name] = []
-              };
-              _.each(checked_models, function(checked_model){
-                var name_to_add;
-
-                // If the value string is blank, then push a `null` since that's what the database likes to see
-                if (checked_model.get('value') != '(blank)'){ 
-                  name_to_add = checked_model.get('value');
-                }else{
-                  name_to_add = null;
-                };
-                active_parents[column_name].push(name_to_add)
-              });
-
-            });
-
+          this.$el.find('input').datepicker({
+            dateFormat: 'yy-mm-dd',
+            showOn: "button",
+            buttonImage: "/web/css/thirdparty/images/calendar.png",
+            buttonImageOnly: true
           });
-        },
-
-        setQueryablity: function(){
-          // TODO for now this is only setting queryability to false on the item models
-          // some parents have parents also so they should be set to false like everyone else
-
-          var cols = {
-            t1: 'account',
-            t2: 'item',
-            t3a: 'item',
-            t3b: 'item',
-            t3c: 'item',
-            t4: 'classification',
-            t5: 'balance_transactions',
-            t6: 'refund_type'
-          };
-          column_collections[table_name_schema][cols[table_name_schema]].each( function(collection){
-            var models_to_alter = collection.item_values.getLimitedByParents(),
-                models_to_queryableify = models_to_alter[0],
-                models_to_unqueryableify = models_to_alter[1];
-
-            _.each(models_to_queryableify, function(elem){
-              elem[0].set('queryable', true);
-            });
-            _.each(models_to_unqueryableify, function(elem){
-              elem[0].set('queryable', false);
-            });
-            
-          })
-
-        },
-
-        toggleItem: function(e){
-          this.model.toggleChecked();
-        },
-
-        toggleQueryable: function(e){
-          this.model.toggleQueryable();
-        },
-
-        showHelpText: function(e){
-          var $help_text = $(e.target),
-              help_text = $help_text.data('help-text'),
-              offset = $(e.target).offset(),
-              offset_top = offset.top,
-              offset_left = offset.left;
-
-
-          $help_hover.css({
-            top: offset_top,
-            left: offset_left + 6
-          }).html(help_text).show();
-
-        },
-
-        hideHelpText: function(){
-          $help_hover.hide();
-        }
-    });
-
-    var TextfieldView = Backbone.View.extend({
-        tagName: 'li',
-
-        template: _.template($('#OutputNumber-view-templ').html()),
-
-        // events:{
-        //   'keyup': 'updateValue'
-        // },
-
-        initialize: function(){
-
-          var model_data = this.model.toJSON();
-          _.extend(model_data, formatHelpers);
-          this.$el.html( this.template(model_data) );
-          this.$el.addClass('query-checkbox-item').addClass('queryable-item');
 
           this.$el.find('input').val( this.model.get('value') );
+
           this.listenTo(this.model, 'change', this.render);
         },
 
         render: function(){
-
 
           if (this.model.get('queryable')){
             this.$el.css('display','list-item');
@@ -838,229 +495,915 @@ $(function() {
         }
     });
 
-    var TextfieldSelectorView = Backbone.View.extend({
-        tagName: 'div',
+    // Create the platonic DatefieldSelectorView
+    var DatefieldSelectorView = Backbone.View.extend({
+      tagName: 'li',
 
-        template: _.template($('#TextfieldSelector-view-templ').html()),
+      template: _.template($('#TextfieldSelector-view-templ').html()),
 
-        // events:{
-        //   'change': 'toggleQueryable'
-        // },
+      events:{
+        'change': 'toggleQueryable'
+      },
 
-        initialize: function(){
+      initialize: function(){
 
-          // Set up event listeners. The change backbone event
-          // is raised when a property changes (like the checked field)
-          var model_data = this.model.toJSON();
-          _.extend(model_data, formatHelpers);
-          this.$el.html( this.template(model_data) );
-          this.$el.addClass('query-checkbox-controller');
+        // Set up event listeners. The change backbone event
+        // is raised when a property changes (like the checked field)
+        var model_data = this.model.toJSON();
+        _.extend(model_data, formatHelpers);
+        this.$el.html( this.template(model_data) );
+        // this.$el.addClass('query-checkbox-controller');
 
-          this.listenTo(this.model, 'change', this.render);
-        },
+          // this.listenTo(this.model, 'change', this.render);
+      },
 
-        render: function(){
-          this.$el.find('input').prop('checked', this.model.get('queryable'));
+      render: function(){
 
-          return this;
-        },
+        // this.$el.find('input').prop('checked', this.model.get('queryable'));
 
-        toggleQueryable: function(e){
-          this.model.toggleQueryable();
-        }
-    });
+        return this;
+      },
+
+      toggleQueryable: function(e){
+        this.model.toggleQueryable();
+
+      }
+  });  
 
 
-        //This view turns a Column model into HTML. Will create DIV elements and a UL for the ItemView LIs to be appended to.
-    var ColumnView = Backbone.View.extend({
-        tagName : 'div',
+  // Step four
+  // This is where it all comes together
+  // Our app will loop through this table's collections and create the appropriate view of that element
+  // TODO add a siwtch so that it selects the proper view depending on whether it's a date column or a checkbox column
+  // For a checkbox column there will actually be a subview for the value etc. etc. etc.
+  var App = Backbone.View.extend({
 
-        template: _.template( $('#ColumnView-templ').html() ),
+    el: "#qb-table-builders",
 
-        events: {
-          // 'change .qc-select-all': 'checkUncheckAll',
-          'click .col-filter': 'toggleFilters',
-          // 'change .qc-toggle-col': 'toggleColumn'
-        },
+    template: $('#sentence-col-templ').html(),
 
-        initialize: function(){
+    initialize: function(){
 
-          var that = this;
+      var main_context = this;
 
-          // This will call this.render() whenever the column model changes
-          that.listenTo(this.model, 'change', this.render);
+      // Small hack: So that we don't have to go about creating a bunch of empty uls in our markup
+      // Create the uls for this table dynamically right here
+      main_context.$el.find('.sentence-option').append( main_context.template );
 
-          // Get the attributes of the column model, this won't include the item_values collection because those aren't stored in the attributes hash
-          var model_data = this.model.toJSON();
-          _.extend(model_data, formatHelpers);
-          var column_markup = this.template(model_data);
+      _.each(collections[t_name], function(collection, collection_name, collection_list){
+        collection.each( function(item){
+          if (collection_name == 'date'){
+            var v_el_date_select = new DatefieldSelectorView({model: item}),
+                v_el_date_value  = new DatefieldView({model: item});
 
-          that.$el.html(column_markup)
+            var select_item = v_el_date_select.render().el,
+                value_item  = v_el_date_value.render().el;
 
-          var column_type = this.model.get('column_type');
+            var sentence_wire = t_name + '-' + collection_name + '-select';
+            main_context.$el.find('.sentence-option.' + sentence_wire + ' .sentence-group').append( select_item );
+            
+            sentence_wire = t_name + '-' + collection_name + '-value';
+            main_context.$el.find('.sentence-option.' + sentence_wire + ' .sentence-group').append( value_item );
+            
+          }
 
-          var subview_type = this.pickWhichSubview( column_type );
-          var subview_collection = this.model.item_values;
+        }, main_context); // Make sure you give it the right context of this, whatever the hell that is.
+      });
+    }
+  });
+
+    // The all-important one line that runs the app.
+    var app = new App();
+
+
+
+    // // This view turns a model into HTML. Will create LI elements.
+    // var CheckboxView = Backbone.View.extend({
+    //     tagName: 'li',
+
+    //     template: _.template($('#Checkbox-view-templ').html()),
+
+    //     // events:{
+    //     //   'change': 'toggleItem',
+    //     //   'mouseover .help-text-flag': 'showHelpText',
+    //     //   'mouseleave .help-text-flag': 'hideHelpText'
+    //     // },
+
+    //     initialize: function(){
+
+    //       // Set up event listeners. The change backbone event
+    //       // is raised when a property changes (like the checked field)
+    //       var model_data = this.model.toJSON();
+    //       _.extend(model_data, formatHelpers);
+    //       this.$el.html( this.template(model_data) );
+    //       this.$el.addClass('queryable-item');
+
+    //       console.log(model_data)
+
+    //       this.$el.appendTo()
+    //       this.listenTo(this.model, 'change', this.render);
+    //     },
+
+    //     render: function(){
+
+    //       this.$el.find('input').prop('checked', this.model.get('checked'));
+
+    //       if (this.model.get('queryable')){
+    //         this.$el.css('display','list-item');
+    //         this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('disabled', false)
+    //       }else{
+    //         this.$el.css('display','none');
+    //         var queryable_count = column_collections[table_name_schema].item.models[0].item_values.getQueryableCount();
+    //         if (queryable_count == 'none_queryable'){
+    //           this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('disabled', true);
+    //         };
+    //       };
+
+    //       // Make sure it stays alternating colors
+    //       this.$el.parent().find('li:visible').filter(':even').css({'background-color': '#c1e4f2'});
+    //       this.$el.parent().find('li:visible').filter(':odd').css({'background-color': '#fff'});          
+
+    //       return this;
+    //     },
+
+    //     toggleItem: function(e){
+    //       this.model.toggleChecked();
+    //     },
+
+    //     toggleQueryable: function(e){
+    //       this.model.toggleQueryable();
+    //     },
+
+    //     showHelpText: function(e){
+    //       var $help_text = $(e.target),
+    //           help_text = $help_text.data('help-text'),
+    //           offset = $(e.target).offset(),
+    //           offset_top = offset.top,
+    //           offset_left = offset.left;
+
+
+    //       $help_hover.css({
+    //         top: offset_top,
+    //         left: offset_left + 6
+    //       }).html(help_text).show();
+
+    //     },
+
+    //     hideHelpText: function(){
+    //       $help_hover.hide();
+    //     }
+    // });   
+
+
+
+    // function delegateModelEvents(from, to, eventKey) {
+    //     from.bind('all', function(eventName) {
+    //         var args = _.toArray(arguments);
+    //         if (eventKey) {
+    //             args[0] = eventKey + ':' + args[0];
+    //         }
+    //         to.trigger.apply(to, args);
+    //     });
+    // };
+     
+    // function getUpdateOp(model) {
+    //     return (model instanceof Backbone.Collection) ? 'reset' : 'set';
+    // };
+     
+    // Backbone.RelationalModel = Backbone.Model.extend({
+    //     relations: {},
+    //     set: function(attrs, options) {
+    //         _.each(this.relations, function(constructor, key) {
+    //             var relation = this[key];
+     
+    //             // set up relational model if it's not there yet
+    //             if ( !relation) {
+    //                 relation = this[key] = new constructor();
+     
+    //                 // makes it so relation events are triggered out
+    //                 // e.g. 'add' on a relation called 'collection' would
+    //                 // trigger event 'collection:add' on this model
+    //                 delegateModelEvents(relation, this, key);
+    //             }
+     
+    //             // check to see if incoming set will affect relation
+    //             if (attrs[key]) {
+    //                 // perform update on relation model
+    //                 relation[ getUpdateOp(relation) ](attrs[key], options);
+     
+    //                 // remove from attr hash, prevents duplication of data +
+    //                 // keeps models out of attributes, which should be only used for
+    //                 // dumb JSON attributes
+    //                 delete attrs[key];
+    //             }
+    //         }, this);
+     
+    //         return Backbone.Model.prototype.set.call(this, attrs, options);
+    //     }
+    // });
+    /********** M O D E L ************/
+
+
+    // var ElementCollection = Backbone.Collection.extend({
+    //   model: ElementModel,
+
+    //   getQueryableAndChecked: function(){
+    //     return this.where({queryable: true, checked: true});
+    //   },
+
+    //   getQueryableAndUnchecked: function(){
+    //     return this.where({queryable: true, checked: false});
+    //   },
+
+    //   getQueryableCount: function(){
+    //     var all_items = this.length,
+    //         queryable_items = this.where({queryable: true}).length,
+    //         compare = queryable_items / all_items;
+
+    //     if (compare == 0){
+    //       return 'none_queryable'
+    //     }else if (compare == 1){
+    //       return 'all_queryable'
+    //     }else{
+    //       return 'some_querable'
+    //     };
+    //   },
+
+    //   getCheckedCountAndQueryable: function(){
+    //     var all_items = this.length,
+    //         checked_items = this.where({checked: true, queryable: true}).length,
+    //         compare = checked_items / all_items
+
+    //     // TODO handle when all or none are checked
+    //     if (compare == 1 || compare == 0) {
+    //       return 'all_none';
+    //     }else if (compare >= .5 && compare < 1){
+    //       return 'majority_checked';
+    //     }else if (compare < .5) {
+    //       return 'majority_unchecked';
+    //     };
+    //   },
+
+      // getLimitedByParents: function(){
+      //   var that = this;
+      //   var json = that.toJSON(),
+      //       names_to_queryableify = [],
+      //       names_to_unqueryableify = [],
+      //       models_to_queryableify = [],
+      //       models_to_unqueryableify = [];
+
+      //   // Get each model
+      //   _.each(json, function(model){
+      //     var type_parents = model.type_parents;
+
+      //     // For each of its parents, it needs at least one in all of its categories.
+      //     // So, if it had one in account, two in transaction_type and one in is_total
+      //     // It would need at least three `true`s for it to be visible
+      //     // It other words, it needs a yes from each column.
+      //     var results = []
+      //     _.each(type_parents, function(required_parents, column_name, list){
+      //       var column_active_parents = active_parents[column_name];
+      //       var overlap = _.intersection(column_active_parents, required_parents);
+      //       if (overlap.length > 0){
+      //         results.push(0);
+      //       }else{
+      //         results.push(1);
+      //       };
+      //     });
+      //     var sum_results = _.reduce(results, function(memo, num){ return memo + num; }, 0);
+
+      //     if (sum_results > 0){
+      //      // Fail
+      //      names_to_unqueryableify.push(model.value)
+      //     }else{
+      //      // Pass
+      //      names_to_queryableify.push(model.value)
+      //     };
+
+      //   });
+
+      //   _.each(names_to_queryableify, function(name){
+      //     models_to_queryableify.push(that.where({ value: name }))
+      //   });
+
+      //   _.each(names_to_unqueryableify, function(name){
+      //     models_to_unqueryableify.push(that.where({ value: name }))
+      //   });
+
+      //   return [models_to_queryableify, models_to_unqueryableify];
+      // }
+
+    // });
+
+    // var Column = Backbone.RelationalModel.extend({
+
+    //     defaults: {
+    //       queryable: true,
+    //       filtered: false,
+    //       table_name: table_name_schema // TODO replace with dynamic once this builder works for all columns
+    //     },
+
+    //     relations: {
+    //         item_values: ElementCollection
+    //     },
+
+    //     toggleQueryable: function(){
+    //       this.set('queryable', !this.get('queryable'));
+    //     }
+
+    // });
+
+    // var column_models = {};
+
+    // // Instantiate column models
+    // _.each(table.columns, function(column_info, column_name, columns){
+
+    //   // To save space, not every item has its parent table and colum information
+    //   // These are those values to add
+    //   var parent_object_info = {
+    //     table_name: table_name_schema,
+    //     column_name: column_info.name, // This line could be either column_name or column_info.name since the key is repeated, purely to keep it consistent with .type, use column_info.name
+    //     column_type: column_info.column_type
+    //   };
+    //   // Loop through each item_value and add that parent_object_info by _.extending()
+    //   _.each(column_info.item_values, function(item_value){
+    //     _.extend(item_value, parent_object_info);
+    //   });
+
+    //   // Create a model for each column
+    //   column_models[column_name] = new Column(column_info);
+
+    // });
+
+    // // Instantiate column collections
+    // var column_collections = {
+    //   t1: {},
+    //   t2: {},
+    //   t3a: {},
+    //   t3b: {},
+    //   t3c: {},
+    //   t4: {},
+    //   t5: {},
+    //   t6: {},
+    // };
+    // // Create a collection object and then creates an instance of that collection object with a model
+    // _.each(column_models, function(model, model_name, model_list){
+    //   column_collections[table_name_schema][model_name] = Backbone.Collection.extend({
+
+    //     model: ElementModel
+
+    //   });
+    //   column_collections[table_name_schema][model_name] = new column_collections[table_name_schema][model_name](model);
+    // });
+
+
+    // /********** V I E W S ************/
+    // var DatefieldView = Backbone.View.extend({
+    //     tagName: 'li',
+
+    //     template: _.template($('#OutputNumber-view-templ').html()),
+
+    //     // events:{
+    //     //   'keyup': 'updateValue',
+    //     //   'change': 'updateValue'
+    //     // },
+
+    //     initialize: function(){
+
+    //       // Set up event listeners. The change backbone event
+    //       // is raised when a property changes (like the checked field)
+    //       var model_data = this.model.toJSON();
+    //       _.extend(model_data, formatHelpers);
+    //       this.$el.html( this.template(model_data) );
+    //       this.$el.addClass('query-checkbox-item').addClass('queryable-item');
+
+    //       this.$el.find('input').datepicker({
+    //         dateFormat: 'yy-mm-dd',
+    //         showOn: "button",
+    //         buttonImage: "/web/css/thirdparty/images/calendar.png",
+    //         buttonImageOnly: true
+    //       });
+
+    //       this.$el.find('input').val( this.model.get('value') );
+    //       this.listenTo(this.model, 'change', this.render);
+    //     },
+
+    //     render: function(){
+
+    //       if (this.model.get('queryable')){
+    //         this.$el.css('display','list-item');
+    //       }else{
+    //         this.$el.css('display','none');
+    //       };
+
+    //       return this;
+    //     },
+
+    //     updateValue: function(){
+    //       var value = this.$el.find('input').val();
+    //       this.model.updateValue(value);
+    //     }
+    // });
+
+    // var DatefieldSelectorView = Backbone.View.extend({
+    //     tagName: 'div',
+
+    //     template: _.template($('#TextfieldSelector-view-templ').html()),
+
+    //     // events:{
+    //     //   'change': 'toggleQueryable'
+    //     // },
+
+    //     initialize: function(){
+
+    //       // Set up event listeners. The change backbone event
+    //       // is raised when a property changes (like the checked field)
+    //       var model_data = this.model.toJSON();
+    //       _.extend(model_data, formatHelpers);
+    //       this.$el.html( this.template(model_data) );
+    //       this.$el.addClass('query-checkbox-controller');
+
+    //         this.listenTo(this.model, 'change', this.render);
+    //     },
+
+    //     render: function(){
+
+    //       this.$el.find('input').prop('checked', this.model.get('queryable'));
+
+    //       return this;
+    //     },
+
+    //     toggleQueryable: function(e){
+    //       this.model.toggleQueryable();
+    //     }
+    // });
+
+    // // This view turns an Value model into HTML. Will create LI elements.
+    // var CheckboxView = Backbone.View.extend({
+    //     tagName: 'li',
+
+    //     template: _.template($('#Checkbox-view-templ').html()),
+
+    //     // events:{
+    //     //   'change': 'toggleItem',
+    //     //   'mouseover .help-text-flag': 'showHelpText',
+    //     //   'mouseleave .help-text-flag': 'hideHelpText'
+    //     // },
+
+    //     initialize: function(){
+
+    //       // Set up event listeners. The change backbone event
+    //       // is raised when a property changes (like the checked field)
+    //       var model_data = this.model.toJSON();
+    //       _.extend(model_data, formatHelpers);
+    //       this.$el.html( this.template(model_data) );
+    //       this.$el.addClass('queryable-item');
+
+    //       this.listenTo(this.model, 'change', this.render);
+    //     },
+
+    //     render: function(){
+
+    //       this.$el.find('input').prop('checked', this.model.get('checked'));
+
+    //       if (this.model.get('queryable')){
+    //         this.$el.css('display','list-item');
+    //         this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('disabled', false)
+    //       }else{
+    //         this.$el.css('display','none');
+    //         var queryable_count = column_collections[table_name_schema].item.models[0].item_values.getQueryableCount();
+    //         if (queryable_count == 'none_queryable'){
+    //           this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('disabled', true);
+    //         };
+    //       };
+
+    //       // Make sure it stays alternating colors
+    //       this.$el.parent().find('li:visible').filter(':even').css({'background-color': '#c1e4f2'});
+    //       this.$el.parent().find('li:visible').filter(':odd').css({'background-color': '#fff'});          
+
+    //       return this;
+    //     },
+
+    //     toggleItem: function(e){
+    //       this.model.toggleChecked();
+    //     },
+
+    //     toggleQueryable: function(e){
+    //       this.model.toggleQueryable();
+    //     },
+
+    //     showHelpText: function(e){
+    //       var $help_text = $(e.target),
+    //           help_text = $help_text.data('help-text'),
+    //           offset = $(e.target).offset(),
+    //           offset_top = offset.top,
+    //           offset_left = offset.left;
+
+
+    //       $help_hover.css({
+    //         top: offset_top,
+    //         left: offset_left + 6
+    //       }).html(help_text).show();
+
+    //     },
+
+    //     hideHelpText: function(){
+    //       $help_hover.hide();
+    //     }
+    // });    
+
+    // var TypeParentCheckboxView = Backbone.View.extend({
+    //     tagName: 'li',
+
+    //     template: _.template( $('#Checkbox-view-templ').html() ),
+
+    //     // events:{
+    //     //   'change': 'toggleItem',
+    //     //   'mouseover .help-text-flag': 'showHelpText',
+    //     //   'mouseleave .help-text-flag': 'hideHelpText'
+    //     // },
+
+    //     initialize: function(){
+
+    //       // Set up event listeners. The change backbone event
+    //       // is raised when a property changes (like the checked field)
+    //       // Create the HTML
+    //       var model_data = this.model.toJSON();
+    //       _.extend(model_data, formatHelpers);
+    //       this.$el.html( this.template(model_data) );
+    //       this.$el.addClass('queryable-item');
+    //       this.listenTo(this.model, 'change', this.render);
+    //     },
+
+    //     render: function(){
+
+    //       this.$el.find('input').prop('checked', this.model.get('checked'));
+    //       this.setParentLimits();
+
+    //       // console.log(active_parents)
+    //       return this;
+    //     },
+
+    //     showHelpText: function(){
+    //       console.log('here')
+    //     },
+
+    //     setParentLimits: function(){
+    //       this.insertCheckedParents();
+    //       this.setQueryablity();
+    //     },
+
+    //     insertCheckedParents: function(){
+    //       active_parents = {}; // Clear everything
+    //       _.each(column_collections[table_name_schema], function(collection, column_name, collection_list){
+    //         collection.each( function(column){
+
+    //           // Loop through the item_value collection on every column
+    //           var checked_models = column.item_values.getQueryableAndChecked(),
+    //               column_type = column.get('column_type');
+
+    //           // Make an empty array for this type_parent, but only if it doesn't already exist from a previous item
+    //           // Essentially, we're dynamically adding keys to a hash, and we want those keys to initialize as empty arrays 
+    //           // So, if that key is a new key, make it an empty array, if not, then push stuff into it
+    //           if (active_parents[column_name] == undefined){
+    //             active_parents[column_name] = []
+    //           };
+    //           _.each(checked_models, function(checked_model){
+    //             var name_to_add;
+
+    //             // If the value string is blank, then push a `null` since that's what the database likes to see
+    //             if (checked_model.get('value') != '(blank)'){ 
+    //               name_to_add = checked_model.get('value');
+    //             }else{
+    //               name_to_add = null;
+    //             };
+    //             active_parents[column_name].push(name_to_add)
+    //           });
+
+    //         });
+
+    //       });
+    //     },
+
+    //     setQueryablity: function(){
+    //       // TODO for now this is only setting queryability to false on the item models
+    //       // some parents have parents also so they should be set to false like everyone else
+
+    //       var cols = {
+    //         t1: 'account',
+    //         t2: 'item',
+    //         t3a: 'item',
+    //         t3b: 'item',
+    //         t3c: 'item',
+    //         t4: 'classification',
+    //         t5: 'balance_transactions',
+    //         t6: 'refund_type'
+    //       };
+    //       column_collections[table_name_schema][cols[table_name_schema]].each( function(collection){
+    //         var models_to_alter = collection.item_values.getLimitedByParents(),
+    //             models_to_queryableify = models_to_alter[0],
+    //             models_to_unqueryableify = models_to_alter[1];
+
+    //         _.each(models_to_queryableify, function(elem){
+    //           elem[0].set('queryable', true);
+    //         });
+    //         _.each(models_to_unqueryableify, function(elem){
+    //           elem[0].set('queryable', false);
+    //         });
+            
+    //       })
+
+    //     },
+
+    //     toggleItem: function(e){
+    //       this.model.toggleChecked();
+    //     },
+
+    //     toggleQueryable: function(e){
+    //       this.model.toggleQueryable();
+    //     },
+
+    //     showHelpText: function(e){
+    //       var $help_text = $(e.target),
+    //           help_text = $help_text.data('help-text'),
+    //           offset = $(e.target).offset(),
+    //           offset_top = offset.top,
+    //           offset_left = offset.left;
+
+
+    //       $help_hover.css({
+    //         top: offset_top,
+    //         left: offset_left + 6
+    //       }).html(help_text).show();
+
+    //     },
+
+    //     hideHelpText: function(){
+    //       $help_hover.hide();
+    //     }
+    // });
+
+    // var TextfieldView = Backbone.View.extend({
+    //     tagName: 'li',
+
+    //     template: _.template($('#OutputNumber-view-templ').html()),
+
+    //     // events:{
+    //     //   'keyup': 'updateValue'
+    //     // },
+
+    //     initialize: function(){
+
+    //       var model_data = this.model.toJSON();
+    //       _.extend(model_data, formatHelpers);
+    //       this.$el.html( this.template(model_data) );
+    //       this.$el.addClass('query-checkbox-item').addClass('queryable-item');
+
+    //       this.$el.find('input').val( this.model.get('value') );
+    //       this.listenTo(this.model, 'change', this.render);
+    //     },
+
+    //     render: function(){
+
+
+    //       if (this.model.get('queryable')){
+    //         this.$el.css('display','list-item');
+    //       }else{
+    //         this.$el.css('display','none');
+    //       };
+
+    //       return this;
+    //     },
+
+    //     updateValue: function(){
+    //       var value = this.$el.find('input').val();
+    //       this.model.updateValue(value);
+    //     }
+    // });
+
+    // var TextfieldSelectorView = Backbone.View.extend({
+    //     tagName: 'div',
+
+    //     template: _.template($('#TextfieldSelector-view-templ').html()),
+
+    //     // events:{
+    //     //   'change': 'toggleQueryable'
+    //     // },
+
+    //     initialize: function(){
+
+    //       // Set up event listeners. The change backbone event
+    //       // is raised when a property changes (like the checked field)
+    //       var model_data = this.model.toJSON();
+    //       _.extend(model_data, formatHelpers);
+    //       this.$el.html( this.template(model_data) );
+    //       this.$el.addClass('query-checkbox-controller');
+
+    //       this.listenTo(this.model, 'change', this.render);
+    //     },
+
+    //     render: function(){
+    //       this.$el.find('input').prop('checked', this.model.get('queryable'));
+
+    //       return this;
+    //     },
+
+    //     toggleQueryable: function(e){
+    //       this.model.toggleQueryable();
+    //     }
+    // });
+
+
+    //     //This view turns a Column model into HTML. Will create DIV elements and a UL for the ItemView LIs to be appended to.
+    // var ColumnView = Backbone.View.extend({
+    //     tagName : 'div',
+
+    //     template: _.template( $('#ColumnView-templ').html() ),
+
+    //     events: {
+    //       // 'change .qc-select-all': 'checkUncheckAll',
+    //       'click .col-filter': 'toggleFilters',
+    //       // 'change .qc-toggle-col': 'toggleColumn'
+    //     },
+
+    //     initialize: function(){
+
+    //       var that = this;
+
+    //       // This will call this.render() whenever the column model changes
+    //       that.listenTo(this.model, 'change', this.render);
+
+    //       // Get the attributes of the column model, this won't include the item_values collection because those aren't stored in the attributes hash
+    //       var model_data = this.model.toJSON();
+    //       _.extend(model_data, formatHelpers);
+    //       var column_markup = this.template(model_data);
+
+    //       that.$el.html(column_markup)
+
+    //       var column_type = this.model.get('column_type');
+
+    //       var subview_type = this.pickWhichSubview( column_type );
+    //       var subview_collection = this.model.item_values;
           
-          subview_collection.each( function(subview_data){
-            var subview = new subview_type( {model: subview_data} );
-            var subview_markup = subview.render().el;
-            that.$el.find('.qc-values-ctnr').append(subview_markup);
+    //       subview_collection.each( function(subview_data){
+    //         var subview = new subview_type( {model: subview_data} );
+    //         var subview_markup = subview.render().el;
+    //         that.$el.find('.qc-values-ctnr').append(subview_markup);
 
-            // // For the date and value views, add a second view that is the checkboxes that show / hide those limiters
-            // if (column_type == 'date' || column_type == 'numeric'){
-            //   var subview_two;
+    //         // // For the date and value views, add a second view that is the checkboxes that show / hide those limiters
+    //         // if (column_type == 'date' || column_type == 'numeric'){
+    //         //   var subview_two;
 
-            //   if (column_type == 'date'){
-            //     subview_two = new DatefieldSelectorView( {model: subview_data} );
-            //   }else if (column_type == 'numeric') {
-            //     subview_two = new TextfieldSelectorView( {model: subview_data} );
-            //   };
+    //         //   if (column_type == 'date'){
+    //         //     subview_two = new DatefieldSelectorView( {model: subview_data} );
+    //         //   }else if (column_type == 'numeric') {
+    //         //     subview_two = new TextfieldSelectorView( {model: subview_data} );
+    //         //   };
 
-            //   var subview_two_markup = subview_two.render().el;
-            //   that.$el.find('.qc-col-controls').append(subview_two_markup);
+    //         //   var subview_two_markup = subview_two.render().el;
+    //         //   that.$el.find('.qc-col-controls').append(subview_two_markup);
 
-            // };
+    //         // };
 
-          });
+    //       });
 
-        },
+    //     },
 
-        render: function(){
-          $(this.el).attr('id','qc-col-ctnr-' + this.model.get('name')).addClass('qc-col-ctnr');
+    //     render: function(){
+    //       $(this.el).attr('id','qc-col-ctnr-' + this.model.get('name')).addClass('qc-col-ctnr');
 
-          return this;
-        },
+    //       return this;
+    //     },
 
-        pickWhichSubview: function(column_type){
-          if (column_type == 'date'){
-            return DatefieldView;
-          }else if (column_type == 'is_total'){
-            return TypeParentCheckboxView;
-          }else if (column_type == 'parent'){
-            return TypeParentCheckboxView;
-          }else if (column_type == 'item'){
-            return CheckboxView
-          }else if (column_type == 'numeric'){
-            return TextfieldView
-          }else{
-            alert("Error, unknown column type.")
-          };
+    //     pickWhichSubview: function(column_type){
+    //       if (column_type == 'date'){
+    //         return DatefieldView;
+    //       }else if (column_type == 'is_total'){
+    //         return TypeParentCheckboxView;
+    //       }else if (column_type == 'parent'){
+    //         return TypeParentCheckboxView;
+    //       }else if (column_type == 'item'){
+    //         return CheckboxView
+    //       }else if (column_type == 'numeric'){
+    //         return TextfieldView
+    //       }else{
+    //         alert("Error, unknown column type.")
+    //       };
           
-        },
+    //     },
 
-        checkUncheckAll: function(e){
-          var $checkbox = this.$el.find('.qc-select-all')
-          var collection_name = $checkbox.data('collection-name');
-          var checked_state = $checkbox.prop('checked');
+    //     checkUncheckAll: function(e){
+    //       var $checkbox = this.$el.find('.qc-select-all')
+    //       var collection_name = $checkbox.data('collection-name');
+    //       var checked_state = $checkbox.prop('checked');
 
-          column_collections[table_name_schema][collection_name].each(function(collection){
-            collection.item_values.each( function(elem){
-              elem.set('checked', checked_state);
-            })
-          });
+    //       column_collections[table_name_schema][collection_name].each(function(collection){
+    //         collection.item_values.each( function(elem){
+    //           elem.set('checked', checked_state);
+    //         })
+    //       });
 
-        },
+    //     },
 
-        toggleFilters: function(e){
-          $target = $(e.target);
-          $target.toggleClass('active');
-          // The ul
-          $target.parents('.qc-col-ctnr').find('.qc-values-ctnr').toggle();
-          // The controls
-          $target.parents('.qc-col-ctnr').find('.qc-col-controls').toggle();
+    //     toggleFilters: function(e){
+    //       $target = $(e.target);
+    //       $target.toggleClass('active');
+    //       // The ul
+    //       $target.parents('.qc-col-ctnr').find('.qc-values-ctnr').toggle();
+    //       // The controls
+    //       $target.parents('.qc-col-ctnr').find('.qc-col-controls').toggle();
 
-          var current_filter_status = this.model.get('filtered');
-          this.model.set('filtered', !current_filter_status);
+    //       var current_filter_status = this.model.get('filtered');
+    //       this.model.set('filtered', !current_filter_status);
 
-          // If you disable filters for the column, then you should not limit the children of the parents in that column
-          // There might be a solution that will preserve the options that are selected
-          // But for now, just hit the toggle button so that they are all in view
-          // This only needs to be set when you are closing the filter window
-          if (current_filter_status){
-            var $this_toggle_btn = $target.parents('.qc-col-header').find('.qc-col-control-all input'),
-                is_checked = $this_toggle_btn.prop('checked');
-            if (!is_checked){
-              $this_toggle_btn.click();
-            };
-          };
+    //       // If you disable filters for the column, then you should not limit the children of the parents in that column
+    //       // There might be a solution that will preserve the options that are selected
+    //       // But for now, just hit the toggle button so that they are all in view
+    //       // This only needs to be set when you are closing the filter window
+    //       if (current_filter_status){
+    //         var $this_toggle_btn = $target.parents('.qc-col-header').find('.qc-col-control-all input'),
+    //             is_checked = $this_toggle_btn.prop('checked');
+    //         if (!is_checked){
+    //           $this_toggle_btn.click();
+    //         };
+    //       };
 
-        },
+    //     },
 
-        toggleColumn: function(){
-          this.model.toggleQueryable()
-        }
-    });
+    //     toggleColumn: function(){
+    //       this.model.toggleQueryable()
+    //     }
+    // });
 
 
     /********** A P P  V I E W ************/
     // The main view of the application
-    App = Backbone.View.extend({
+    // App = Backbone.View.extend({
 
-        // Base the view on an existing element
-        el: '#qb-table-builders',
+    //     // Base the view on an existing element
+    //     el: '#qb-table-builders',
 
-        template: $('#qc-table-col-buckets').html(),
+    //     template: $('#qc-table-col-buckets').html(),
 
-        initialize: function(){
+    //     initialize: function(){
 
-          var that = this;
+    //       var that = this;
 
-          var bucketMarkupFactory = _.template(this.template),
-              bucket_markup = bucketMarkupFactory( {table_name: table_name_schema} )
-          // Load the bucket divs for each type of column
-          that.$el.append( bucket_markup )
+    //       var bucketMarkupFactory = _.template(this.template),
+    //           bucket_markup = bucketMarkupFactory( {table_name: table_name_schema} )
+    //       // Load the bucket divs for each type of column
+    //       that.$el.append( bucket_markup )
 
-          _.each(column_collections[table_name_schema], function(collection, collection_name, collections){
-            // Listen for the change event on the collection.
-            // This is equivalent to listening on every one of the 
-            // items objects in the collection.
-            that.listenTo(collection, 'change', that.render);
+    //       _.each(column_collections[table_name_schema], function(collection, collection_name, collections){
+    //         // Listen for the change event on the collection.
+    //         // This is equivalent to listening on every one of the 
+    //         // items objects in the collection.
+    //         that.listenTo(collection, 'change', that.render);
 
-            // Listen to the collection on the model for changes as well
-            collection.each( function(model){
-              that.listenTo(model.item_values, 'change', that.render)
-            });
+    //         // Listen to the collection on the model for changes as well
+    //         collection.each( function(model){
+    //           that.listenTo(model.item_values, 'change', that.render)
+    //         });
 
-            collection.each( function(column_data){
+    //         collection.each( function(column_data){
 
-              var column_type = that.normalizeColumnTypes( column_data.toJSON().column_type );
-              var column_view = new ColumnView( {model: column_data} );
+    //           var column_type = that.normalizeColumnTypes( column_data.toJSON().column_type );
+    //           var column_view = new ColumnView( {model: column_data} );
 
-              // Append this column to the appropriate column bucket
-              that.$el.find('#qc-col-bucket-' + table_name_schema + '-' + column_type).append( column_view.render().el );
-            })
-          });
+    //           // Append this column to the appropriate column bucket
+    //           that.$el.find('#qc-col-bucket-' + table_name_schema + '-' + column_type).append( column_view.render().el );
+    //         })
+    //       });
 
-          that.render(table_name_schema);
+    //       that.render(table_name_schema);
 
-        },
+    //     },
 
-        render: function(t_name){
-          console.log('rendering')
+    //     render: function(t_name){
+    //       console.log('rendering')
 
-          // BUILD JSON OBJECT FOR SQL STRING
-          var columns_and_where_filters = buildQueryJson(column_collections[t_name]);
-          var sql_string = JsonToSql(columns_and_where_filters, t_name);
+    //       // BUILD JSON OBJECT FOR SQL STRING
+    //       var columns_and_where_filters = buildQueryJson(column_collections[t_name]);
+    //       var sql_string = JsonToSql(columns_and_where_filters, t_name);
 
-          loadUiWithSqlString(sql_string)
+    //       loadUiWithSqlString(sql_string)
 
-          return this;
-        },
+    //       return this;
+    //     },
 
-        normalizeColumnTypes: function(column_type){
-          // For now, let's lump is_total in with the rest of the parent categories
-          if (column_type == 'is_total'){
-            return 'parent';
-          } else{
-            return column_type;
-          };
-        }
-    });
+    //     normalizeColumnTypes: function(column_type){
+    //       // For now, let's lump is_total in with the rest of the parent categories
+    //       if (column_type == 'is_total'){
+    //         return 'parent';
+    //       } else{
+    //         return column_type;
+    //       };
+    //     }
+    // });
 
     
 
-    window.app = new App();
+    // window.app = new App();
 
   };
 

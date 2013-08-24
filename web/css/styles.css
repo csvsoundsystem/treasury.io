@@ -158,7 +158,8 @@ h3 {
   margin: 15px 0;
 }
 #builder-table-select{
-  margin: 0 0 10px 0;
+  margin: 0 0 0 0;
+  /*margin: 0 0 10px 0;*/
 }
 .btn, .btn-row-el{
   font-family: "Droid Sans", sans-serif;
@@ -336,7 +337,7 @@ form {
   color: #000;
 }
 .builder-item{
-  padding: 10px;
+  padding: 0 10px;
 }
 #results-table-holder{
   width:100%;
@@ -603,17 +604,57 @@ textarea:focus{
   width: 68px;
   display: inline-block;
 }
-/* QUERY BUILDER STYLES */
-#qb-table-builders{
+/* Query charter */
+.qb-table-name{
+  font-size: 14px;
+  margin: 10px 0 5px 0;
+  font-weight: bold;
+}
+.qb-table-available-columns{
+  line-height: 14px;
+}
+.qb-table-sentence{
+  margin-top: 10px;
+}
+.sentence-option{
+  vertical-align: top;
+  display: inline-block;
+  background-color: #f9fdff;
+  padding: 0;
+  margin: 0 2px;
+  font-size: 12px;
+}
+.sentence-group{
+}
+.sentence-group li{
+padding: 0 6px 0 5px;
+  list-style: none;
+}
+.ui-widget{
+  font-size: .6em !important;
+}
+.hasDatepicker{
+  width: 80px;
+} 
+.qc-textfield-option img{
+  margin-left: 2px;
+  width: 15px;
+  position: relative;
+  top: 1px;
+}
+.qc-textfield-option img:hover{
+  cursor: pointer;
+  cursor: hand;
+}
+
+/*#qb-table-builders{
   width:100%;
-  /*background-color: #f0c;*/
   font-size: 12px;
   overflow: auto;
 }
 .qb-table-builder{
   width: 100%;
   overflow: auto;
-  /*display: none;*/
 }
 .qb-table-builder.queryable-table{
   display: block;
@@ -671,18 +712,12 @@ textarea:focus{
   max-height: 180px;
   overflow-y: scroll;
   border-top: 1px solid #969696;
-/*  background: url(../images/header-shadow-bg.png);
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-*//*  -webkit-box-shadow: inset 0 20px 7px -20px #666666;
   -moz-box-shadow: inset 0 20px 7px -20px #666666;
   box-shadow: inset 0 20px 7px -20px #666666;
-*/  display: none;
- /* border-image: url(../images/header-shadow-bg.png) 96 17 15 36 fill repeat;
   border-top: 6px;
   border-bottom:0;
   border-left:0;
-  border-right:0;*/
+  border-right:0;
 }
 .qc-values-ctnr li{
   line-height: 14px;
@@ -690,10 +725,7 @@ textarea:focus{
   padding: 7px 5px 5px 5px;
 }
 .qc-values-ctnr li:nth-child(odd) {
-  background-color: rgba(9, 146, 204, 0.25); /* TK TODO, make this a better color so it is more viewable on bad monitors*/
-}
-.qc-values-ctnr li:nth-child(even) {
-  /*background-color: white;*/
+  background-color: rgba(9, 146, 204, 0.25); 
 }
 .qc-values-ctnr li{
   display: none;
@@ -715,7 +747,6 @@ textarea:focus{
 }
 .qc-col-main-controls span{
   padding: 1px 1px 1px 1px;
-  /*margin-right: 10px;*/
   display: inline-block;
 }
 .qc-col-main-controls .col-filter{
@@ -750,13 +781,12 @@ textarea:focus{
 }
 .hasDatepicker{
   width: 80px;
-} /* TK TODO CHANGE ONCE INPUT FIELDS HAVE MORE DESCRIPTIVE CLASSES */
+} 
 .qc-textfield-option img{
   margin-left: 2px;
   width: 15px;
   position: relative;
   top: 1px;
-  /* TODO ADD HOVER IMAGE TO CHANGE ON HOVER */
 }
 .qc-textfield-option img:hover{
   cursor: pointer;
@@ -773,15 +803,12 @@ textarea:focus{
   font-size: 8px;
   vertical-align: super;
   padding: 2px 1px 0 1px;
-  /*text-decoration: underline;*/
-  /*border-bottom: 1px dotted #303030;*/
 }
 .help-text-flag:hover{
   cursor: hand;
   cursor: pointer;
   background-color: #000;
   color: #fff;
-  /*border-bottom: 1px solid #303030;*/
 }
 #qb-help-text-hover{
   position: absolute;
@@ -789,10 +816,11 @@ textarea:focus{
   background-color: #000;
   color: #fff;
   padding: 3px 5px 3px 10px;
-  max-width: 100px; /* TODO adjust this once we have all the blurbs, TK */
+  max-width: 100px; 
   font-family: 'droid sans';
   font-size: 12px;
 }
+*/
 
 /* end query builder styles*/
 @media screen and (max-width: 640px) {
