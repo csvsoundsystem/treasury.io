@@ -8,7 +8,7 @@ $(function() {
       $sql_query_textarea        = $('#sql'),
       $any_download_as_csv_btn   = $('.download-as-csv-btn'),
       $chart_builder_input_text  = $('.chart-builder-input-text'),
-      $chart_builder_view        = $('.chart-builder-submit .btn'),
+      $chart_builder_view        = $('#view-chart'),
       $chart_builder_series_data = $('#cb-series-col'),
       $chart_builder_x_data      = $('#cb-x-col'),
       $chart_builder_y_data      = $('#cb-y-col'),
@@ -29,7 +29,49 @@ $(function() {
     t5: '7',
     t6: '8'
   },
-  tables = {};
+  tables = {},
+  chart_builder_settings = {
+    t1: {
+      series: 'account',
+      x: 'date',
+      y: 'close_today'
+    },
+    t2: {
+      series: 'item',
+      x: 'date',
+      y: 'today'
+    },
+    t3a: {
+      series: 'hey',
+      x: 'date',
+      y: 'today'
+    },
+    t3b: {
+      series: 'hey',
+      x: 'date',
+      y: 'today'
+    },      
+    t3c: {
+      series: 'hey',
+      x: 'date',
+      y: 'close_today'
+    },
+    t4: {
+      series: 'hey',
+      x: 'date',
+      y: 'today'
+    },
+    t5: {
+      series: 'hey',
+      x: 'date',
+      y: 'total'
+    },
+    t6: {
+      series: 'hey',
+      x: 'date',
+      y: 'today'
+    }
+  };
 
   function bindHandlers(db_schema){
       /* NAV MENU BEHAVIOR */
@@ -110,7 +152,8 @@ $(function() {
       /* PREVIEW IN BROWSER BUTTON */
       $download_browser_btn.mousedown(function(){
         var $that = $(this);
-        if(!$(this).hasClass('disabled')){
+        console.log($that.hasClass('disabled'))
+        if(!$that.hasClass('disabled')){
           var q = $('#download-csv').attr('data-query-link');
           var before_text = $that.html()
           setDownloadBtn('fetch', $that);
@@ -150,7 +193,7 @@ $(function() {
       });
 
       $sql_query_textarea.keyup(function(){
-        console.log('change')
+        // console.log('change')
         var q_string = $sql_query_textarea.val();
         if (q_string.length > 0 ){
           enableBuilderBtnsAndChartOptions();
@@ -161,7 +204,7 @@ $(function() {
       });
 
       $sql_query_textarea.autogrow();
-      makeTextfieldsPlaceholderable();
+      // makeTextfieldsPlaceholderable();
 
       /* SHOW HIDE TABLE */
       $('.show-hide-table').click(function(){
@@ -195,7 +238,7 @@ $(function() {
 
         $('.qc-table-bucket').hide();
         $('#qc-table-bucket-'+table_selector).show();
-        app.render(table_selector);
+        // app.render(table_selector);
         // column_collections[table_selector].each( function(col){
         //   col.render();
         // });
@@ -262,7 +305,6 @@ $(function() {
           return table_name + '-' + name_formatted;
         },
        formatBinaryToText: function(value){
-        // console.log(value)
          if (value == 0){
           return 'no'
          }else{
@@ -282,7 +324,7 @@ $(function() {
     _.each(db_schema.tables, function(table, table_name, table_list){
       tables[table_name] = table;
     });
-    // console.log(tables)
+
     var collections = {
       t1: {},
       t2: {},
@@ -598,8 +640,8 @@ $(function() {
       var columns_and_where_filters = buildQueryJson(collections[this_table_name]);
       // Build SQL string from JSON object
       var sql_string = JsonToSql(columns_and_where_filters, this_table_name);
-      console.log(sql_string)
-      loadUiWithSqlString(sql_string)
+      loadUiWithSqlString(sql_string);
+      loadChartBuilderOptions(this_table_name);
 
     }
 
@@ -631,7 +673,6 @@ $(function() {
     //       this.$el.html( this.template(model_data) );
     //       this.$el.addClass('queryable-item');
 
-    //       console.log(model_data)
 
     //       this.$el.appendTo()
     //       this.listenTo(this.model, 'change', this.render);
@@ -1073,12 +1114,10 @@ $(function() {
     //       this.$el.find('input').prop('checked', this.model.get('checked'));
     //       this.setParentLimits();
 
-    //       // console.log(active_parents)
     //       return this;
     //     },
 
     //     showHelpText: function(){
-    //       console.log('here')
     //     },
 
     //     setParentLimits: function(){
@@ -1413,7 +1452,6 @@ $(function() {
     //     },
 
     //     render: function(t_name){
-    //       console.log('rendering')
 
     //       // BUILD JSON OBJECT FOR SQL STRING
     //       var columns_and_where_filters = buildQueryJson(column_collections[t_name]);
@@ -1440,6 +1478,14 @@ $(function() {
 
   };
 
+  function loadChartBuilderOptions(table_name){
+    var opts = chart_builder_settings[table_name];
+
+    $chart_builder_series_data.val(opts.series)
+    $chart_builder_x_data.val(opts.x)
+    $chart_builder_y_data.val(opts.y)
+  };
+
   function loadUiWithSqlString(sql_string){
     if (encoding == 'true'){
       sql_string = encodeURI(sql_string);
@@ -1457,12 +1503,12 @@ $(function() {
         where_string      = buildWhereQuery(where_filters),
         query             = select_string + '\n' + where_string;
 
-    return query
+    return query;
   };
 
   function buildSelectQuery(table_name){
-    // Get rid of footnotes, which will be
-    var select_string = 'SELECT ' + tables[table_name].all_cols.join(', ').replace(', footnote', '') + '\nFROM\n' + table_name;
+    // Get rid of footnotes
+    var select_string = 'SELECT ' + wrapElsWithQuotes(tables[table_name].all_cols).join(', ').replace(', "footnote"', '') + '\nFROM\n' + table_name;
     return select_string;
   };
 
@@ -1478,7 +1524,7 @@ $(function() {
       });
     };
 
-    return has_filters
+    return has_filters;
 
   };
 
@@ -1519,6 +1565,10 @@ $(function() {
 
   function wrapElsWithParens(arr){
     return _.map(arr, function(el){ return '(' + el + ')' });
+  };
+
+  function wrapElsWithQuotes(arr){
+    return _.map(arr, function(el){ return '"' + el + '"' });
   };
 
   function quoteValIfString(val){
@@ -1688,7 +1738,7 @@ $(function() {
 
     $chart_container.show();
     $chart_canvas.dynamicHighchart(chart_settings, function(response){
-      console.log(response)
+      // console.log(response)
     });
   };
 
@@ -1722,41 +1772,41 @@ $(function() {
     $chart_builder_view.removeClass('disabled');
   };
 
-  function makeTextfieldsPlaceholderable(){
-    /* Clears textfields from helper text on click */
-    /* https://gist.github.com/mhkeller/5827111    */
-    var $textfield = $('.placeholder-textfield');
+  // function makeTextfieldsPlaceholderable(){
+  //   /* Clears textfields from helper text on click */
+  //   /* https://gist.github.com/mhkeller/5827111    */
+  //   var $textfield = $('.placeholder-textfield');
  
-    $textfield.focus(function(srcc){
-      if ($(this).val() == $(this)[0].title){
-        $(this).removeClass("placeholder-textfield-active");
-        $(this).val("");
-      };
-    });
+  //   $textfield.focus(function(srcc){
+  //     if ($(this).val() == $(this)[0].title){
+  //       $(this).removeClass("placeholder-textfield-active");
+  //       $(this).val("");
+  //     };
+  //   });
  
-    $textfield.blur(function(){
-      if ($(this).val() == ""){
-        $(this).addClass("placeholder-textfield-active");
-        $(this).val($(this)[0].title);
-      }
-    });
+  //   $textfield.blur(function(){
+  //     if ($(this).val() == ""){
+  //       $(this).addClass("placeholder-textfield-active");
+  //       $(this).val($(this)[0].title);
+  //     }
+  //   });
  
-    $textfield.blur();
-  }
+  //   $textfield.blur();
+  // }
 
   function trackQuery(fileFormat, resultCount){
-    if (typeof(resultCount) == 'undefined') {
-      var resultCount = false;
-    };
+    // if (typeof(resultCount) == 'undefined') {
+    //   var resultCount = false;
+    // };
 
-    // Track
-    if (encoding == 'true'){
-      var url = decodeURI($('#sql').val())
-    }else{
-      var url = $('#sql').val()
-    };
-    var sql = url.replace('https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=', '')
-    _paq.push(['trackSiteSearch', sql, fileFormat, resultCount]);
+    // // Track
+    // if (encoding == 'true'){
+    //   var url = decodeURI($('#sql').val())
+    // }else{
+    //   var url = $('#sql').val()
+    // };
+    // var sql = url.replace('https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=', '')
+    // _paq.push(['trackSiteSearch', sql, fileFormat, resultCount]);
   }
 
   function scrollThere(that, e){
@@ -1767,11 +1817,14 @@ $(function() {
   };
 
   function enableBuilderBtnsAndChartOptions(){
-    var $builder_btns = $('#builder-btns .btn').not('.chart-builder-submit .btn'),
-        $chart_options = $('#chart-builder-options');
+    var $builder_btns  = $('#builder-btns .btn'),
+        $chart_options = $('#chart-builder-options'),
+        $preview_btns  = $('.buttn');
+
 
     if($builder_btns.hasClass('disabled')){
       $builder_btns.removeClass('disabled');
+      $preview_btns.removeClass('disabled');
       $chart_options.removeClass('disabled');
       $('#builder-btns-overlay').css('z-index',0);
     };
@@ -1824,7 +1877,7 @@ $(function() {
 
   function loadBtnAttrsWithQueryLink(q_string){
     var q_string_sanitized = sanitizeForBtns(q_string);
-    var query = api_endpoint + q_string_sanitized;
+    var query              = api_endpoint + q_string_sanitized;
     $download_json_btn.attr('href', query);
     $download_csv_btn.attr('data-query-link', query);
   };
