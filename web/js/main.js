@@ -16,7 +16,10 @@ $(function() {
       $chart_canvas              = $('#chart-canvas'),
       $builder_table_select      = $('#builder-table-select'),
       $qb_table_builders         = $('#qb-table-builders'),
-      $help_hover                = $('#qb-help-text-hover');
+      $help_hover                = $('#qb-help-text-hover'),
+      $chart_builder_title       = $('#cb-chart-title'),
+      $chart_builder_y_label     = $('#cb-y-axis-label');
+
 
 
   var default_queries = {
@@ -204,15 +207,27 @@ $(function() {
       });
 
       /* SHOW HIDE TABLE */
-      $('.show-hide-table').click(function(){
+      // $('.show-hide-table').click(function(){
+      //   var state = $(this).data('state');
+      //   if (state == 'hide'){
+      //     $('#results-table-container').hide();
+      //     $(this).data('state','show');
+      //     $(this).html('Show preview table')
+      //   }else{
+      //     $('#results-table-container').show();
+      //     $(this).html('Hide preview table')
+      //     $(this).data('state','hide');
+      //   };
+      // });      
+      $('#toggle-query-viewers').click(function(){
         var state = $(this).data('state');
         if (state == 'hide'){
-          $('#results-table-container').hide();
+          $('#query-viewers-wrapper').hide();
           $(this).data('state','show');
-          $(this).html('Show preview table')
+          $(this).html('Show previews')
         }else{
-          $('#results-table-container').show();
-          $(this).html('Hide preview table')
+          $('#query-viewers-wrapper').show();
+          $(this).html('Hide previews')
           $(this).data('state','hide');
         };
       });
@@ -261,7 +276,7 @@ $(function() {
       }); 
 
       $sql_query_textarea.autogrow();
-      makeTextfieldsPlaceholderable();
+      // makeTextfieldsPlaceholderable();
 
       $('.toggle-chart-opts').click(function(){
         $("#chart-builder-options").toggle();
@@ -343,6 +358,7 @@ $(function() {
     makeTableColumns(tables.t1, 't1', collections);
 
     // TODO dynamically add column names to that section in the DOM
+    $('#'+ 't1-' + 'builder').find('.qb-table-available-columns').html('Columns:<pre><code class="no-wrap">' + tables.t1.all_cols.join(', ') + '</pre></code>');
 
     // _.each(db_schema.tables, function(table_data, table_name_schema, table_list){
     //   makeTableColumns(table_data, table_name_schema)
@@ -632,10 +648,13 @@ $(function() {
             sentence_wire = t_name + '-' + collection_name + '-value';
             this.$el.find('.sentence-option.' + sentence_wire + ' .sentence-group').append( value_item );
             
-          }
+          };
 
         }, main_context); // Make sure you give it the right context of this, whatever the hell that is.
+
       });
+
+      // main_context.updateQueryState();
     },
 
     updateQueryState: function(model){
@@ -1490,7 +1509,7 @@ $(function() {
     $chart_builder_x_data.val(opts.x);
     $chart_builder_y_data.val(opts.y);
 
-    $('.placeholder-textfield').removeClass('placeholder-textfield-active');
+    // $chart_builder_series_data.trigger('change');
   };
 
   function loadUiWithSqlString(sql_string){
@@ -1738,9 +1757,11 @@ $(function() {
     var chart_settings = {
       query_url: $download_json_btn.attr('href'),
       chart_type: $('input:radio[name=chart-type]:checked').val(),
-      series: $chart_builder_series_data.val(),
-      x: $chart_builder_x_data.val(),
-      y: $chart_builder_y_data.val()
+      series: ($chart_builder_series_data.val() != $chart_builder_series_data.title) ? $chart_builder_series_data.val() : '',
+      x: ($chart_builder_x_data.val() != $chart_builder_x_data.title) ? $chart_builder_x_data.val() : '',
+      y: ($chart_builder_y_data.val() != $chart_builder_y_data.title) ? $chart_builder_y_data.val() : '',
+      title: ($chart_builder_title.val() != $chart_builder_title.title) ? $chart_builder_title.val() : '' , 
+      y_axis_label: ($chart_builder_y_label.val() != $chart_builder_y_label.title) ? $chart_builder_y_label.val() : '' 
     };
 
     $chart_container.show();
@@ -1780,25 +1801,25 @@ $(function() {
   };
 
   function makeTextfieldsPlaceholderable(){
-    /* Clears textfields from helper text on click */
-    /* https://gist.github.com/mhkeller/5827111    */
-    var $textfield = $('.placeholder-textfield');
+    // /* Clears textfields from helper text on click */
+    // /* https://gist.github.com/mhkeller/5827111    */
+    // var $textfield = $('.placeholder-textfield');
  
-    $textfield.focus(function(srcc){
-      if ($(this).val() == $(this)[0].title){
-        $(this).removeClass("placeholder-textfield-active");
-        $(this).val("");
-      };
-    });
+    // $textfield.focus(function(srcc){
+    //   if ($(this).val() == $(this)[0].title){
+    //     $(this).removeClass("placeholder-textfield-active");
+    //     $(this).val("");
+    //   };
+    // });    
  
-    $textfield.blur(function(){
-      if ($(this).val() == ""){
-        $(this).addClass("placeholder-textfield-active");
-        $(this).val($(this)[0].title);
-      };
-    });
+    // $textfield.blur(function(){
+    //   if ($(this).val() == ""){
+    //     $(this).addClass("placeholder-textfield-active");
+    //     $(this).val($(this)[0].title);
+    //   };
+    // });
  
-    $textfield.blur();
+    // $textfield.blur();
   }
 
   function trackQuery(fileFormat, resultCount){

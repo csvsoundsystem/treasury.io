@@ -94,11 +94,7 @@
               <div id="qb-table-builders" class="builder-item">
                 <div class="qb-table-builder" id="t1-builder">
                   <div class="qb-table-name">t1: Operating Cash Balance</div>
-                  <div class="qb-table-available-columns">Columns
-                    <pre>
-                      <code>table, url, date, year_month, year, month, day, weekday, account, account_raw, close_today, open_today, open_mo, footnote</code>
-                    </pre>
-                  </div>
+                  <div class="qb-table-available-columns"></div>
                   <div class="qb-table-sentence">
                     <p>How much cash does the federal government have on hand <span class='sentence-option t1-date-select'></span> <span class='sentence-option t1-date-value'></span> ?</p>
                   </div>
@@ -114,18 +110,19 @@
                     <input type="radio" name="encoding" value="true"> URL-Encoded
                  </span>
  -->                  <div id="query-string">
-                    <textarea id="sql" class="placeholder-textfield" title="Select from the dropdown menu above or type your own query..."></textarea>
+                    <textarea id="sql" class="placeholder-textfield" placeholder="Select from the query builder options above or type your own query..."></textarea>
                   </div>
                 </fieldset>
               </div>
-              <div id="query-viewers-wrapper" class="builder-item">
+              <div id="toggle-query-viewers" data-state="show">Show previews</div>
+              <div id="query-viewers-wrapper" class="builder-item" style="display: none;">
                 <div id="query-preview-wrapper" class="query-viewer">
                   <div class="query-preview-button-wrapper">
                     <!-- BUTTON -->
                     <button type="button" class="buttn disabled piwik_ignore" id="download-browser">Update query preview*</button>
                     <!-- CANVAS -->
                     <div id="results-container" style="display: none;">
-                      <div class="show-hide-table" data-state="hide">Hide preview table</div>
+                      <!-- <div class="show-hide-table" data-state="hide">Hide preview table</div> -->
                       <div id="results-table-container">
                         <div id="results-table-holder">
                           <table id="results" cellspacing="5"></table>
@@ -142,15 +139,19 @@
                     <div id="chart-builder-options" style="display: none;">
                       <div class="chart-builder-option-box">
                         <p class="chart-builder-close-btn toggle-chart-opts">Hide options</p>
-                        <label for="cb-series-col" >Series name: <input id="cb-series-col" type="text" class="placeholder-textfield chart-builder-input-text" title="i.e. item"></label>
-                        <label for="cb-x-col" >X-value <input id="cb-x-col"      type="text" class="placeholder-textfield chart-builder-input-text" title="i.e. date"></label>
-                        <label for="cb-y-col" >Y-value <input id="cb-y-col"      type="text" class="placeholder-textfield chart-builder-input-text" title="i.e. close_today"></label>
+                        <label for="cb-series-col" >Series name: <input id="cb-series-col" type="text" class="placeholder-textfield chart-builder-input-text" placeholder="i.e. item"></label>
+                        <label for="cb-x-col" >X-value <input id="cb-x-col" type="text" class="placeholder-textfield chart-builder-input-text" placeholder="i.e. date"></label>
+                        <label for="cb-y-col" >Y-value <input id="cb-y-col" type="text" class="placeholder-textfield chart-builder-input-text" placeholder="i.e. close_today"></label>
                         <span class="clearfix"></span>
                       </div>
                       <div class="chart-builder-option-box">
                         <p class="chart-builder-option-box-title">The x-axis holds:</p>
                         <label for="chart-type-datetime"><input id="chart-type-datetime" type="radio" name="chart-type" value="datetime" checked> Dates (line graph)</label>
                         <label for="chart-type-categorical"><input id="chart-type-categorical" type="radio" name="chart-type" value="categorical"> Categories (bar graph)</label>
+                      </div>
+                      <div class="chart-builder-option-box" style="margin-top: 10px;">
+                        <label for="cb-chart-title" >Title <input id="cb-chart-title" type="text" class="placeholder-textfield chart-builder-input-text" placeholder="i.e. Daily cash"></label>
+                        <label for="cb-y-axis-label" >Y-axis <input id="cb-y-axis-label" type="text" class="placeholder-textfield chart-builder-input-text" placeholder="i.e. $ (millions)"></label>
                       </div>
                     </div>
                     <button id="view-chart" type="button" class="buttn disabled">Update chart</button>
@@ -159,7 +160,7 @@
 
                   <!-- CANVAS -->
                   <div id="chart-container" style="display: none;">
-                    <div class="show-hide-chart" data-state="hide">Hide chart</div>
+                    <!-- <div class="show-hide-chart" data-state="hide">Hide chart</div> -->
                     <div id="chart-canvas"></div>
                     <div id="hover-templ"></div>
                   </div>
@@ -168,7 +169,7 @@
               </div>
 
               <div id="builder-btns" class="btn-group builder-item">
-                <!-- <div id="builder-btns-overlay"></div> -->
+                <div id="builder-btns-overlay"></div>
                 <!-- <span class="btn disabled piwik_ignore" id="download-browser">Preview query**</span> -->
                 <a class="btn disabled piwik_ignore" id="download-json" target="_blank" href="#">View JSON</a>
                 <span class="btn disabled piwik_ignore download-as-csv-btn" id="download-csv" data-query-link="">Download CSV</span>
