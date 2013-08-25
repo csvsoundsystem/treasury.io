@@ -122,7 +122,7 @@
                 <div id="query-preview-wrapper" class="query-viewer">
                   <div class="query-preview-button-wrapper">
                     <!-- BUTTON -->
-                    <button type="button" class="buttn disabled piwik_ignore" id="download-browser">Preview query*</button>
+                    <button type="button" class="buttn disabled piwik_ignore" id="download-browser">Update query preview*</button>
                     <!-- CANVAS -->
                     <div id="results-container" style="display: none;">
                       <div class="show-hide-table" data-state="hide">Hide preview table</div>
@@ -138,27 +138,25 @@
                 <div id="query-chart-wrapper" class="query-viewer">
                   <!-- BUTTON  -->
                   <div class="query-preview-button-wrapper">
-                    <button id="view-chart" type="button" class="buttn disabled">View chart</button>
+                    <div id="toggle-chart-options" class="disabled toggle-chart-opts">Show options</div>
+                    <div id="chart-builder-options" style="display: none;">
+                      <div class="chart-builder-option-box">
+                        <p class="chart-builder-close-btn toggle-chart-opts">Hide options</p>
+                        <label for="cb-series-col" >Series name: <input id="cb-series-col" type="text" class="placeholder-textfield chart-builder-input-text" title="i.e. item"></label>
+                        <label for="cb-x-col" >X-value <input id="cb-x-col"      type="text" class="placeholder-textfield chart-builder-input-text" title="i.e. date"></label>
+                        <label for="cb-y-col" >Y-value <input id="cb-y-col"      type="text" class="placeholder-textfield chart-builder-input-text" title="i.e. close_today"></label>
+                        <span class="clearfix"></span>
+                      </div>
+                      <div class="chart-builder-option-box">
+                        <p class="chart-builder-option-box-title">The x-axis holds:</p>
+                        <label for="chart-type-datetime"><input id="chart-type-datetime" type="radio" name="chart-type" value="datetime" checked> Dates (line graph)</label>
+                        <label for="chart-type-categorical"><input id="chart-type-categorical" type="radio" name="chart-type" value="categorical"> Categories (bar graph)</label>
+                      </div>
+                    </div>
+                    <button id="view-chart" type="button" class="buttn disabled">Update chart</button>
                   </div>
                   <!-- OPTIONS -->
-                  <div id="chart-builder-options" class="disabled">
-                    <div class="chart-builder-title">Chart options</div>
-                    <div class="chart-builder-option-box">
-                      <p class="chart-builder-option-box-title">Which fields hold the...</p>
-                      <input id="cb-series-col" type="text" class="placeholder-textfield chart-builder-input-text" title="Series names ">
-                      <input id="cb-x-col" type="text" class="placeholder-textfield chart-builder-input-text" title="X-axis data ">
-                      <input id="cb-y-col" type="text" class="placeholder-textfield chart-builder-input-text" title="Y-axis data ">
-                      <span class="clearfix"></span>
-                    </div>
-                    <div class="chart-builder-option-box">
-                      <p class="chart-builder-option-box-title">The chart's x-axis holds...</p>
-                      <input type="radio" name="chart-type" value="datetime" checked> <span class="radio-btn-text"><span class="radio-btn-fixewidth">Dates</span> (line graph)</span><br/>
-                      <input type="radio" name="chart-type" value="categorical"> <span class="radio-btn-text"><span class="radio-btn-fixed-wid">Categories</span> (bar graph)</span>
-                    </div>
-                    <div class="chart-builder-submit">
-                      <!-- <div class="btn disabled">View chart</div> -->
-                    </div>
-                  </div>
+
                   <!-- CANVAS -->
                   <div id="chart-container" style="display: none;">
                     <div class="show-hide-chart" data-state="hide">Hide chart</div>
@@ -170,7 +168,7 @@
               </div>
 
               <div id="builder-btns" class="btn-group builder-item">
-                <div id="builder-btns-overlay"></div>
+                <!-- <div id="builder-btns-overlay"></div> -->
                 <!-- <span class="btn disabled piwik_ignore" id="download-browser">Preview query**</span> -->
                 <a class="btn disabled piwik_ignore" id="download-json" target="_blank" href="#">View JSON</a>
                 <span class="btn disabled piwik_ignore download-as-csv-btn" id="download-csv" data-query-link="">Download CSV</span>

@@ -203,9 +203,6 @@ $(function() {
         loadBtnAttrsWithQueryLink(q_string)
       });
 
-      $sql_query_textarea.autogrow();
-      // makeTextfieldsPlaceholderable();
-
       /* SHOW HIDE TABLE */
       $('.show-hide-table').click(function(){
         var state = $(this).data('state');
@@ -226,6 +223,7 @@ $(function() {
       });
 
       $chart_builder_view.mousedown(function(e){
+        $("#chart-builder-options").hide();
         constructDynamicHighchartObject();
       });
 
@@ -261,6 +259,13 @@ $(function() {
       $qb_table_builders.on('keyup', '.queryable-item input:text', function(){
         buildQueryFromInputs();
       }); 
+
+      $sql_query_textarea.autogrow();
+      makeTextfieldsPlaceholderable();
+
+      $('.toggle-chart-opts').click(function(){
+        $("#chart-builder-options").toggle();
+      });
 
   };
 
@@ -1481,9 +1486,11 @@ $(function() {
   function loadChartBuilderOptions(table_name){
     var opts = chart_builder_settings[table_name];
 
-    $chart_builder_series_data.val(opts.series)
-    $chart_builder_x_data.val(opts.x)
-    $chart_builder_y_data.val(opts.y)
+    $chart_builder_series_data.val(opts.series);
+    $chart_builder_x_data.val(opts.x);
+    $chart_builder_y_data.val(opts.y);
+
+    $('.placeholder-textfield').removeClass('placeholder-textfield-active');
   };
 
   function loadUiWithSqlString(sql_string){
@@ -1772,27 +1779,27 @@ $(function() {
     $chart_builder_view.removeClass('disabled');
   };
 
-  // function makeTextfieldsPlaceholderable(){
-  //   /* Clears textfields from helper text on click */
-  //   /* https://gist.github.com/mhkeller/5827111    */
-  //   var $textfield = $('.placeholder-textfield');
+  function makeTextfieldsPlaceholderable(){
+    /* Clears textfields from helper text on click */
+    /* https://gist.github.com/mhkeller/5827111    */
+    var $textfield = $('.placeholder-textfield');
  
-  //   $textfield.focus(function(srcc){
-  //     if ($(this).val() == $(this)[0].title){
-  //       $(this).removeClass("placeholder-textfield-active");
-  //       $(this).val("");
-  //     };
-  //   });
+    $textfield.focus(function(srcc){
+      if ($(this).val() == $(this)[0].title){
+        $(this).removeClass("placeholder-textfield-active");
+        $(this).val("");
+      };
+    });
  
-  //   $textfield.blur(function(){
-  //     if ($(this).val() == ""){
-  //       $(this).addClass("placeholder-textfield-active");
-  //       $(this).val($(this)[0].title);
-  //     }
-  //   });
+    $textfield.blur(function(){
+      if ($(this).val() == ""){
+        $(this).addClass("placeholder-textfield-active");
+        $(this).val($(this)[0].title);
+      };
+    });
  
-  //   $textfield.blur();
-  // }
+    $textfield.blur();
+  }
 
   function trackQuery(fileFormat, resultCount){
     // if (typeof(resultCount) == 'undefined') {

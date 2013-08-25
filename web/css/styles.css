@@ -529,11 +529,11 @@ textarea:focus{
 #chart-builder-options{
   position: relative;
   display:inline-block;
-  -webkit-box-shadow: inset 0 0 7px #416B80;
-  -moz-box-shadow: inset 0 0 7px #416B80;
-  box-shadow: inset 0 0 7px #416B80;
-  max-width: 340px;
-  padding: 0.5em 0.75em;
+  -webkit-box-shadow:  0 0 7px #416B80;
+  -moz-box-shadow:  0 0 7px #416B80;
+  box-shadow:  0 0 7px #416B80;
+  padding: 10px;
+  border: 1px solid #6F8C9B;
 }
 #chart-builder-options p {
   margin-bottom: 0;
@@ -544,21 +544,21 @@ textarea:focus{
   letter-spacing: 1px;
 }
 .chart-builder-option-box{
-  display: inline-block;
-  margin-right: 20px;
+  /*display: inline-block;*/
+  /*margin-right: 20px;*/
   /*float:left;*/
   line-height:20px;
-  max-width: 170px;
+  /*max-width: 170px;*/
 }
 #chart-builder-options p.chart-builder-option-box-title{
-  font-size:13px;
+/*  font-size:13px;
   margin-bottom:5px;
-}
+*/}
 .chart-builder-input-text{
-  display:block;
-  margin-bottom: 4px;
+  margin: 2px 0 8px 0;
+/*  display:block;
   width: 96%;
-  height: 15px;
+*/  height: 15px;
 
 }
 .chart-builder-submit{
@@ -570,7 +570,7 @@ textarea:focus{
 .chart-builder-submit .btn{
   padding: 0 .75em;
   border-width:2px;
-  width:87%;
+  /*width:87%;*/
   -webkit-box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px;
   -moz-box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px;
   box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px;
@@ -661,6 +661,50 @@ padding: 0 6px 0 5px;
 }
 .query-preview-button-wrapper{
   text-align: right;
+  position: relative;
+}
+#toggle-chart-options{
+  display: inline-block;
+  margin-right: 5px;
+}
+#chart-builder-options{
+  text-align: left;
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 89px;
+  background-color: #82C6E4;
+  z-index: 99999;
+  font-size: 12px;
+}
+#toggle-chart-options.hidden #chart-builder-options{
+  /*display: none;*/
+}
+#chart-builder-options label{
+  display: block;
+  line-height: 12px;
+  margin-bottom: 4px;
+}
+.toggle-chart-opts{
+  text-align: right;
+  font-size: 10px;
+  line-height: 8px;
+}
+.chart-builder-close-btn{
+  position: relative;
+  top: -2px;
+  left: 3px;
+}
+#toggle-chart-options:hover, .chart-builder-close-btn:hover{
+  cursor: pointer;
+  cursor: hand;
+  text-decoration: underline;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: -moz-none;
+  -ms-user-select: none;
+  user-select: none;
 }
 /* end query viewer coe */
 
