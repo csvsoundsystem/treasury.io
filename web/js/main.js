@@ -353,11 +353,13 @@ $(function() {
       t4: {},
       t5: {},
       t6: {}
-    }
-    makeTableColumns(tables.t1, 't1', collections);
+    };
+
+    var test_col = 't1';
+    makeTableColumns(tables[test_col], test_col, collections);
 
     // TODO dynamically add column names to that section in the DOM
-    $('#'+ 't1-' + 'builder').find('.qb-table-available-columns').html('Columns:<pre><code class="no-wrap">' + tables.t1.all_cols.join(', ') + '</pre></code>');
+    $('#'+ test_col +'-' + 'builder').find('.qb-table-available-columns').html('Columns:<pre><code class="no-wrap">' + tables[test_col].all_cols.join(', ') + '</pre></code>');
 
     // _.each(db_schema.tables, function(table_data, table_name_schema, table_list){
     //   makeTableColumns(table_data, table_name_schema)
@@ -1649,8 +1651,8 @@ $(function() {
 
 
     // For every collection in the table
-    var column_obj = {};
     _.each(this_col_collection, function(collection, collection_name, collection_list){
+    var column_obj = {};
       // For each column
       var queryable_and_checked_models;
 
@@ -1727,7 +1729,7 @@ $(function() {
        
       // });
     });
-
+  console.log(filters)
     return filters;
 
   };
