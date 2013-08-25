@@ -17,12 +17,16 @@
 	        box-sizing: border-box;
 }
 .chart-loading{
-	text-transform:uppercase;
-	font-family:Arial, sans-serif;
-	text-align:center;
-	font-weight:bold;
-	letter-spacing:1px;
-	margin-top:10%;
+	text-transform: uppercase;
+	font-family: Arial, sans-serif;
+	text-align: center;
+	font-weight: bold;
+	letter-spacing: 1px;
+	color: #FFF;
+	background-color: #1776B6;
+	max-width: 175px;
+	margin: 50% auto;
+	line-height: 20px;
 }
 .chart-loading img{
 	position:relative;

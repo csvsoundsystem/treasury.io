@@ -155,7 +155,6 @@ $(function() {
       /* PREVIEW IN BROWSER BUTTON */
       $download_browser_btn.mousedown(function(){
         var $that = $(this);
-        console.log($that.hasClass('disabled'))
         if(!$that.hasClass('disabled')){
           var q = $('#download-csv').attr('data-query-link');
           var before_text = $that.html()
