@@ -1,56 +1,46 @@
 $(function() {
 
 
-    var encoding                 = 'false',
-      api_endpoint               = 'https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=',
-      $query_refresher           = $('#query-refresher'),
-      $download_browser_btn      = $('#download-browser'),
-      $download_csv_btn          = $('#download-csv'),
-      $download_json_btn         = $('#download-json'),
-      $sql_query_textarea        = $('#sql'),
-      $any_download_as_csv_btn   = $('.download-as-csv-btn'),
-      $chart_builder_input_text  = $('.chart-builder-input-text'),
-      $chart_builder_view        = $('#view-chart'),
-      $chart_builder_series_data = $('#cb-series-col'),
-      $chart_builder_x_data      = $('#cb-x-col'),
-      $chart_builder_y_data      = $('#cb-y-col'),
-      $chart_container           = $('#chart-container');
-      $chart_canvas              = $('#chart-canvas'),
-      $builder_table_select      = $('#builder-table-select'),
-      $qb_table_builders         = $('#qb-table-builders'),
-      $help_hover                = $('#qb-help-text-hover'),
-      $chart_builder_title       = $('#cb-chart-title'),
-      $chart_builder_y_label     = $('#cb-y-axis-label');
+  var encoding                 = 'false',
+    api_endpoint               = 'https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=',
+    $query_refresher           = $('#query-refresher'),
+    $download_browser_btn      = $('#download-browser'),
+    $download_csv_btn          = $('#download-csv'),
+    $download_json_btn         = $('#download-json'),
+    $sql_query_textarea        = $('#sql'),
+    $any_download_as_csv_btn   = $('.download-as-csv-btn'),
+    $chart_builder_input_text  = $('.chart-builder-input-text'),
+    $chart_builder_view        = $('#view-chart'),
+    $chart_builder_series_data = $('#cb-series-col'),
+    $chart_builder_x_data      = $('#cb-x-col'),
+    $chart_builder_y_data      = $('#cb-y-col'),
+    $chart_container           = $('#chart-container');
+    $chart_canvas              = $('#chart-canvas'),
+    $builder_table_select      = $('#builder-table-select'),
+    $qb_table_builders         = $('#qb-table-builders'),
+    $help_hover                = $('#qb-help-text-hover'),
+    $chart_builder_title       = $('#cb-chart-title'),
+    $chart_builder_y_label     = $('#cb-y-axis-label');
 
-    // For autogrowing of textarea
-    // Textarea
-    var text = document.getElementById('sql');
-    function resizeSqlArea () {
-        text.style.height = 'auto';
-        text.style.height = text.scrollHeight+'px';
-    }
-    /* 0-timeout to get the already changed text */
-    function delayedResize () {
-        window.setTimeout(resizeSqlArea, 0);
-    }
-    $sql_query_textarea.on('change',  resizeSqlArea);
-    $sql_query_textarea.on('cut',     delayedResize);
-    $sql_query_textarea.on('paste',   delayedResize);
-    $sql_query_textarea.on('drop',    delayedResize);
-    $sql_query_textarea.on('keydown', delayedResize);
+  // For autogrowing of textarea
+  // Textarea
+  var text = document.getElementById('sql');
+  function resizeSqlArea () {
+      text.style.height = 'auto';
+      text.style.height = text.scrollHeight+'px';
+  }
+  /* 0-timeout to get the already changed text */
+  function delayedResize () {
+      window.setTimeout(resizeSqlArea, 0);
+  }
+  $sql_query_textarea.on('change',  resizeSqlArea);
+  $sql_query_textarea.on('cut',     delayedResize);
+  $sql_query_textarea.on('paste',   delayedResize);
+  $sql_query_textarea.on('drop',    delayedResize);
+  $sql_query_textarea.on('keydown', delayedResize);
 
 
-  var default_queries = {
-    t1: '1',
-    t2: '2',
-    t3a: '3',
-    t3b: '4',
-    t3c: '5',
-    t4: '6',
-    t5: '7',
-    t6: '8'
-  },
-  tables = {},
+  var tables = {},
   chart_builder_settings = {
     t1: {
       series: 'account',
@@ -389,8 +379,8 @@ $(function() {
   function makeTableColumns(table, t_name, collections){
 
     // Okay, how's it going?
-    // Good
-    // Great
+    // Good!
+    // Great!
     // Let's redo this query builder interface
     // Okay!
     // Step one
@@ -404,6 +394,7 @@ $(function() {
         comparinator: 'comparinator_default',
         queryable: true,
         checked: true,
+        parent: false,
         value: 0
       },
 
@@ -429,11 +420,11 @@ $(function() {
 
       // Return an array only with the checked services
       getQueryableAndChecked: function(){
-          return this.where({queryable:true, checked:true});
+        return this.where({queryable:true, checked:true});
       },      
 
       getQueryableAndUnchecked: function(){
-          return this.where({queryable:true, checked:false});
+        return this.where({queryable:true, checked:false});
       },
 
       getCheckedCountAndQueryable: function(){
@@ -477,14 +468,15 @@ $(function() {
       // Loop through each item_value and add that parent_object_info by _.extending()
       // Turn them into instances of our models
       _.each(column_info.item_values, function(item_value){
-        _.extend(item_value, parent_object_info);
-        var item_model_instance = new ElementModel(item_value);
-        // But wait, there's more
+        // But wait, before we continue working on that model
         // We also want to turn these children elements into models and treat them as belonging to a separate collection, that we'll call item
         // It will have a property which is the name of its parent and then true
         // So `deposit: true` is one of them
         // Later on we set up a view on this model such that in certain cases, only `deposit: true` is shown
         if (item_value.children){
+          // If this has children then it means its a parent, so on our model, let's change its attribute from true to false
+          // this will come in handy later when we look for click events on that item, we can see if it will change other things
+          item_value.parent = true;
           sub_models = [];
           item_value.children.forEach(function(child){
             child[item_value.value] = true;
@@ -504,6 +496,12 @@ $(function() {
           });
           collections[t_name]['item'] = new ElementCollection(sub_models);
         };
+
+        // Okay back to our original item
+        // Add that parent object by extending, like we said we were gonna do
+        // then turn it into a model
+        _.extend(item_value, parent_object_info);
+        var item_model_instance = new ElementModel(item_value);
         models.push(item_model_instance);
       });
 
@@ -520,8 +518,11 @@ $(function() {
 
         template: _.template($('#Checkbox-view-templ').html()),
 
-        events:{
-          'change': 'toggleItem',
+        events: {
+          'change': function(e) {
+              this.toggleChecked(e);
+              this.limitPotentialChildren(e);
+          },
           'mouseover .help-text-flag': 'showHelpText',
           'mouseleave .help-text-flag': 'hideHelpText'
         },
@@ -534,33 +535,52 @@ $(function() {
           _.extend(model_data, formatHelpers);
           this.$el.html( this.template(model_data) );
 
-          
+          this.listenTo(this.model, 'change', this.render);
         },
 
         render: function(){
 
           // this.$el.find('input').prop('checked', this.model.get('checked'));
 
-          // if (this.model.get('queryable')){
-          //   this.$el.css('display','list-item');
-          //   this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('disabled', false)
-          // }else{
-          //   this.$el.css('display','none');
-          //   var queryable_count = column_collections[table_name_schema].item.models[0].item_values.getQueryableCount();
-          //   if (queryable_count == 'none_queryable'){
-          //     this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('disabled', true);
-          //   };
-          // };
+          if (this.model.get('queryable')){
+            this.$el.css('display','list-item');
+            // this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('disabled', false)
+          }else{
+            this.$el.css('display','none');
+            // var queryable_count = column_collections[table_name_schema].item.models[0].item_values.getQueryableCount();
+            // if (queryable_count == 'none_queryable'){
+            //   this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('disabled', true);
+            // };
+          };
 
-          // // Make sure it stays alternating colors
-          // this.$el.parent().find('li:visible').filter(':even').css({'background-color': '#c1e4f2'});
-          // this.$el.parent().find('li:visible').filter(':odd').css({'background-color': '#fff'});          
+          // Make sure it stays alternating colors
+          this.$el.parent().find('li:visible').filter(':even').css({'background-color': '#c1e4f2'});
+          this.$el.parent().find('li:visible').filter(':odd').css({'background-color': '#fff'});          
 
           return this;
         },
 
-        toggleItem: function(e){
+        toggleChecked: function(e){
           this.model.toggleChecked();
+          console.log(this.model.get('queryable'))
+        },
+
+        limitPotentialChildren: function(e){
+          var is_parent = this.model.get('parent');
+          if (is_parent){
+            var item_name = this.model.get('value');
+            var a = { a : item_name };
+            console.log(item_name)
+            // This is only going to affect this one element in this one table. So, we could make walking this object dynamic
+            // But why fool ourselves? If we do that, then we might think this is meant to work in other instances.
+            // But it's really not.
+            // So don't be fooled.
+            // collections.t2.item.invoke('set', {"queryable": false});
+            collections.t2.item.each(function(model){
+              model.set({'queryable': false})
+            });
+          }
+
         },
 
         toggleQueryable: function(e){
@@ -568,10 +588,10 @@ $(function() {
         },
 
         showHelpText: function(e){
-          var $help_text = $(e.target),
-              help_text = $help_text.data('help-text'),
-              offset = $(e.target).offset(),
-              offset_top = offset.top,
+          var $help_text  = $(e.target),
+              help_text   = $help_text.data('help-text'),
+              offset      = $(e.target).offset(),
+              offset_top  = offset.top,
               offset_left = offset.left;
 
 
@@ -1602,9 +1622,9 @@ $(function() {
 
   function JsonToSql(where_filters, table_name){
 
-    var select_string     = buildSelectQuery(table_name),
-        where_string      = buildWhereQuery(where_filters),
-        query             = select_string + '\n' + where_string;
+    var select_string = buildSelectQuery(table_name),
+        where_string  = buildWhereQuery(where_filters),
+        query         = select_string + '\n' + where_string;
 
     return query;
   };
@@ -1730,8 +1750,8 @@ $(function() {
     _.each(this_col_collection, function(collection, collection_name, collection_list){
       var column_obj  = {},
           add_model   = true,
-          cmpr        = '=',
-          modify_cmpr = false;
+          modify_cmpr = false,
+          cmpr        = '=';
 
       // For each column
       column_obj[collection_name] = [];
@@ -1756,7 +1776,6 @@ $(function() {
         };
       };
 
-
       if (add_model){
         _.each(queryable_models, function(elem, ind){
           var value_obj = {};
@@ -1769,68 +1788,6 @@ $(function() {
         filters.push(column_obj);
       };
 
-      // _.each(queryable_and_checked_models, function(elem, ind){
-      //   var value_obj = {};
-      //   value_obj['value'] = elem.get('value');
-      //   value_obj['comparinator'] = elem.get('comparinator');
-
-      //   column_obj[collection_name].push(value_obj);
-
-      // });
-
-      // filters.push(column_obj);      
-
-
-
-      // collection.each( function(column){
-
-          // The rest of this is for the WHERE query so we can skip
-          /*
-            // Loop through the item_value collection on every queryable column
-            column_obj = {}
-
-            var cmpr = '=',
-                add_model = true,
-                majority_status;
-
-            column_obj[collection_name] = [];
-
-            if (column_name != 'item'){
-              queryable_models = column.item_values.getQueryableAndChecked()
-            }else{
-              majority_status = column.item_values.getCheckedCountAndQueryable();
-              if (majority_status == 'majority_checked'){ // If the majority of them are checked, then it's easier to only do a WHERE clause on the excluded items
-                cmpr = '!='
-                queryable_models = column.item_values.getQueryableAndUnchecked();
-              }else if (majority_status == 'majority_unchecked') {
-                queryable_models = column.item_values.getQueryableAndChecked();
-              }else if(majority_status == 'all_none'){
-                add_model = false;
-                // Don't include any of this column's info if all of them are selected or none are selected
-                // So don't add models to nuthin'
-              };
-            };
-            
-            if (add_model){
-              _.each(queryable_models, function(elem, ind){
-                var value_obj = {};
-                value_obj['value'] = elem.get('value');
-
-                if (elem.get('comparinator') == '='){
-                 value_obj['comparinator'] = cmpr;
-                }else{
-                  value_obj['comparinator'] = elem.get('comparinator');
-                };
-
-                column_obj[collection_name].push(value_obj);
-              });
-
-              filters.push(column_obj);
-            };
-            
-          */
-       
-      // });
     });
     return filters;
 
@@ -1869,7 +1826,6 @@ $(function() {
 
     $chart_container.show();
     $chart_canvas.dynamicHighchart(chart_settings, function(response){
-      // console.log(response)
     });
   };
 
