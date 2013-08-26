@@ -714,6 +714,18 @@ padding: 0 6px 0 5px;
 #toggle-query-viewers{
   text-align: right;
 }
+.t2-item .sentence-group{
+  width: 137px;
+  line-height: 14px;
+  height: 100px;
+  overflow-y: scroll;
+}
+.t2-item .sentence-group li{
+  padding: 4px;
+}
+.sentence-group li:nth-child(odd) {
+  background-color: rgba(9, 146, 204, 0.25); 
+}
 
 /* end query viewer coe */
 
@@ -858,17 +870,21 @@ padding: 0 6px 0 5px;
   position: relative;
   top: 1px;
 }
+
 .qc-textfield-option img:hover{
   cursor: pointer;
   cursor: hand;
 }
+
 .textbox-label-text{
   display: inline-block;
   width: 25px;
 }
+*/
 .help-text-ctnr{
   position:relative;
 }
+
 .help-text-flag{
   font-size: 8px;
   vertical-align: super;
@@ -890,7 +906,7 @@ padding: 0 6px 0 5px;
   font-family: 'droid sans';
   font-size: 12px;
 }
-*/
+
 
 /* end query builder styles*/
 @media screen and (max-width: 640px) {

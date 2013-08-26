@@ -355,7 +355,7 @@ $(function() {
       t6: {}
     };
 
-    var test_col = 't1';
+    var test_col = 't2';
     makeTableColumns(tables[test_col], test_col, collections);
 
     // TODO dynamically add column names to that section in the DOM
@@ -385,8 +385,7 @@ $(function() {
         comparinator: 'comparinator_default',
         queryable: true,
         checked: true,
-        value: 0,
-        children: []
+        value: 0
       },
 
       toggleChecked: function(){
@@ -427,7 +426,8 @@ $(function() {
     _.each(table.columns, function(column_info, column_name, columns){
 
       // Make models
-      var models = [];
+      var models = [],
+          sub_models = [];
       // To save space, not every item has its table and column information
       // These are those values to add
       var parent_object_info = {
@@ -439,16 +439,37 @@ $(function() {
       // Turn them into instances of our models
       _.each(column_info.item_values, function(item_value){
         _.extend(item_value, parent_object_info);
-        var item_model_instances = new ElementModel(item_value);
-        models.push(item_model_instances);
+        var item_model_instance = new ElementModel(item_value);
+        // But wait, there's more
+        // We also want to turn these children elements into models and treat them as belonging to a separate collection, that we'll call item
+        // It will have a property which is the name of its parent and then true
+        // So `deposit: true` is one of them
+        // Later on we set up a view on this model such that in certain cases, only `deposit: true` is shown
+        if (item_value.children){
+          sub_models = [];
+          item_value.children.forEach(function(child){
+            child[item_value.value] = true;
+            var more_info_for_item = {
+              table_name: t_name,
+              column_name: 'item',
+              column_type: 'string',
+              comparinator: '='
+            };
+            // Our data had named this with a key of `item` but it will fit our schema better if we call it `value`
+            // So store that as `value` and delete `item`
+            child.value = child.item;
+            delete child.item
+            _.extend(child, more_info_for_item);
+            var child_instance = new ElementModel(child);
+            sub_models.push(child_instance);
+          });
+          collections[t_name]['item'] = new ElementCollection(sub_models);
+        };
+        models.push(item_model_instance);
       });
 
-      // Make collections
-      // Create a platonic collection for this column
-      // collections[t_name][column_info.name] = Backbone.Collection.extend({ model: ElementModel }); // Maybe add collection methods here
-      // Instantiate it with data
-      collections[t_name][column_info.name] = new ElementCollection(models)
-
+      // Instantiate our collection with data
+      collections[t_name][column_info.name] = new ElementCollection(models);
     });
 
     // Step four
@@ -460,11 +481,11 @@ $(function() {
 
         template: _.template($('#Checkbox-view-templ').html()),
 
-        // events:{
-        //   'change': 'toggleItem',
-        //   'mouseover .help-text-flag': 'showHelpText',
-        //   'mouseleave .help-text-flag': 'hideHelpText'
-        // },
+        events:{
+          'change': 'toggleItem',
+          'mouseover .help-text-flag': 'showHelpText',
+          'mouseleave .help-text-flag': 'hideHelpText'
+        },
 
         initialize: function(){
 
@@ -635,7 +656,11 @@ $(function() {
 
         main_context.listenTo(collection, 'change', main_context.updateQueryState);
 
+        // This is the meat and potatoes of the app
+        // This is where the data from each collection is given a view and rendered into the appropriate div
+        // I'm prefixing elements that are backbone view objects with v_ as opposed to their markup which is v_`name`.render().el
         collection.each( function(item){
+          var sentence_wire;
           if (collection_name == 'date'){
             var v_el_date_select = new DatefieldSelectorView({model: item}),
                 v_el_date_value  = new DatefieldView({model: item});
@@ -643,19 +668,30 @@ $(function() {
             var select_item = v_el_date_select.render().el,
                 value_item  = v_el_date_value.render().el;
 
-            var sentence_wire = t_name + '-' + collection_name + '-select';
+            sentence_wire = main_context.constructSw([t_name, collection_name, 'select']);
             this.$el.find('.sentence-option.' + sentence_wire + ' .sentence-group').append( select_item );
             
-            sentence_wire = t_name + '-' + collection_name + '-value';
+            sentence_wire = main_context.constructSw([t_name, collection_name, 'value']);
             this.$el.find('.sentence-option.' + sentence_wire + ' .sentence-group').append( value_item );
+
             
-          };
+          }else{
+            var v_el_checkbox_select = new CheckboxView({model: item})
+
+            var checkbox_item = v_el_checkbox_select.render().el;
+            sentence_wire = main_context.constructSw([t_name, collection_name]);
+            this.$el.find('.sentence-option.' + sentence_wire + ' .sentence-group').append( checkbox_item );
+
+          }
 
         }, main_context); // Make sure you give it the right context of this, whatever the hell that is.
 
       });
 
-      // main_context.updateQueryState();
+    },
+
+    constructSw: function(keys){
+      return keys.join('-');
     },
 
     updateQueryState: function(model){
@@ -1658,24 +1694,20 @@ $(function() {
 
       column_obj[collection_name] = [];
 
-      if (collection_name != 'item'){
 
-        queryable_and_checked_models = collection.getQueryableAndChecked();
+      queryable_and_checked_models = collection.getQueryableAndChecked();
 
-        _.each(queryable_and_checked_models, function(elem, ind){
+      _.each(queryable_and_checked_models, function(elem, ind){
 
-          var value_obj = {};
-          value_obj['value'] = elem.get('value');
-          value_obj['comparinator'] = elem.get('comparinator');
+        var value_obj = {};
+        value_obj['value'] = elem.get('value');
+        value_obj['comparinator'] = elem.get('comparinator');
 
-          column_obj[collection_name].push(value_obj);
+        column_obj[collection_name].push(value_obj);
 
-        });
+      });
 
-        filters.push(column_obj);      
-      }else{
-
-      };
+      filters.push(column_obj);      
 
 
 
@@ -1729,7 +1761,6 @@ $(function() {
        
       // });
     });
-  console.log(filters)
     return filters;
 
   };

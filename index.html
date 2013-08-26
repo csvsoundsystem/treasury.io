@@ -105,7 +105,7 @@
                   <div class="qb-table-name">t2: Deposits &amp; Withdrawals</div>
                   <div class="qb-table-available-columns"></div>
                   <div class="qb-table-sentence">
-                    <p>How much cash did the federal government <span class='sentence-option t2-date-select'></span> <span class='sentence-option t2-date-value'></span> ?</p>
+                    <p>How much cash in <span class='sentence-option t2-transaction_type'></span> did <span class='sentence-option t2-item'></span> make <span class='sentence-option t2-date-select'></span> <span class='sentence-option t2-date-value'></span> ?</p>
                   </div>
                 </div>
 
@@ -436,45 +436,9 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
       </ul>
     </script>
 
-    <script type='text/template' id="qc-table-col-buckets">
-      <div id="qc-table-bucket-<%= table_name %>" class="qc-table-bucket">
-        <div class="qc-col-bucket" id="qc-col-bucket-<%= table_name %>-date">
-          <div class="qc-col-bucket-hed">Date</div>
-        </div>
-        <div class="qc-col-bucket" id="qc-col-bucket-<%= table_name %>-parent">
-          <div class="qc-col-bucket-hed">Categories</div>
-        </div>
-        <div class="qc-col-bucket" id="qc-col-bucket-<%= table_name %>-item">
-          <div class="qc-col-bucket-hed">Items</div>
-        </div>
-        <div class="qc-col-bucket" id="qc-col-bucket-<%= table_name %>-numeric">
-          <div class="qc-col-bucket-hed">Values</div>
-        </div>
-      </div>
-    </script>
-
-    <script type="text/template" id="ColumnView-templ">
-        <div class="qc-col-header">
-          <div class="qc-col-name">
-            <strong><%= name %></strong> <span><%= normalizeFormatType(type) %></span>
-          </div>
-          <div class="qc-col-main-controls">
-            <span class="col-filter" >Values</span>
-          </div>
-          <div class="qc-col-controls">
-            <% if ((type == 'TEXT' && name != 'date') || name == 'is_total') { %>
-              <div class="qc-col-control-all">
-              </div>
-            <% } %>
-          </div>
-        </div>
-        <ul class="qc-values-ctnr">
-        </ul>
-    </script>
 
     <script type="text/template" id="Checkbox-view-templ">
-      
-        <%= value %> (<%= formatBinaryToText(value) %>) <span class="help-text-flag" data-help-text="help-text">?</span>
+      <label for="<%= makeKeyFromName(table_name, value) %>"><input type="checkbox" id="<%= makeKeyFromName(table_name, value) %>" checked/> <%= value %> <span class="help-text-flag" data-help-text="help-text">?</span></label>
     </script>
 
     <script type="text/template" id="OutputNumber-view-templ">
