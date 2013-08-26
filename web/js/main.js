@@ -1,5 +1,7 @@
 $(function() {
-      var encoding               = 'false',
+
+
+    var encoding                 = 'false',
       api_endpoint               = 'https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=',
       $query_refresher           = $('#query-refresher'),
       $download_browser_btn      = $('#download-browser'),
@@ -20,6 +22,22 @@ $(function() {
       $chart_builder_title       = $('#cb-chart-title'),
       $chart_builder_y_label     = $('#cb-y-axis-label');
 
+    // For autogrowing of textarea
+    // Textarea
+    var text = document.getElementById('sql');
+    function resizeSqlArea () {
+        text.style.height = 'auto';
+        text.style.height = text.scrollHeight+'px';
+    }
+    /* 0-timeout to get the already changed text */
+    function delayedResize () {
+        window.setTimeout(resizeSqlArea, 0);
+    }
+    $sql_query_textarea.on('change',  resizeSqlArea);
+    $sql_query_textarea.on('cut',     delayedResize);
+    $sql_query_textarea.on('paste',   delayedResize);
+    $sql_query_textarea.on('drop',    delayedResize);
+    $sql_query_textarea.on('keydown', delayedResize);
 
 
   var default_queries = {
@@ -76,6 +94,7 @@ $(function() {
     }
   };
 
+
   function bindHandlers(db_schema){
       /* NAV MENU BEHAVIOR */
       $('#navmenu').scrollSpy()
@@ -113,10 +132,10 @@ $(function() {
         encoding = $(this).val();
         if(encoding == 'true'){
            var encoded_text = encodeURI(query_text);
-           $sql_query_textarea.val(encoded_text);
+           $sql_query_textarea.val(encoded_text).trigger('change');
          }else{
            var unencoded_text = decodeURI(query_text);
-           $sql_query_textarea.val(unencoded_text);
+           $sql_query_textarea.val(unencoded_text).trigger('change');
          };
       });
 
@@ -202,7 +221,7 @@ $(function() {
         }else{
           disableBuilderBtnsAndChartOptions();
         }
-        loadBtnAttrsWithQueryLink(q_string)
+        loadBtnAttrsWithQueryLink(q_string);
       });
 
       /* SHOW HIDE TABLE */
@@ -274,7 +293,7 @@ $(function() {
         buildQueryFromInputs();
       }); 
 
-      $sql_query_textarea.autogrow();
+      // $sql_query_textarea.autogrow();
       // makeTextfieldsPlaceholderable();
 
       $('.toggle-chart-opts').click(function(){
@@ -411,7 +430,27 @@ $(function() {
       // Return an array only with the checked services
       getQueryableAndChecked: function(){
           return this.where({queryable:true, checked:true});
+      },      
+
+      getQueryableAndUnchecked: function(){
+          return this.where({queryable:true, checked:false});
+      },
+
+      getCheckedCountAndQueryable: function(){
+        var all_items = this.length,
+            checked_items = this.where({checked: true, queryable: true}).length,
+            compare = checked_items / all_items
+
+        // TODO handle when all or none are checked
+        if (compare == 1 || compare == 0) {
+          return 'all_none';
+        }else if (compare >= .5 && compare < 1){
+          return 'majority_checked';
+        }else if (compare < .5) {
+          return 'majority_unchecked';
+        };
       }
+
     });
 
     // Step three
@@ -1555,7 +1594,8 @@ $(function() {
     };
 
     $sql_query_textarea.val(sql_string);
-    $sql_query_textarea.autogrow();
+    resizeSqlArea();
+    // $sql_query_textarea.autogrow();
     loadBtnAttrsWithQueryLink(sql_string);
     enableBuilderBtnsAndChartOptions();
   };
@@ -1645,8 +1685,8 @@ $(function() {
   function buildQueryJson(this_col_collection){
     var queryable_models,
         checked_models,
-        filters = []; // The structure of this object will be an array of objects that are arrays of objects. Fun, right?
-
+        filters = [], // The structure of this object will be an array of objects that are arrays of objects. Fun, right?
+        majority_status;
         /*  
           var filters = [
             {
@@ -1688,26 +1728,57 @@ $(function() {
 
     // For every collection in the table
     _.each(this_col_collection, function(collection, collection_name, collection_list){
-    var column_obj = {};
+      var column_obj  = {},
+          add_model   = true,
+          cmpr        = '=',
+          modify_cmpr = false;
+
       // For each column
-      var queryable_and_checked_models;
-
       column_obj[collection_name] = [];
-
 
       queryable_and_checked_models = collection.getQueryableAndChecked();
 
-      _.each(queryable_and_checked_models, function(elem, ind){
+      if (collection_name != 'item'){
+        queryable_models = collection.getQueryableAndChecked()
+      }else{
+        majority_status = collection.getCheckedCountAndQueryable();
+        modify_cmpr = true;
+        if (majority_status == 'majority_checked'){ // If the majority of them are checked, then it's easier to only do a WHERE clause on the excluded items
+          queryable_models = collection.getQueryableAndUnchecked();
+          cmpr = '!=';
+        }else if (majority_status == 'majority_unchecked') {
+          queryable_models = collection.getQueryableAndChecked();
 
-        var value_obj = {};
-        value_obj['value'] = elem.get('value');
-        value_obj['comparinator'] = elem.get('comparinator');
+        }else if(majority_status == 'all_none'){
+          add_model = false;
+          // Don't include any of this column's info if all of them are selected or none are selected
+          // So don't add models to nuthin'
+        };
+      };
 
-        column_obj[collection_name].push(value_obj);
 
-      });
+      if (add_model){
+        _.each(queryable_models, function(elem, ind){
+          var value_obj = {};
+          value_obj['value'] = elem.get('value');
+          value_obj['comparinator'] = (!modify_cmpr) ? elem.get('comparinator') : cmpr ;
 
-      filters.push(column_obj);      
+          column_obj[collection_name].push(value_obj);
+        });
+
+        filters.push(column_obj);
+      };
+
+      // _.each(queryable_and_checked_models, function(elem, ind){
+      //   var value_obj = {};
+      //   value_obj['value'] = elem.get('value');
+      //   value_obj['comparinator'] = elem.get('comparinator');
+
+      //   column_obj[collection_name].push(value_obj);
+
+      // });
+
+      // filters.push(column_obj);      
 
 
 
