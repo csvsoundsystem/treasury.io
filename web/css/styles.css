@@ -17,6 +17,14 @@ p strong{
 input{
   margin: 0;
 }
+label{
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: -moz-none;
+  -ms-user-select: none;
+  user-select: none;
+}
 .container-fluid {
   padding-right: 20px;
   padding-left: 20px;
@@ -715,9 +723,9 @@ padding: 0 6px 0 5px;
   text-align: right;
 }
 .t2-item .sentence-group{
-  width: 137px;
+  max-width: 137px;
   line-height: 14px;
-  height: 100px;
+  max-height: 100px;
   overflow-y: scroll;
 }
 .t2-item .sentence-group li{

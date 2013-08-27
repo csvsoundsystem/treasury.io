@@ -82,7 +82,11 @@ $(function() {
       x: 'date',
       y: 'today'
     }
-  };
+  },
+  app,
+  deposit_models = [],   
+  withdrawal_models = [],
+  d_and_w_models = []; 
 
 
   function bindHandlers(db_schema){
@@ -394,7 +398,6 @@ $(function() {
         comparinator: 'comparinator_default',
         queryable: true,
         checked: true,
-        parent: false,
         value: 0
       },
 
@@ -428,7 +431,7 @@ $(function() {
       },
 
       getCheckedCountAndQueryable: function(){
-        var all_items = this.length,
+        var all_items = this.where({queryable: true}).length,
             checked_items = this.where({checked: true, queryable: true}).length,
             compare = checked_items / all_items
 
@@ -440,6 +443,37 @@ $(function() {
         }else if (compare < .5) {
           return 'majority_unchecked';
         };
+      },
+
+      getDeposits: function(){
+        var deposits = [];
+        this.each(function(model){
+          var under_deposit = _.contains( model.get('parents'), 'deposit' )
+          if (under_deposit) { deposits.push( model ) }
+        });
+
+        return deposits;
+      },
+
+      getWithdrawals: function(){
+        var withdrawals = [];
+        this.each(function(model){
+          var under_withdrawals = _.contains( model.get('parents'), 'withdrawal' )
+          if (under_withdrawals) { withdrawals.push( model ) }
+        });
+
+        return withdrawals;
+      },
+
+      getDepositsAndWithdrawals: function(){
+        var both = [];
+        this.each(function(model){
+          var under_withdrawals = _.contains( model.get('parents'), 'withdrawal' )
+          var under_deposit     = _.contains( model.get('parents'), 'deposit' )
+          if (under_withdrawals && under_deposit) { both.push( model ) }
+        });
+
+        return both;
       }
 
     });
@@ -456,7 +490,7 @@ $(function() {
     _.each(table.columns, function(column_info, column_name, columns){
 
       // Make models
-      var models = [],
+      var models     = [],
           sub_models = [];
       // To save space, not every item has its table and column information
       // These are those values to add
@@ -468,36 +502,7 @@ $(function() {
       // Loop through each item_value and add that parent_object_info by _.extending()
       // Turn them into instances of our models
       _.each(column_info.item_values, function(item_value){
-        // But wait, before we continue working on that model
-        // We also want to turn these children elements into models and treat them as belonging to a separate collection, that we'll call item
-        // It will have a property which is the name of its parent and then true
-        // So `deposit: true` is one of them
-        // Later on we set up a view on this model such that in certain cases, only `deposit: true` is shown
-        if (item_value.children){
-          // If this has children then it means its a parent, so on our model, let's change its attribute from true to false
-          // this will come in handy later when we look for click events on that item, we can see if it will change other things
-          item_value.parent = true;
-          sub_models = [];
-          item_value.children.forEach(function(child){
-            child[item_value.value] = true;
-            var more_info_for_item = {
-              table_name: t_name,
-              column_name: 'item',
-              column_type: 'string',
-              comparinator: '='
-            };
-            // Our data had named this with a key of `item` but it will fit our schema better if we call it `value`
-            // So store that as `value` and delete `item`
-            child.value = child.item;
-            delete child.item
-            _.extend(child, more_info_for_item);
-            var child_instance = new ElementModel(child);
-            sub_models.push(child_instance);
-          });
-          collections[t_name]['item'] = new ElementCollection(sub_models);
-        };
 
-        // Okay back to our original item
         // Add that parent object by extending, like we said we were gonna do
         // then turn it into a model
         _.extend(item_value, parent_object_info);
@@ -514,146 +519,181 @@ $(function() {
 
     // Create the platonic CheckboxView
     var CheckboxView = Backbone.View.extend({
-        tagName: 'li',
+      tagName: 'li',
 
-        template: _.template($('#Checkbox-view-templ').html()),
+      template: _.template($('#Checkbox-view-templ').html()),
 
-        events: {
-          'change': function(e) {
-              this.toggleChecked(e);
-              this.limitPotentialChildren(e);
-          },
-          'mouseover .help-text-flag': 'showHelpText',
-          'mouseleave .help-text-flag': 'hideHelpText'
+      events: {
+        'change': function(e) {
+            this.toggleChecked(e);
+            this.limitPotentialChildren(e);
         },
+        'mouseover .help-text-flag': 'showHelpText',
+        'mouseleave .help-text-flag': 'hideHelpText'
+      },
 
-        initialize: function(){
+      initialize: function(){
 
-          // Set up event listeners. The change backbone event
-          // is raised when a property changes (like the checked field)
-          var model_data = this.model.toJSON();
-          _.extend(model_data, formatHelpers);
-          this.$el.html( this.template(model_data) );
+        // Set up event listeners. The change backbone event
+        // is raised when a property changes (like the checked field)
+        var model_data = this.model.toJSON();
+        _.extend(model_data, formatHelpers);
+        this.$el.html( this.template(model_data) );
 
-          this.listenTo(this.model, 'change', this.render);
-        },
+        this.listenTo(this.model, 'change', this.render);
+      },
 
-        render: function(){
+      render: function(){
 
-          // this.$el.find('input').prop('checked', this.model.get('checked'));
+        // this.$el.find('input').prop('checked', this.model.get('checked'));
 
-          if (this.model.get('queryable')){
-            this.$el.css('display','list-item');
-            // this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('disabled', false)
+        if (this.model.get('queryable')){
+          this.$el.css('display','list-item');
+          // this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('disabled', false)
+        }else{
+          this.$el.css('display','none');
+          // var queryable_count = column_collections[table_name_schema].item.models[0].item_values.getQueryableCount();
+          // if (queryable_count == 'none_queryable'){
+          //   this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('disabled', true);
+          // };
+        };
+
+        // Make sure it stays alternating colors
+        this.$el.parent().find('li:visible').filter(':even').css({'background-color': '#c1e4f2'});
+        this.$el.parent().find('li:visible').filter(':odd').css({'background-color': '#fff'});          
+
+        return this;
+      },
+
+      toggleChecked: function(e){
+        this.model.toggleChecked();
+        var this_table_name = this.model.get('table_name');
+      },
+
+      limitPotentialChildren: function(e){
+        var main_context = this;
+
+        var this_table_name = this.model.get('table_name');
+
+        var val_name = this.model.get('value'),
+            checked  = this.model.get('checked');
+
+        if (val_name == 'deposit'){
+          if (checked){
+            deposit_models.forEach(function(model){
+              model.set({'queryable': true})
+            });
           }else{
-            this.$el.css('display','none');
-            // var queryable_count = column_collections[table_name_schema].item.models[0].item_values.getQueryableCount();
-            // if (queryable_count == 'none_queryable'){
-            //   this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('disabled', true);
-            // };
-          };
-
-          // Make sure it stays alternating colors
-          this.$el.parent().find('li:visible').filter(':even').css({'background-color': '#c1e4f2'});
-          this.$el.parent().find('li:visible').filter(':odd').css({'background-color': '#fff'});          
-
-          return this;
-        },
-
-        toggleChecked: function(e){
-          this.model.toggleChecked();
-          console.log(this.model.get('queryable'))
-        },
-
-        limitPotentialChildren: function(e){
-          var is_parent = this.model.get('parent');
-          if (is_parent){
-            var item_name = this.model.get('value');
-            var a = { a : item_name };
-            console.log(item_name)
-            // This is only going to affect this one element in this one table. So, we could make walking this object dynamic
-            // But why fool ourselves? If we do that, then we might think this is meant to work in other instances.
-            // But it's really not.
-            // So don't be fooled.
-            // collections.t2.item.invoke('set', {"queryable": false});
-            collections.t2.item.each(function(model){
+            deposit_models.forEach(function(model){
               model.set({'queryable': false})
             });
           }
-
-        },
-
-        toggleQueryable: function(e){
-          this.model.toggleQueryable();
-        },
-
-        showHelpText: function(e){
-          var $help_text  = $(e.target),
-              help_text   = $help_text.data('help-text'),
-              offset      = $(e.target).offset(),
-              offset_top  = offset.top,
-              offset_left = offset.left;
-
-
-          $help_hover.css({
-            top: offset_top,
-            left: offset_left + 6
-          }).html(help_text).show();
-
-        },
-
-        hideHelpText: function(){
-          $help_hover.hide();
+        }else if (val_name == 'withdrawal'){
+          if (checked){
+            withdrawal_models.forEach(function(model){
+              model.set({'queryable': true})
+            });
+            
+          }else{
+            withdrawal_models.forEach(function(model){
+              model.set({'queryable': false})
+            });
+          }
         }
+
+        app.updateQueryState(this_table_name);
+        // if (is_parent){
+          // This is only going to affect this one element in this one table. So, we could make walking this object dynamic
+          // But why fool ourselves? If we do that, then we might think this is meant to work in other instances.
+          // But it's really not.
+          // So don't be fooled.
+
+          // $('.t2-item li').hide();
+          // collections.t2.item.each(function(model){
+          //   model.set({'queryable': false})
+          // });
+
+        // }
+
+      },
+
+      toggleQueryable: function(e){
+        this.model.toggleQueryable();
+
+        var this_table_name = this.model.get('table_name');
+        app.updateQueryState(this_table_name);
+      },
+
+      showHelpText: function(e){
+        var $help_text  = $(e.target),
+            help_text   = $help_text.data('help-text'),
+            offset      = $(e.target).offset(),
+            offset_top  = offset.top,
+            offset_left = offset.left;
+
+
+        $help_hover.css({
+          top: offset_top,
+          left: offset_left + 6
+        }).html(help_text).show();
+
+      },
+
+      hideHelpText: function(){
+        $help_hover.hide();
+      }
     }); 
 
     // Create the platonic DatefieldView
     var DatefieldView = Backbone.View.extend({
-        tagName: 'li',
+      tagName: 'li',
 
-        template: _.template($('#OutputNumber-view-templ').html()),
+      template: _.template($('#OutputNumber-view-templ').html()),
 
-        events:{
-          'keyup': 'updateValue',
-          'change': 'updateValue'
-        },
+      events:{
+        'keyup': 'updateValue',
+        'change': 'updateValue'
+      },
 
-        initialize: function(){
+      initialize: function(){
 
-          // Set up event listeners. The change backbone event
-          // is raised when a property changes (like the checked field)
-          var model_data = this.model.toJSON();
-          _.extend(model_data, formatHelpers);
-          this.$el.html( this.template(model_data) );
-          // this.$el.addClass('query-checkbox-item').addClass('queryable-item');
+        // Set up event listeners. The change backbone event
+        // is raised when a property changes (like the checked field)
+        var model_data = this.model.toJSON();
+        _.extend(model_data, formatHelpers);
+        this.$el.html( this.template(model_data) );
+        // this.$el.addClass('query-checkbox-item').addClass('queryable-item');
 
-          this.$el.find('input').datepicker({
-            dateFormat: 'yy-mm-dd',
-            showOn: "button",
-            buttonImage: "/web/css/thirdparty/images/calendar.png",
-            buttonImageOnly: true
-          });
+        this.$el.find('input').datepicker({
+          dateFormat: 'yy-mm-dd',
+          showOn: "button",
+          buttonImage: "/web/css/thirdparty/images/calendar.png",
+          buttonImageOnly: true
+        });
 
-          this.$el.find('input').val( this.model.get('value') );
+        this.$el.find('input').val( this.model.get('value') );
 
-          this.listenTo(this.model, 'change', this.render);
-        },
+        this.listenTo(this.model, 'change', this.render);
+      },
 
-        render: function(){
+      render: function(){
 
-          if (this.model.get('queryable')){
-            this.$el.css('display','list-item');
-          }else{
-            this.$el.css('display','none');
-          };
+        if (this.model.get('queryable')){
+          this.$el.css('display','list-item');
+        }else{
+          this.$el.css('display','none');
+        };
 
-          return this;
-        },
+        return this;
+      },
 
-        updateValue: function(){
-          var value = this.$el.find('input').val();
-          this.model.updateValue(value);
-        }
+      updateValue: function(){
+        var value = this.$el.find('input').val();
+        this.model.updateValue(value);
+
+        var this_table_name = this.model.get('table_name');
+        app.updateQueryState(this_table_name);
+      }
     });
 
     // Create the platonic DatefieldSelectorView
@@ -688,6 +728,8 @@ $(function() {
       toggleQueryable: function(e){
         this.model.toggleQueryable();
 
+        var this_table_name = this.model.get('table_name');
+        app.updateQueryState(this_table_name);
       }
   });  
 
@@ -713,7 +755,12 @@ $(function() {
 
       _.each(collections[t_name], function(collection, collection_name, collection_list){
 
-        main_context.listenTo(collection, 'change', main_context.updateQueryState);
+
+        if (t_name == 't2' && collection_name == 'item'){
+          main_context.constructDepositWithdrawalLists(collection);
+        }
+
+        // main_context.listenTo(collection, 'change', main_context.updateQueryState);
 
         // This is the meat and potatoes of the app
         // This is where the data from each collection is given a view and rendered into the appropriate div
@@ -741,7 +788,8 @@ $(function() {
             sentence_wire = main_context.constructSw([t_name, collection_name]);
             this.$el.find('.sentence-option.' + sentence_wire + ' .sentence-group').append( checkbox_item );
 
-          }
+          };
+
 
         }, main_context); // Make sure you give it the right context of this, whatever the hell that is.
 
@@ -749,12 +797,20 @@ $(function() {
 
     },
 
+    constructDepositWithdrawalLists: function(clltctn){
+      // console.log(collection)
+      deposit_models    = clltctn.getDeposits();
+      withdrawal_models = clltctn.getWithdrawals();
+      d_and_w_models    = clltctn.getDepositsAndWithdrawals();
+
+    },
+
     constructSw: function(keys){
       return keys.join('-');
     },
 
-    updateQueryState: function(model){
-      var this_table_name = model.get('table_name');
+    updateQueryState: function(this_table_name){
+      // var this_table_name = model.get('table_name');
 
       // Build JSON object from collection attributes
       var columns_and_where_filters = buildQueryJson(collections[this_table_name]);
@@ -767,8 +823,8 @@ $(function() {
 
   });
 
-    // The all-important one line that runs the app.
-    var app = new App();
+  // The all-important one line that runs the app.
+  app = new App();
 
 
 
