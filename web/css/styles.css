@@ -723,17 +723,21 @@ padding: 0 6px 0 5px;
 #toggle-query-viewers{
   text-align: right;
 }
-.t2-item .sentence-group{
-  max-width: 137px;
+.t2-item .sentence-group, .t4-classification .sentence-group{
+  max-width: 150px;
   line-height: 14px;
-  max-height: 100px;
+  max-height: 125px;
   overflow-y: scroll;
 }
-.t2-item .sentence-group li{
+.t2-item .sentence-group li,  .t4-classification .sentence-group li{
   padding: 4px;
 }
 .sentence-group li:nth-child(odd) {
   background-color: rgba(9, 146, 204, 0.25); 
+}
+.qb-table-builder{
+  display: none;
+  margin-bottom: 40px;
 }
 
 /* end query viewer coe */

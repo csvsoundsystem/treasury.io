@@ -55,32 +55,32 @@ $(function() {
       y: 'today'
     },
     t3a: {
-      series: 'hey',
+      series: 'transaction_type',
       x: 'date',
       y: 'today'
     },
     t3b: {
-      series: 'hey',
+      series: '',
       x: 'date',
       y: 'today'
     },      
     t3c: {
-      series: 'hey',
+      series: 'item',
       x: 'date',
       y: 'close_today'
     },
     t4: {
-      series: 'hey',
+      series: 'classification',
       x: 'date',
       y: 'today'
     },
     t5: {
-      series: 'hey',
+      series: '',
       x: 'date',
       y: 'total'
     },
     t6: {
-      series: 'hey',
+      series: 'refund_type',
       x: 'date',
       y: 'today'
     }
@@ -263,9 +263,10 @@ $(function() {
         disableFirstChoice($this);
         var table_selector = $this.val();
 
-        $('.qc-table-bucket').hide();
-        $('#qc-table-bucket-'+table_selector).show();
-        // app.render(table_selector);
+        $('.qb-table-builder').hide();
+        $('#' + table_selector + '-builder').show();
+        apps[table_selector].updateQueryState(table_selector);
+        // console.log(apps[table_selector])
         // column_collections[table_selector].each( function(col){
         //   col.render();
         // });
@@ -371,7 +372,6 @@ $(function() {
     };
 
     // makeTableColumns(tables[test_col], test_col, collections);
-
     _.each(tables, function(table_data, table_name_schema, table_list){
       $('#'+ table_name_schema +'-' + 'builder').find('.qb-table-available-columns').html('Columns:<pre><code class="no-wrap">' + table_data.all_cols.join(', ') + '</pre></code>');
       makeTableColumns(table_data, table_name_schema);

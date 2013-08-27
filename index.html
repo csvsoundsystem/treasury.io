@@ -84,10 +84,10 @@
                 <option value="t1" >How much cash does the federal government have on hand? (Table 1)</option>
                 <option value="t2" >What programs are making deposits and withdrawals? (Table 2)</option>
                 <option value="t3a">How is the government selling and buying back its debt? (Table 3a)</option>
-                <option value="t3b">What types of debt is the government selling? (Table 3b)</option>
+                <!-- <option value="t3b">What types of debt is the government selling? (Table 3b)</option> -->
                 <option value="t3c">How close is the government to its credit limit (the debt ceiling)? (Table 3c)</option>
                 <option value="t4" >Where is the government getting its tax revenue from and where is it deposited? (Table 4)</option>
-                <option value="t5" >Where did the government invest cash it didn't immediately need? (Table 5)</option>
+                <!-- <option value="t5" >Where did the government invest cash it didn't immediately need? (Table 5)</option> -->
                 <option value="t6" >How much money did the government refund to businesses and individuals? (Table 6)</option>
               </select>
               <div id="qb-table-builders" class="builder-item">
@@ -107,12 +107,52 @@
                     <p>How much cash in <span class='sentence-option t2-transaction_type'></span> did <span class='sentence-option t2-item'></span> make <span class='sentence-option t2-date-select'></span> <span class='sentence-option t2-date-value'></span> ?</p>
                   </div>
                 </div>
-                <!--  t3 -->
+                <!--  t3a -->
                 <div class="qb-table-builder" id="t3a-builder">
-                  <div class="qb-table-name">t3: Public Debt Transactions</div>
+                  <div class="qb-table-name">t3a: Public Debt Transactions</div>
                   <div class="qb-table-available-columns"></div>
                   <div class="qb-table-sentence">
                     <p>How much debt did the government <span class='sentence-option t3a-transaction_type'></span> <span class='sentence-option t3a-date-select'></span> <span class='sentence-option t3a-date-value'></span> ?</p>
+                  </div>
+                </div>
+                <!--  t3b -->
+<!--                 <div class="qb-table-builder" id="t3a-builder">
+                  <div class="qb-table-name">t3b: Public Debt Transactions</div>
+                  <div class="qb-table-available-columns"></div>
+                  <div class="qb-table-sentence">
+                    <p>How much debt did the government <span class='sentence-option t3a-transaction_type'></span> <span class='sentence-option t3a-date-select'></span> <span class='sentence-option t3a-date-value'></span> ?</p>
+                  </div>
+                </div> -->                
+                <!--  t3c -->
+                <div class="qb-table-builder" id="t3c-builder">
+                  <div class="qb-table-name">t3c: Debt Subject to Limit</div>
+                  <div class="qb-table-available-columns"></div>
+                  <div class="qb-table-sentence">
+                    <p>How much debt that's subject to the debt ceiling does the government have <span class='sentence-option t3c-date-select'></span> <span class='sentence-option t3c-date-value'></span> ?</p>
+                  </div>
+                </div>
+                <!--  t4 -->
+                <div class="qb-table-builder" id="t4-builder">
+                  <div class="qb-table-name">t4: Federal Tax Deposits</div>
+                  <div class="qb-table-available-columns"></div>
+                  <div class="qb-table-sentence">
+                    <p>How much in <span class='sentence-option t4-classification'></span> revenue did the governent collect <span class='sentence-option t4-date-select'></span> <span class='sentence-option t4-date-value'></span> ?</p>
+                  </div>
+                </div>
+                <!--  t5 -->
+<!--                 <div class="qb-table-builder" id="t5-builder">
+                  <div class="qb-table-name">t4: Federal Tax Deposits</div>
+                  <div class="qb-table-available-columns"></div>
+                  <div class="qb-table-sentence">
+                    <p>How much in <span class='sentence-option t5-classification'></span> revenue did the governent collect <span class='sentence-option t5-date-select'></span> <span class='sentence-option t5-date-value'></span> ?</p>
+                  </div>
+                </div> -->                
+                <!--  t6 -->
+                <div class="qb-table-builder" id="t6-builder">
+                  <div class="qb-table-name">t4: Income Tax Refunds Issued</div>
+                  <div class="qb-table-available-columns"></div>
+                  <div class="qb-table-sentence">
+                    <p>How much tax revenue did the government return to <span class='sentence-option t6-refund_type'></span> <span class='sentence-option t6-date-select'></span> <span class='sentence-option t6-date-value'></span> ?</p>
                   </div>
                 </div>
 
