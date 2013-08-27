@@ -637,6 +637,7 @@ textarea:focus{
   padding: 0;
   margin: 0 2px;
   font-size: 12px;
+  position: relative;
 }
 .sentence-group{
 }
@@ -914,7 +915,11 @@ padding: 0 6px 0 5px;
   font-family: 'droid sans';
   font-size: 12px;
 }
-
+.group-toggle-all{
+  position: absolute;
+  right: 0;
+  font-size: 10px;
+}
 
 /* end query builder styles*/
 @media screen and (max-width: 640px) {

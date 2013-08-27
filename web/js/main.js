@@ -270,21 +270,21 @@ $(function() {
 
       });
 
-      $('.qc-select-all').click(function(){
-        $(this).parents('.qc-col-ctnr').find('.query-checkbox-item input').prop('checked', this.checked);
+      $('.group-toggle-all input').click(function(){
+        $(this).parents('.sentence-option').find('.sentence-group input').prop('checked', this.checked).trigger('change');
       });
 
       /* The checkboxes and input textboxes need different listeners because .on('change') only detects changes for textfields after the box loses mouse focus (i.e. the user clicks away) */
-      $qb_table_builders.on('change', '.queryable-item input:checkbox', function(){
+      $qb_table_builders.on('change', '.sentence-group input:checkbox', function(){
 
         // If everything is checked, then check the main one, else uncheck it
         setParentCheckState($(this));
 
-        buildQueryFromInputs();
+        // buildQueryFromInputs();
       }); 
 
       $qb_table_builders.on('keyup', '.queryable-item input:text', function(){
-        buildQueryFromInputs();
+        // buildQueryFromInputs();
       }); 
 
       // $sql_query_textarea.autogrow();
@@ -298,10 +298,10 @@ $(function() {
 
   function setParentCheckState($this){
     // If everything is checked, then check the main one, else uncheck it
-    if($this.parents('.qc-values-ctnr').find('input:checkbox').length == $this.parents('.qc-values-ctnr').find('input:checkbox:checked').length) {
-        $this.parents('.qc-values-ctnr').siblings('.qc-col-header').find(".qc-select-all").prop('checked', 'true');
+    if($this.parents('.sentence-group').find('input:checkbox').length == $this.parents('.sentence-group').find('input:checkbox:checked').length) {
+        $this.parents('.sentence-option').find(".toggle-group").prop('checked', 'true');
     } else {
-        $this.parents('.qc-values-ctnr').siblings('.qc-col-header').find('.qc-select-all').removeAttr('checked');
+        $this.parents('.sentence-option').find('.toggle-group').removeAttr('checked');
     };
 
   };
@@ -474,6 +474,20 @@ $(function() {
         });
 
         return both;
+      },
+
+      getQueryableCount: function(){
+        var all_items = this.length,
+            queryable_items = this.where({queryable: true}).length,
+            compare = queryable_items / all_items;
+
+        if (compare == 0){
+          return 'none_queryable'
+        }else if (compare == 1){
+          return 'all_queryable'
+        }else{
+          return 'some_querable'
+        };
       }
 
     });
@@ -545,14 +559,16 @@ $(function() {
 
       render: function(){
 
+        var table_name = this.model.get('table_name');
+
         // this.$el.find('input').prop('checked', this.model.get('checked'));
 
         if (this.model.get('queryable')){
           this.$el.css('display','list-item');
-          // this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('disabled', false)
+          // this.$el.parents('.sentence-option').find('.group-toggle-all input').prop('disabled', false)
         }else{
           this.$el.css('display','none');
-          // var queryable_count = column_collections[table_name_schema].item.models[0].item_values.getQueryableCount();
+          // var queryable_count = collections[table_name].getQueryableCount();
           // if (queryable_count == 'none_queryable'){
           //   this.$el.parents('.qc-col-ctnr').find('.qc-col-control-all input').prop('disabled', true);
           // };
@@ -758,7 +774,8 @@ $(function() {
 
         if (t_name == 't2' && collection_name == 'item'){
           main_context.constructDepositWithdrawalLists(collection);
-        }
+          $(".t2-item").append('<div class="group-toggle-all"><label for="toggle-t2-item"><input type="checkbox" id="toggle-t2-item" class="toggle-group" checked/> Toggle all</div>')
+        };
 
         // main_context.listenTo(collection, 'change', main_context.updateQueryState);
 
