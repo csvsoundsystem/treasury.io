@@ -372,18 +372,14 @@ $(function() {
 
     // makeTableColumns(tables[test_col], test_col, collections);
 
-    // TODO dynamically add column names to that section in the DOM
-
     _.each(tables, function(table_data, table_name_schema, table_list){
-      if (table_name_schema == 't1' || table_name_schema == 't2'){
-        $('#'+ table_name_schema +'-' + 'builder').find('.qb-table-available-columns').html('Columns:<pre><code class="no-wrap">' + table_data.all_cols.join(', ') + '</pre></code>');
-        makeTableColumns(table_data, table_name_schema, collections);
-      }
+      $('#'+ table_name_schema +'-' + 'builder').find('.qb-table-available-columns').html('Columns:<pre><code class="no-wrap">' + table_data.all_cols.join(', ') + '</pre></code>');
+      makeTableColumns(table_data, table_name_schema);
     });
   };
 
 
-  function makeTableColumns(table, t_name, collections){
+  function makeTableColumns(table, t_name){
 
     // Okay, how's it going?
     // Good!
@@ -504,7 +500,7 @@ $(function() {
 
     // But let's not get ahead of ourselves, first just instantiate a model for every item in the schema_json and add it to the models object
     // Instantiate item models and collections
-    console.log(collections)
+    // console.log(collections)
     _.each(table.columns, function(column_info, column_name, columns){
 
       // Make models
@@ -530,6 +526,7 @@ $(function() {
 
       // Instantiate our collection with data
       collections[t_name][column_info.name] = new ElementCollection(models);
+      // console.log('here',t_name, column_info.name)
     });
 
     // Step four
@@ -666,6 +663,8 @@ $(function() {
 
       initialize: function(){
 
+        // console.log('init datefield', this.model.get('table_name'))
+
         // Set up event listeners. The change backbone event
         // is raised when a property changes (like the checked field)
         var model_data = this.model.toJSON();
@@ -721,7 +720,9 @@ $(function() {
         // is raised when a property changes (like the checked field)
         var model_data = this.model.toJSON();
         _.extend(model_data, formatHelpers);
-        this.$el.html( this.template(model_data) );
+        var model_markup = this.template(model_data);
+        this.$el.html( model_markup );
+        // console.log(model_markup)
         // this.$el.addClass('query-checkbox-controller');
 
         // this.listenTo(this.model, 'change', this.updateQueryState);
@@ -761,7 +762,7 @@ $(function() {
 
         // Small hack: So that we don't have to go about creating a bunch of empty uls in our markup
         // Create the uls for this table dynamically right here
-        main_context.$el.find('.sentence-option').append( main_context.template );
+        main_context.$el.find('#' + t_name + '-builder .sentence-option').append( main_context.template );
 
         _.each(collections[t_name], function(collection, collection_name, collection_list){
         // console.log('col rendering', collection_name)
@@ -786,13 +787,15 @@ $(function() {
               var select_item = v_el_date_select.render().el,
                   value_item  = v_el_date_value.render().el;
 
+              // console.log(collection_name, select_item)
+
               sentence_wire = main_context.constructSw([t_name, collection_name, 'select']);
               this.$el.find('.sentence-option.' + sentence_wire + ' .sentence-group').append( select_item );
               
               sentence_wire = main_context.constructSw([t_name, collection_name, 'value']);
               this.$el.find('.sentence-option.' + sentence_wire + ' .sentence-group').append( value_item );
 
-              console.log(sentence_wire)
+              // console.log(sentence_wire)
               
             }else{
               var v_el_checkbox_select = new CheckboxView({model: item})
@@ -838,6 +841,7 @@ $(function() {
 
     // The all-important one line that runs the app.
     apps[t_name] = new App();
+    // console.log('t_name', t_name)
 
   };
 
