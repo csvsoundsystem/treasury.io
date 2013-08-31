@@ -169,27 +169,11 @@
                   </div>
                 </fieldset>
               </div>
-              <div id="toggle-query-viewers" data-state="show">Show previews</div>
-              <div id="query-viewers-wrapper" class="builder-item" style="display: none;">
-                <div id="query-preview-wrapper" class="query-viewer">
-                  <div class="query-preview-button-wrapper">
-                    <!-- BUTTON -->
-                    <button type="button" class="buttn disabled piwik_ignore" id="download-browser">Update query preview*</button>
-                    <!-- CANVAS -->
-                    <div id="results-container" style="display: none;">
-                      <!-- <div class="show-hide-table" data-state="hide">Hide preview table</div> -->
-                      <div id="results-table-container">
-                        <div id="results-table-holder">
-                          <table id="results" cellspacing="5"></table>
-                        </div>
-                      </div>
-                    </div>                    
-                  </div>
-
-                </div>
-                <div id="query-chart-wrapper" class="query-viewer">
-                  <!-- BUTTON  -->
-                  <div class="query-preview-button-wrapper">
+              <div id="query-viewers-wrapper" class="builder-item" style="display: block;">
+                <div id="query-viewers-buttons">
+                  <!-- BUTTON --> 
+                  <button type="button" class="buttn disabled piwik_ignore query-preview-button qp-btn" id="download-browser">Query preview*</button>
+                  <div class="query-preview-button-wrapper query-preview-button">
                     <div id="toggle-chart-options" class="disabled toggle-chart-opts">Show options</div>
                     <div id="chart-builder-options" style="display: none;">
                       <div class="chart-builder-option-box">
@@ -209,13 +193,27 @@
                         <label for="cb-y-axis-label" >Y-axis <input id="cb-y-axis-label" type="text" class="placeholder-textfield chart-builder-input-text" placeholder="i.e. $ (millions)"></label>
                       </div>
                     </div>
-                    <button id="view-chart" type="button" class="buttn disabled">Update chart</button>
+                    <button id="view-chart" type="button" class="buttn disabled qp-btn">Draw chart</button>
                   </div>
-                  <!-- OPTIONS -->
+                </div>
+                <div id="query-preview-wrapper" class="query-viewer">
+                  <div class="query-preview-button-wrapper">
+                    <!-- CANVAS -->
+                    <div id="results-container" style="display: none;">
+                      <div class="show-hide-table show-hide-button" data-state="hide" data-target="#results-table-container" data-text="preview table">Hide preview table</div>
+                      <div id="results-table-container">
+                        <div id="results-table-holder">
+                          <table id="results" cellspacing="5"></table>
+                        </div>
+                      </div>
+                    </div>                    
+                  </div>
 
+                </div>
+                <div id="query-chart-wrapper" class="query-viewer">
                   <!-- CANVAS -->
                   <div id="chart-container" style="display: none;">
-                    <!-- <div class="show-hide-chart" data-state="hide">Hide chart</div> -->
+                    <div class="show-hide-chart show-hide-button" data-state="hide" data-target="#chart-canvas" data-text="chart">Hide chart</div>
                     <div id="chart-canvas"></div>
                     <div id="hover-templ"></div>
                   </div>

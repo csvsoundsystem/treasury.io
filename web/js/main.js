@@ -210,7 +210,6 @@ $(function() {
       });
 
       $sql_query_textarea.keyup(function(){
-        // console.log('change')
         var q_string = $sql_query_textarea.val();
         if (q_string.length > 0 ){
           enableBuilderBtnsAndChartOptions();
@@ -221,30 +220,22 @@ $(function() {
       });
 
       /* SHOW HIDE TABLE */
-      // $('.show-hide-table').click(function(){
-      //   var state = $(this).data('state');
-      //   if (state == 'hide'){
-      //     $('#results-table-container').hide();
-      //     $(this).data('state','show');
-      //     $(this).html('Show preview table')
-      //   }else{
-      //     $('#results-table-container').show();
-      //     $(this).html('Hide preview table')
-      //     $(this).data('state','hide');
-      //   };
-      // });      
-      $('#toggle-query-viewers').click(function(){
-        var state = $(this).data('state');
+      $('.show-hide-button').click(function(){
+        var state = $(this).data('state')
+            target = $(this).data('target'),
+            text   = $(this).data('text');
+
         if (state == 'hide'){
-          $('#query-viewers-wrapper').hide();
+          $(target).hide();
           $(this).data('state','show');
-          $(this).html('Show previews')
+          $(this).html('Show ' + text);
         }else{
-          $('#query-viewers-wrapper').show();
-          $(this).html('Hide previews')
+          $(target).show();
+          $(this).html('Hide ' + text);
           $(this).data('state','hide');
         };
-      });
+      });      
+
 
       /* CHART BUILDER ENABLE DISABLE BUTTON */
       $chart_builder_input_text.keyup(function(e){
@@ -252,8 +243,11 @@ $(function() {
       });
 
       $chart_builder_view.mousedown(function(e){
-        $("#chart-builder-options").hide();
-        constructDynamicHighchartObject();
+        if (! $(this).hasClass('disabled') ) {
+          $("#chart-builder-options").hide();
+          constructDynamicHighchartObject();
+          
+        };
       });
 
 
@@ -266,10 +260,7 @@ $(function() {
         $('.qb-table-builder').hide();
         $('#' + table_selector + '-builder').show();
         apps[table_selector].updateQueryState(table_selector);
-        // console.log(apps[table_selector])
-        // column_collections[table_selector].each( function(col){
-        //   col.render();
-        // });
+
 
       });
 
@@ -283,15 +274,9 @@ $(function() {
         // If everything is checked, then check the main one, else uncheck it
         setParentCheckState($(this));
 
-        // buildQueryFromInputs();
       }); 
 
-      $qb_table_builders.on('keyup', '.queryable-item input:text', function(){
-        // buildQueryFromInputs();
-      }); 
 
-      // $sql_query_textarea.autogrow();
-      // makeTextfieldsPlaceholderable();
 
       $('.toggle-chart-opts').click(function(){
         $("#chart-builder-options").toggle();
@@ -1107,28 +1092,6 @@ $(function() {
     $chart_builder_view.removeClass('disabled');
   };
 
-  function makeTextfieldsPlaceholderable(){
-    // /* Clears textfields from helper text on click */
-    // /* https://gist.github.com/mhkeller/5827111    */
-    // var $textfield = $('.placeholder-textfield');
- 
-    // $textfield.focus(function(srcc){
-    //   if ($(this).val() == $(this)[0].title){
-    //     $(this).removeClass("placeholder-textfield-active");
-    //     $(this).val("");
-    //   };
-    // });    
- 
-    // $textfield.blur(function(){
-    //   if ($(this).val() == ""){
-    //     $(this).addClass("placeholder-textfield-active");
-    //     $(this).val($(this)[0].title);
-    //   };
-    // });
- 
-    // $textfield.blur();
-  }
-
   function trackQuery(fileFormat, resultCount){
     // if (typeof(resultCount) == 'undefined') {
     //   var resultCount = false;
@@ -1167,44 +1130,17 @@ $(function() {
 
   function disableBuilderBtnsAndChartOptions(){
     var $builder_btns = $('#builder-btns .btn').not('.chart-builder-submit .btn'),
-        $chart_options = $('#chart-builder-options');
+        $chart_options = $('#chart-builder-options'),
+        $preview_btns  = $('.buttn');
 
     if(!$builder_btns.hasClass('disabled')){
+      $preview_btns.addClass('disabled');
       $builder_btns.addClass('disabled');
       $chart_options.addClass('disabled');
       $('#builder-btns-overlay').css('z-index',9999);
     };
   };
-  // function initRedQuery(table_schema){
-  //   RedQueryBuilderFactory.create({
-  //     meta : table_schema,
-  //     onSqlChange : function(sql, args) {
-  //       enableBuilderBtnsAndChartOptions();
 
-  //       $query_refresher[0].disabled = true;
-  //       var out = sql + '\r\n';
-  //       for (var i = 0; i < args.length; i++) {
-  //         var arg = args[i];
-  //         if(isNaN(arg)){
-  //           arg = "'" + arg + "'"
-  //         }else{
-  //           arg = Number(arg);
-  //         }
-  //         out = out.replace('?', arg)
-  //       }
-  //       sanitize_out = function(out) { return out.replace(/\"x0\"\.?/g, ''); }
-
-  //       query = function(base, out) { return base + encodeURI(sanitize_out(out)); }
-
-  //       if (encoding == 'true'){
-  //         document.getElementById("sql").value = encodeURI(sanitize_out(out));
-  //       }else{
-  //         document.getElementById("sql").value = sanitize_out(out);
-  //       }
-  //       loadBtnAttrsWithQueryLink(sanitize_out(out));
-  //     }
-  //   });
-  // };
 
   function sanitizeForBtns(q_string){
     return q_string.replace(/\n/g,'%20').replace(/%20%20/g,'%20') // Convert line breaks to spaces, avoid double spaces
@@ -1250,7 +1186,6 @@ $(function() {
   $.get('web/table_schema/db_schema.json', function(db_schema) {
 
     makeQueryBuilders(db_schema);;
-    // drawQueryBuilders(db_schema);
     bindHandlers(db_schema);
   });
 
