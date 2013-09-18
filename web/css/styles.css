@@ -687,7 +687,7 @@ padding: 0 6px 0 5px;
   width: 99.5%;
   clear: both;
   /*background-color: #f0c;*/
-  display: inline-block;
+  /*display: inline-block;*/
   vertical-align: top;
 }
 .query-preview-button-wrapper{
