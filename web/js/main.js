@@ -24,10 +24,10 @@ $(function() {
 
   // For autogrowing of textarea
   // Textarea
-  var text = document.getElementById('sql');
+  var sql_text_area = document.getElementById('sql');
   function resizeSqlArea () {
-      text.style.height = 'auto';
-      text.style.height = text.scrollHeight+'px';
+      sql_text_area.style.height = 'auto';
+      sql_text_area.style.height = sql_text_area.scrollHeight+'px';
   }
   /* 0-timeout to get the already changed text */
   function delayedResize () {
@@ -245,8 +245,8 @@ $(function() {
       $chart_builder_view.mousedown(function(e){
         if (! $(this).hasClass('disabled') ) {
           $("#chart-builder-options").hide();
-          constructDynamicHighchartObject();
-          
+          constructDynamicHighchartObject($(this));
+          setDownloadBtn('fetch', $(this), 'Draw chart');
         };
       });
 
@@ -279,7 +279,9 @@ $(function() {
 
 
       $('.toggle-chart-opts').click(function(){
-        $("#chart-builder-options").toggle();
+        if ( !$(this).hasClass('disabled') ){
+          $("#chart-builder-options").toggle();
+        }
       });
 
   };
@@ -1046,7 +1048,7 @@ $(function() {
     };
   };
 
-  function constructDynamicHighchartObject(){
+  function constructDynamicHighchartObject($btn){
     var chart_settings = {
       query_url: $download_json_btn.attr('href'),
       chart_type: $('input:radio[name=chart-type]:checked').val(),
@@ -1059,6 +1061,8 @@ $(function() {
 
     $chart_container.show();
     $chart_canvas.dynamicHighchart(chart_settings, function(response){
+      setDownloadBtn('reset', $btn, 'Draw chart');
+
     });
   };
 
@@ -1115,12 +1119,14 @@ $(function() {
   };
 
   function enableBuilderBtnsAndChartOptions(){
-    var $builder_btns  = $('#builder-btns .btn'),
-        $chart_options = $('#chart-builder-options'),
-        $preview_btns  = $('.buttn');
+    var $builder_btns         = $('#builder-btns .btn'),
+        $chart_options        = $('#chart-builder-options'),
+        $preview_btns         = $('.buttn'),
+        $toggle_chart_options = $('#toggle-chart-options');
 
 
     if($builder_btns.hasClass('disabled')){
+      $toggle_chart_options.removeClass('disabled');
       $builder_btns.removeClass('disabled');
       $preview_btns.removeClass('disabled');
       $chart_options.removeClass('disabled');
@@ -1131,9 +1137,11 @@ $(function() {
   function disableBuilderBtnsAndChartOptions(){
     var $builder_btns = $('#builder-btns .btn').not('.chart-builder-submit .btn'),
         $chart_options = $('#chart-builder-options'),
-        $preview_btns  = $('.buttn');
+        $preview_btns  = $('.buttn'),
+        $toggle_chart_options = $('#toggle-chart-options');
 
     if(!$builder_btns.hasClass('disabled')){
+      $toggle_chart_options.addClass('disabled');
       $preview_btns.addClass('disabled');
       $builder_btns.addClass('disabled');
       $chart_options.addClass('disabled');
@@ -1156,7 +1164,7 @@ $(function() {
   function setDownloadBtn(state, $this, before_text){
     if (state == 'fetch'){
       var ajax_img = '<img src="web/images/ajax-loader.gif"/>';
-      $this.html('Fetching... ' + ajax_img).addClass('disabled');
+      $this.html('<span class="btn-loading-text">Fetching...</span>' + ajax_img).addClass('disabled');
     }else{
       $this.html(before_text).removeClass('disabled');
     };

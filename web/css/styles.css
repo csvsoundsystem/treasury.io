@@ -542,6 +542,7 @@ textarea:focus{
   -moz-user-select: -moz-none;
   -ms-user-select: none;
   user-select: none;
+  margin-top: 5px;
 }
 .show-hide-button:hover{
   cursor:pointer;
@@ -615,10 +616,12 @@ textarea:focus{
 }
 #chart-container{
   margin-top: 10px;
+  width: 100%;
 }
 
 #chart-canvas{
   width: 100%;
+  position: relative;
   margin: 0 auto;
   height: 400px;
 }
@@ -674,7 +677,7 @@ padding: 0 6px 0 5px;
 }
 /* BEGIN QUERY VIEWER CODE */
 #query-viewers-wrapper{
-  width: 98%;
+  width: 98.1%;
   overflow: visible;
 }
 .query-viewer{
@@ -706,6 +709,7 @@ padding: 0 6px 0 5px;
   letter-spacing: 2px;
   font-size: 11px;
   position: relative;
+  height: 33px;
 }
 .qp-btn:hover{
   cursor: pointer;
@@ -713,14 +717,17 @@ padding: 0 6px 0 5px;
   text-decoration: underline;
 }
 .qp-btn img{
-  position: relative;
-  top: 2px;
-  left: -2px;
+  position: absolute;
+  top: 22%;
+  right: 3px;
 }
 .qp-btn:active{
   box-shadow: 1px 1px 0px 0px;
   top: 2px;
   left: 2px;
+}
+.btn-loading-text{
+  margin-right: 15px;
 }
 #view-chart{
   position: relative;
@@ -735,7 +742,7 @@ padding: 0 6px 0 5px;
   display: block;
   position: absolute;
   top: 0;
-  right: 78px;
+  right: 110px;
   background-color: #82C6E4;
   z-index: 99999;
   font-size: 12px;
@@ -768,6 +775,18 @@ padding: 0 6px 0 5px;
   -moz-user-select: -moz-none;
   -ms-user-select: none;
   user-select: none;
+}
+#toggle-chart-options.disabled{
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+  filter: alpha(opacity=75);
+  -moz-opacity: 0.75;
+  -khtml-opacity: 0.75;
+  opacity: 0.75;
+  
+}
+#toggle-chart-options.disabled:hover{
+  cursor: default;
+  text-decoration: none;
 }
 #toggle-query-viewers{
   text-align: right;
