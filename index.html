@@ -499,20 +499,20 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
     <script src="web/js/main.js"></script>
     <!-- Piwik -->
     <script type="text/javascript">
-      // var _paq = _paq || [];
-      // _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
-      // _paq.push(["setCookieDomain", "*.treasury.io"]);
-      // _paq.push(["setDomains", ["*.treasury.io"]]);
-      // _paq.push(["trackPageView"]);
-      // _paq.push(["enableLinkTracking"]);
+      var _paq = _paq || [];
+      _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+      _paq.push(["setCookieDomain", "*.treasury.io"]);
+      _paq.push(["setDomains", ["*.treasury.io"]]);
+      _paq.push(["trackPageView"]);
+      _paq.push(["enableLinkTracking"]);
 
-      // (function() {
-      //   var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.thomaslevine.com/";
-      //   _paq.push(["setTrackerUrl", u+"piwik.php"]);
-      //   _paq.push(["setSiteId", "21"]);
-      //   var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
-      //   g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
-      // })();
+      (function() {
+        var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.thomaslevine.com/";
+        _paq.push(["setTrackerUrl", u+"piwik.php"]);
+        _paq.push(["setSiteId", "21"]);
+        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+      })();
     </script>
     <!-- End Piwik Code -->
 </body>
