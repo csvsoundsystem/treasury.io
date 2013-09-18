@@ -152,7 +152,10 @@ $(function() {
           var q = $(this).attr('data-query-link');
           var before_text = $(this).html();
           setDownloadBtn('fetch', $(this));
-          convertJSONtoCSV(q, $(this), before_text);
+          var request = convertJSONtoCSV(q, $(this), before_text);
+          $('#download-cancel').show().click(function(){
+            request.abort()
+          })
         };
         return false;
       });
@@ -1171,13 +1174,18 @@ $(function() {
   };
 
   function convertJSONtoCSV(query, $this, before_text){
-    fetchJSON(query).done(function(json){
+    $('#download-cancel').show()
+    return fetchJSON(query).done(function(json){
       setDownloadBtn('reset', $this, before_text);
       var csv = dsv.csv.format(json);
+      $('#download-cancel').hide()
       window.location.href = "data:text/csv," + encodeURIComponent(csv);
     }).fail(function(err){
       setDownloadBtn('reset', $this, before_text);
-      if (err.status == 404){
+      $('#download-cancel').hide()
+      if (err.status === 0){
+        // Manually cancelled
+      } else if (err.status == 404){
         alert('404 Error. Please recheck your query and make sure everything is spelled correctly.')
       }else{
         alert(err.status + ' ' + JSON.stringify(err.responseJSON))

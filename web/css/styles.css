@@ -282,6 +282,9 @@ a:hover{
 #download-csv{
   width:140px;
 }
+#download-cancel{
+  background-color: #f51;
+}
 #builder-btns{
   position:relative;
   padding-right: 5px;
