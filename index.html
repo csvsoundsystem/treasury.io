@@ -4,24 +4,38 @@
     <title>Treasury IO: A daily data feed for the U.S. Treasury</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="icon" type="image/png" href="web/favicon.png">
-    <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>
+    <!-- <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'> -->
     <script src="web/js/thirdparty/jquery-1.10.1.min.js"></script>
     <script src="web/js/thirdparty/dsv.min.js"></script>
     <script src="web/js/thirdparty/jquery.formalize.min.js"></script>
     <script src="web/js/thirdparty/bootstrap-scrollspy.js"></script>
-    <script src="web/js/thirdparty/jquery.autogrow-textarea.js"></script>
     <script src="web/js/thirdparty/jquery.scrollTo-min.js"></script>
-    <!-- RED QUERY -->
-    <script src="web/RedQueryBuilder/RedQueryBuilder.nocache.js"></script>
-    <link href="web/RedQueryBuilder/gwt/dark/dark.css" rel="stylesheet" type="text/css">
-    <script src="web/RedQueryBuilder/RedQueryBuilderFactory.nocache.js"></script>
-    <!-- end red query -->
+
+    <!-- CHART BUILDER -->
+    <link href="web/css/thirdparty/jquery.dynamic-highchart.css" rel='stylesheet' type='text/css'/>
+    <script src="web/js/thirdparty/miso.ds.deps.ie.0.4.1.js"></script>
+    <script src="web/js/thirdparty/highcharts.js"></script>
+    <script src="web/js/thirdparty/jquery.dynamic-highchart.js"></script>
+    <!-- end chart builder -->
+
     <!-- SYNTAX HIGHLIGHTING -->
     <link href="web/css/thirdparty/rainbow.github.css" rel="stylesheet" type="text/css">
     <script src="web/js/thirdparty/rainbow-custom.min.js"></script>
     <!-- end syntax highlighting -->
+
+    <!-- BACKBONE -->
+    <script src="web/js/thirdparty/backbone-min.js"></script>
+    <!-- end backbone -->
+
+    <!-- JQUERY UI DATEPICKER -->
+    <link rel="stylesheet" type="text/css" href="web/css/thirdparty/jquery-ui-1.10.3.custom.min.css">
+    <script src="web/js/thirdparty/jquery-ui-1.10.3.custom.min.js"></script>
+    <!-- end datepicker -->
+
+    <!-- STYLES -->
     <link href="web/css/reset.css" rel='stylesheet' type='text/css'/>
     <link href="web/css/styles.css" rel='stylesheet' type='text/css'/>
+    <!-- end styles -->
 
     <!-- Facebook
     https://developers.facebook.com/docs/opengraph/creating-object-types/
@@ -48,16 +62,16 @@
             <div id="subhead">A daily data feed for the U.S. Treasury</div>
         </div>
         <nav id="navmenu">
-            <ul id="menu">
-                <li class="nav-item" id="logo"><a class="btn" href="#hero"><img src="web/images/flag.png"></a></li>
-                <li class="nav-item active"><a class="btn" href="#query">Query</a></li>
-                <li class="nav-item"><a class="btn" href="#about">About</a></li>
-                <li class="nav-item"><a class="btn" href="#documentation">The Docs</a></li>
-                <li class="nav-item"><a class="btn" href="#usage">Usage</a></li>
-                <li class="nav-item"><a class="btn" href="#libraries">Libraries</a></li>
-                <li class="nav-item"><a class="btn" href="#the-robot">The Robot</a></li>
-                <li class="nav-item"><a class="btn" href="#contact">Contact</a></li>
-            <ul>
+          <ul id="menu">
+            <li class="nav-item" id="logo"><a class="btn" href="#hero"><img src="web/images/flag.png"></a></li>
+            <li class="nav-item active"><a class="btn" href="#query">Query</a></li>
+            <li class="nav-item"><a class="btn" href="#about">About</a></li>
+            <li class="nav-item"><a class="btn" href="#documentation">The Docs</a></li>
+            <li class="nav-item"><a class="btn" href="#usage">Usage</a></li>
+            <li class="nav-item"><a class="btn" href="#libraries">Libraries</a></li>
+            <li class="nav-item"><a class="btn" href="#the-robot">The Robot</a></li>
+            <li class="nav-item"><a class="btn" href="#contact">Contact</a></li>
+          <ul>
         </nav>
     </div>
     <div id="container-solid">
@@ -65,41 +79,197 @@
           <div id="query" class="section">
             <h2><a href="#query"><span class="bullet">$</span> <span class="internal-link">Query builder</span></a></h2>
             <div id="builder">
-              <div id="rqb">&nbsp;</div>
-              <button id="query-refresher" disabled>Update query text...</button>
-              <div id="query-string-wrapper">
+              <select id="builder-table-select" class="builder-item">
+                <option >What do you want to know?</option>
+                <option value="t1" >How much cash does the federal government have on hand? (Table 1)</option>
+                <option value="t2" >What programs are making deposits and withdrawals? (Table 2)</option>
+                <option value="t3a">How is the government selling and buying back its debt? (Table 3a)</option>
+                <!-- <option value="t3b">What types of debt is the government selling? (Table 3b)</option> -->
+                <option value="t3c">How close is the government to its credit limit (the debt ceiling)? (Table 3c)</option>
+                <option value="t4" >Where is the government getting its tax revenue from and where is it deposited? (Table 4)</option>
+                <!-- <option value="t5" >Where did the government invest cash it didn't immediately need? (Table 5)</option> -->
+                <option value="t6" >How much money did the government refund to businesses and individuals? (Table 6)</option>
+              </select>
+              <div id="qb-table-builders" class="builder-item">
+                <!-- t1 -->
+                <div class="qb-table-builder" id="t1-builder">
+                  <div class="qb-table-name">t1: Operating Cash Balance</div>
+                  <div class="qb-table-available-columns"></div>
+                  <div class="qb-table-sentence">
+                    <p>How much cash does the federal government have on hand <span class='sentence-option t1-date-select'></span> <span class='sentence-option t1-date-value'></span> ?</p>
+                  </div>
+                </div>
+                <!-- t2 -->
+                <div class="qb-table-builder" id="t2-builder">
+                  <div class="qb-table-name">t2: Deposits &amp; Withdrawals</div>
+                  <div class="qb-table-available-columns"></div>
+                  <div class="qb-table-sentence">
+                    <p>How much cash in <span class='sentence-option t2-transaction_type'></span> did <span class='sentence-option t2-item'></span> make <span class='sentence-option t2-date-select'></span> <span class='sentence-option t2-date-value'></span> ?</p>
+                  </div>
+                </div>
+                <!--  t3a -->
+                <div class="qb-table-builder" id="t3a-builder">
+                  <div class="qb-table-name">t3a: Public Debt Transactions</div>
+                  <div class="qb-table-available-columns"></div>
+                  <div class="qb-table-sentence">
+                    <p>How much debt did the government <span class='sentence-option t3a-transaction_type'></span> <span class='sentence-option t3a-date-select'></span> <span class='sentence-option t3a-date-value'></span> ?</p>
+                  </div>
+                </div>
+                <!--  t3b -->
+<!--                 <div class="qb-table-builder" id="t3a-builder">
+                  <div class="qb-table-name">t3b: Public Debt Transactions</div>
+                  <div class="qb-table-available-columns"></div>
+                  <div class="qb-table-sentence">
+                    <p>How much debt did the government <span class='sentence-option t3a-transaction_type'></span> <span class='sentence-option t3a-date-select'></span> <span class='sentence-option t3a-date-value'></span> ?</p>
+                  </div>
+                </div> -->                
+                <!--  t3c -->
+                <div class="qb-table-builder" id="t3c-builder">
+                  <div class="qb-table-name">t3c: Debt Subject to Limit</div>
+                  <div class="qb-table-available-columns"></div>
+                  <div class="qb-table-sentence">
+                    <p>How much debt that's subject to the debt ceiling does the government have <span class='sentence-option t3c-date-select'></span> <span class='sentence-option t3c-date-value'></span> ?</p>
+                  </div>
+                </div>
+                <!--  t4 -->
+                <div class="qb-table-builder" id="t4-builder">
+                  <div class="qb-table-name">t4: Federal Tax Deposits</div>
+                  <div class="qb-table-available-columns"></div>
+                  <div class="qb-table-sentence">
+                    <p>How much in <span class='sentence-option t4-classification'></span> revenue did the governent collect <span class='sentence-option t4-date-select'></span> <span class='sentence-option t4-date-value'></span> ?</p>
+                  </div>
+                </div>
+                <!--  t5 -->
+<!--                 <div class="qb-table-builder" id="t5-builder">
+                  <div class="qb-table-name">t4: Federal Tax Deposits</div>
+                  <div class="qb-table-available-columns"></div>
+                  <div class="qb-table-sentence">
+                    <p>How much in <span class='sentence-option t5-classification'></span> revenue did the governent collect <span class='sentence-option t5-date-select'></span> <span class='sentence-option t5-date-value'></span> ?</p>
+                  </div>
+                </div> -->                
+                <!--  t6 -->
+                <div class="qb-table-builder" id="t6-builder">
+                  <div class="qb-table-name">t4: Income Tax Refunds Issued</div>
+                  <div class="qb-table-available-columns"></div>
+                  <div class="qb-table-sentence">
+                    <p>How much tax revenue did the government return to <span class='sentence-option t6-refund_type'></span> <span class='sentence-option t6-date-select'></span> <span class='sentence-option t6-date-value'></span> ?</p>
+                  </div>
+                </div>
+
+              </div>
+              <div id="query-string-wrapper" class="builder-item">
                 <fieldset>
-                  <span>SQL Query, view as:* </span>
+<!--                   <span>SQL Query, view as:* </span>
                   <span id="query-encoding-options">
-                    <input type="radio" name="encoding" value="false" checked>Plain-text
-                    <input type="radio" name="encoding" value="true">URL-Encoded
-                  </span>
-                  <div id="query-string">
-                    <textarea id="sql" class="placeholder-textfield" title="Select from the dropdown menu above or type your own query..."></textarea>
+                    <input type="radio" name="encoding" value="false" checked> Plain-text 
+                    <input type="radio" name="encoding" value="true"> URL-Encoded
+                 </span>
+ -->                  <div id="query-string">
+                    <textarea id="sql" class="placeholder-textfield" placeholder="Select from the query builder options above or type your own query..."></textarea>
                   </div>
                 </fieldset>
               </div>
-            <div id="builder-btns" class="btn-group">
-              <div id="builder-btns-overlay"></div>
-              <span class="btn disabled piwik_ignore" id="download-browser">Preview query**</span>
-              <a class="btn disabled piwik_ignore" id="download-json" target="_blank" href="#">View JSON</a>
-              <span class="btn disabled piwik_ignore download-as-csv-btn" id="download-csv" data-query-link="">Download CSV</span>
+              <div id="query-viewers-wrapper" class="builder-item" style="display: block;">
+                <div id="query-viewers-buttons">
+                  <!-- BUTTON --> 
+                  <button type="button" class="buttn disabled piwik_ignore query-preview-button qp-btn" id="download-browser">Query preview*</button>
+                  <div class="query-preview-button-wrapper query-preview-button">
+                    <div id="toggle-chart-options" class="disabled toggle-chart-opts">Show options</div>
+                    <div id="chart-builder-options" style="display: none;">
+                      <div class="chart-builder-option-box">
+                        <p class="chart-builder-close-btn toggle-chart-opts">Hide options</p>
+                        <label for="cb-series-col" >Series name: <input id="cb-series-col" type="text" class="placeholder-textfield chart-builder-input-text" placeholder="i.e. item"></label>
+                        <label for="cb-x-col" >X-value <input id="cb-x-col" type="text" class="placeholder-textfield chart-builder-input-text" placeholder="i.e. date"></label>
+                        <label for="cb-y-col" >Y-value <input id="cb-y-col" type="text" class="placeholder-textfield chart-builder-input-text" placeholder="i.e. close_today"></label>
+                        <span class="clearfix"></span>
+                      </div>
+                      <div class="chart-builder-option-box">
+                        <p class="chart-builder-option-box-title">The x-axis holds:</p>
+                        <label for="chart-type-datetime"><input id="chart-type-datetime" type="radio" name="chart-type" value="datetime" checked> Dates (line graph)</label>
+                        <label for="chart-type-categorical"><input id="chart-type-categorical" type="radio" name="chart-type" value="categorical"> Categories (bar graph)</label>
+                      </div>
+                      <div class="chart-builder-option-box" style="margin-top: 10px;">
+                        <label for="cb-chart-title" >Title <input id="cb-chart-title" type="text" class="placeholder-textfield chart-builder-input-text" placeholder="i.e. Daily cash"></label>
+                        <label for="cb-y-axis-label" >Y-axis <input id="cb-y-axis-label" type="text" class="placeholder-textfield chart-builder-input-text" placeholder="i.e. $ (millions)"></label>
+                      </div>
+                    </div>
+                    <button id="view-chart" type="button" class="buttn disabled qp-btn">Draw chart</button>
+                  </div>
+                </div>
+                <div id="query-preview-wrapper" class="query-viewer">
+                  <div class="query-preview-button-wrapper">
+                    <!-- CANVAS -->
+                    <div id="results-container" style="display: none;">
+                      <div class="show-hide-table show-hide-button" data-state="hide" data-target="#results-table-container" data-text="preview table">Hide preview table</div>
+                      <div id="results-table-container">
+                        <div id="results-table-holder">
+                          <table id="results" cellspacing="5"></table>
+                        </div>
+                      </div>
+                    </div>                    
+                  </div>
+
+                </div>
+                <div id="query-chart-wrapper" class="query-viewer">
+                  <!-- CANVAS -->
+                  <div id="chart-container" style="display: none;">
+                    <div class="show-hide-chart show-hide-button" data-state="hide" data-target="#chart-canvas" data-text="chart">Hide chart</div>
+                    <div id="chart-canvas"></div>
+                    <div id="hover-templ"></div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div id="builder-btns" class="btn-group builder-item">
+                <div id="builder-btns-overlay"></div>
+                <!-- <span class="btn disabled piwik_ignore" id="download-browser">Preview query**</span> -->
+                <a class="btn disabled piwik_ignore" id="download-json" target="_blank" href="#">View JSON</a>
+                <span class="btn disabled piwik_ignore download-as-csv-btn" id="download-csv" data-query-link="">Download CSV</span>
+                <div class="clearfix"></div>
+                
+<!--                 <div id="chart-builder-options" class="disabled">
+                  <div class="chart-builder-title">Chart options</div>
+                  <div class="chart-builder-option-box">
+                    <p class="chart-builder-option-box-title">Which fields hold the...</p>
+                    <input id="cb-series-col" type="text" class="placeholder-textfield chart-builder-input-text" title="Series names ">
+                    <input id="cb-x-col" type="text" class="placeholder-textfield chart-builder-input-text" title="X-axis data ">
+                    <input id="cb-y-col" type="text" class="placeholder-textfield chart-builder-input-text" title="Y-axis data ">
+                    <span class="clearfix"></span>
+                  </div>
+                  <div class="chart-builder-option-box">
+                    <p class="chart-builder-option-box-title">The chart's x-axis holds...</p>
+                    <input type="radio" name="chart-type" value="datetime" checked> <span class="radio-btn-text"><span class="radio-btn-fixewidth">Dates</span> (line graph)</span><br/>
+                    <input type="radio" name="chart-type" value="categorical"> <span class="radio-btn-text"><span class="radio-btn-fixed-wid">Categories</span> (bar graph)</span>
+                  </div>
+                  <div class="chart-builder-submit">
+                     <div class="btn disabled">View chart</div>
+                  </div>
+                </div> -->
+
+              </div>
             </div>
-            <div id="query-asterisk-field">
+<!--             <div id="query-asterisk-field">
                 <p>Note: If using "is before" or "is after" for "Date" field, make sure your dates is in YYYY-MM-DD format (<a href="https://en.wikipedia.org/wiki/ISO_8601" target="_blank">ISO-8601</a>/<a href="https://tools.ietf.org/html/rfc3339">RFC3339</a>).</p>
-                <p>* All queries are URL-encoded when you select "View JSON" or "Download .CSV." Use these buttons as a shortcut when accessing the API programatically or for testing.</p>
+                <p>* Use these radio buttons as a shortcut when accessing the API programatically or for testing. All queries are URL-encoded when you select "View JSON" or "Download CSV."</p>
                 <p>** This will put <code class="inline-code">LIMIT 10</code> on the end of your query, so best not to add your own <code class="inline-code">LIMIT</code>.</p>
             </div>
-        </div>
+ -->        
       </div>
-      <div id="results-container" class="section" style="display: none;">
+<!--       <div id="chart-container" class="section" style="display: none;">
+        <div class="show-hide-chart" data-state="hide">Hide chart</div>
+        <div id="chart-canvas"></div>
+        <div id="hover-templ"></div>
+
+      </div>
+ --><!--       <div id="results-container" class="section" style="display: none;">
         <div class="show-hide-table" data-state="hide">Hide preview table</div>
         <div id="results-table-container">
           <div id="results-table-holder">
             <table id="results" cellspacing="5"></table>
           </div>
         </div>
-      </div>
+      </div> -->
           <div class="section" id="about">
             <h2><a href="#about"><span class="bullet">$</span> <span class="internal-link">About</span></a></h2>
             <!-- Copied from http://www.bdatafest.computationalreporting.com/projects/fms-symphony -->
@@ -303,23 +473,46 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
       <p>By <a href="http://www.twitter.com/brianabelson" target="_blank">Brian Abelson</a>, <a href="http://www.twitter.com/jbialer" target="_blank">Jake Bialer</a>, <a href="http://www.twitter.com/bjdewilde" target="_blank">Burton DeWilde</a>, <a href="http://www.twitter.com/mhkeller" target="_blank">Michael Keller</a>, <a href="http://www.twitter.com/thomaslevine" target="_blank">Thomas Levine</a> &amp; <a href="http://www.twitter.com/cezary" target="_blank">Cezary Podkul</a>. With an assist from <a href="http://www.twitter.com/ag_dubs" target="_blank">Ashley Williams</a>.</p>
       <p></p>
     </footer>
+    <div id="qb-help-text-hover"></div>
+
+    <script type="text/template" id="sentence-col-templ">
+      <ul class="sentence-group">
+      </ul>
+    </script>
+
+
+    <script type="text/template" id="Checkbox-view-templ">
+      <label for="<%= makeKeyFromName(table_name, value) %>"><input type="checkbox" id="<%= makeKeyFromName(table_name, value) %>" checked/> <%= value %> <span class="help-text-flag" data-help-text="help-text">?</span></label>
+    </script>
+
+    <script type="text/template" id="OutputNumber-view-templ">
+      <label class="qc-textfield-option" for="<%= makeKeyFromName(column_name, table_name) %>-<%= comparinatorToText(comparinator) %>">
+        <span class="textbox-label-text"><input type="text" value="<%= value %>" placeholder="<%= comparinatorToText(comparinator) %>" id="<%= makeKeyFromName(column_name, table_name) %>-<%= comparinatorToText(comparinator) %>"/>
+      </label>
+    </script>
+
+    <script type="text/template" id="TextfieldSelector-view-templ">
+      <label for="<%= makeKeyFromName(table_name, column_name) %>-<%= comparinatorToText(comparinator) %>-select">
+        <input type="checkbox" value="<%= comparinator %>" id="<%= makeKeyFromName(table_name, column_name) %>-<%= comparinatorToText(comparinator) %>-select" checked /> <%= comparinatorToText(comparinator) %></label>
+    </script>
+
     <script src="web/js/main.js"></script>
     <!-- Piwik -->
     <script type="text/javascript">
-      var _paq = _paq || [];
-      _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
-      _paq.push(["setCookieDomain", "*.treasury.io"]);
-      _paq.push(["setDomains", ["*.treasury.io"]]);
-      _paq.push(["trackPageView"]);
-      _paq.push(["enableLinkTracking"]);
+      // var _paq = _paq || [];
+      // _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+      // _paq.push(["setCookieDomain", "*.treasury.io"]);
+      // _paq.push(["setDomains", ["*.treasury.io"]]);
+      // _paq.push(["trackPageView"]);
+      // _paq.push(["enableLinkTracking"]);
 
-      (function() {
-        var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.thomaslevine.com/";
-        _paq.push(["setTrackerUrl", u+"piwik.php"]);
-        _paq.push(["setSiteId", "21"]);
-        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
-        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
-      })();
+      // (function() {
+      //   var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.thomaslevine.com/";
+      //   _paq.push(["setTrackerUrl", u+"piwik.php"]);
+      //   _paq.push(["setSiteId", "21"]);
+      //   var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+      //   g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+      // })();
     </script>
     <!-- End Piwik Code -->
 </body>
