@@ -1089,6 +1089,7 @@ $(function() {
       // Ok to go!
       enableChartViewBtn();
     };
+      enableChartViewBtn();
   };
 
   function disableChartViewBtn(){

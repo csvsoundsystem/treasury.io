@@ -76,22 +76,30 @@
     };
 
     function findDistinctSeriesNames(ds, col){
-      var items = ds.column(col).data,
-          items_uniq = _.uniq(items);
+      if (col != ''){
+        var items = ds.column(col).data,
+            items_uniq = _.uniq(items);
+      }else{
+        items_uniq = [''];
+      };
       return items_uniq;
     };
 
     function geEachSeriesDs(ds, items_uniq, col){
-      var series_ds_arr = [];
-      _.each(items_uniq, function(item){
-        var series = ds.where({
-          // copy only where the value of the specified call is equal to one of the unique item names
-          rows: function(row) {
-            return row[col] == item;
-          }
-        });
-        series_ds_arr.push(series);
-      })
+      if (col != ''){
+        var series_ds_arr = [];
+        _.each(items_uniq, function(item){
+          var series = ds.where({
+            // copy only where the value of the specified call is equal to one of the unique item names
+            rows: function(row) {
+              return row[col] == item;
+            }
+          });
+          series_ds_arr.push(series);
+        })
+      }else{
+        series_ds_arr = [ds];
+      }
       return series_ds_arr;
     };
 
@@ -103,7 +111,7 @@
     function createHighChartsDataSeries(series_ds_arr, col, value, x, type, color_palette){
       var series = [];
       _.each(series_ds_arr, function(series_ds, index){
-        var series_name = series_ds.column(col).data[0],
+        var series_name = (col != '') ? series_ds.column(col).data[0] : 'data',
             series_data_value = series_ds.column(value).data,
             series_date_time,
             series_data = [];
