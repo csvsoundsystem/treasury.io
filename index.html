@@ -482,7 +482,7 @@ puts (treasuryio 'SELECT * FROM t1 LIMIT 10')</code></pre>
 
 
     <script type="text/template" id="Checkbox-view-templ">
-      <label for="<%= makeKeyFromName(table_name, value) %>"><input type="checkbox" id="<%= makeKeyFromName(table_name, value) %>" checked/> <%= value %> <span class="help-text-flag" data-help-text="help-text">?</span></label>
+      <label for="<%= makeKeyFromName(table_name, value) %>"><input type="checkbox" id="<%= makeKeyFromName(table_name, value) %>" checked/> <%= value %> <span style="display:none;" class="help-text-flag" data-help-text="help-text">?</span></label>
     </script>
 
     <script type="text/template" id="OutputNumber-view-templ">
