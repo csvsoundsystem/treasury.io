@@ -1200,10 +1200,22 @@ $(function() {
     });
   };
 
-  $.get('web/table_schema/db_schema.json', function(db_schema) {
+  function getSchema(){
+    return $.ajax({
+      url: '//api.treasury.io/cc7znvq/47d80ae900e04f2/http/db_schema.json',
+      dataType: 'JSONP',
+      jsonpCallback: 'callback'
+    })
+  }
 
-    makeQueryBuilders(db_schema);;
-    bindHandlers(db_schema);
-  });
+  getSchema()
+    .done( function(db_schema){
+      makeQueryBuilders(db_schema);
+      bindHandlers(db_schema);
+    
+    })
+    .fail( function(err){
+      alert(err.responseType)
+    })
 
 });
