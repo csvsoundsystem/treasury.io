@@ -1202,7 +1202,7 @@ $(function() {
 
   function getSchema(){
     return $.ajax({
-      url: '//api.treasury.io/cc7znvq/47d80ae900e04f2/http/db_schema.json',
+      url: '//api.treasury.io/cc7znvq/47d80ae900e04f2/http/db_schema.js',
       dataType: 'JSONP',
       jsonpCallback: 'callback'
     })
