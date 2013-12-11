@@ -798,13 +798,13 @@ padding: 0 6px 0 5px;
   text-align: right;
 }
 .t2-item .sentence-group, .t4-classification .sentence-group{
-  max-width: 230px;
+  max-width: 260px;
   line-height: 14px;
   max-height: 144px;
   overflow-y: scroll;
 }
 .t2-item .sentence-group li,  .t4-classification .sentence-group li{
-  padding: 4px;
+  padding: 5px 4px;
 }
 .sentence-group li:nth-child(odd) {
   background-color: rgba(9, 146, 204, 0.25); 
@@ -830,9 +830,11 @@ padding: 0 6px 0 5px;
 }
 
 .help-text-flag{
-  font-size: 8px;
-  vertical-align: super;
-  padding: 2px 1px 0 1px;
+  font-size: 10px;
+  padding: 2px 1px 2px 1px;
+  position: relative;
+  top: -4px;
+
 }
 .help-text-flag:hover{
   cursor: hand;
@@ -844,11 +846,12 @@ padding: 0 6px 0 5px;
   position: absolute;
   display: none;
   background-color: #000;
-  color: #fff;
-  padding: 3px 5px 3px 10px;
-  max-width: 100px; 
+  color: #FFF;
+  padding: 6px;
+  max-width: 300px;
   font-family: 'droid sans';
   font-size: 12px;
+  line-height: 14px;
 }
 .group-toggle-all{
   position: absolute;

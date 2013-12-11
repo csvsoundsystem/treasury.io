@@ -89,6 +89,15 @@ $(function() {
   withdrawal_models = [],
   d_and_w_models = []; 
 
+  function byValue(a,b) {
+    if (a.value < b.value)
+       return -1;
+    if (a.value > b.value)
+      return 1;
+    return 0;
+  }
+
+
 
   function bindHandlers(db_schema){
       /* NAV MENU BEHAVIOR */
@@ -359,7 +368,6 @@ $(function() {
       t6: {}
     };
 
-    // makeTableColumns(tables[test_col], test_col, collections);
     _.each(tables, function(table_data, table_name_schema, table_list){
       $('#'+ table_name_schema +'-' + 'builder').find('.qb-table-available-columns').html('Columns:<pre><code class="no-wrap">' + table_data.all_cols.join(', ') + '</pre></code>');
       makeTableColumns(table_data, table_name_schema);
@@ -383,6 +391,7 @@ $(function() {
         name: 'name_default',
         column_type: 'column_type__default',
         comparinator: 'comparinator_default',
+        description: '',
         queryable: true,
         checked: true,
         value: 0
@@ -503,6 +512,12 @@ $(function() {
       };
       // Loop through each item_value and add that parent_object_info by _.extending()
       // Turn them into instances of our models
+
+      // First let's sort this object but only for t2 items...
+      if (column_info.item_values[0].table_name == 't2'){
+        column_info.item_values.sort(byValue);
+      }
+      console.log(column_info.item_values)
       _.each(column_info.item_values, function(item_value){
 
         // Add that parent object by extending, like we said we were gonna do
@@ -628,7 +643,7 @@ $(function() {
 
         $help_hover.css({
           top: offset_top,
-          left: offset_left + 6
+          left: offset_left + 6 
         }).html(help_text).show();
 
       },
@@ -1203,7 +1218,7 @@ $(function() {
   function getSchema(){
     return $.ajax({
       url: '//api.treasury.io/cc7znvq/47d80ae900e04f2/http/db_schema.js',
-      dataType: 'JSONP',
+      dataType: 'JSONP'
       jsonpCallback: 'callback'
     })
   }
@@ -1215,7 +1230,8 @@ $(function() {
     
     })
     .fail( function(err){
-      alert(err.responseType)
+      
+      // alert(err.responseType)
     })
 
 });
