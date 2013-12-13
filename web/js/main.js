@@ -517,7 +517,6 @@ $(function() {
       if (column_info.item_values[0].table_name == 't2'){
         column_info.item_values.sort(byValue);
       }
-      console.log(column_info.item_values)
       _.each(column_info.item_values, function(item_value){
 
         // Add that parent object by extending, like we said we were gonna do
@@ -1218,7 +1217,7 @@ $(function() {
   function getSchema(){
     return $.ajax({
       url: '//api.treasury.io/cc7znvq/47d80ae900e04f2/http/db_schema.js',
-      dataType: 'JSONP'
+      dataType: 'JSONP',
       jsonpCallback: 'callback'
     })
   }
