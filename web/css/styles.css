@@ -803,7 +803,7 @@ padding: 0 6px 0 5px;
   text-align: right;
 }
 .t2-item .sentence-group, .t4-classification .sentence-group{
-  max-width: 260px;
+  max-width: 265px;
   line-height: 14px;
   max-height: 144px;
   overflow-y: scroll;
