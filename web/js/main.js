@@ -276,7 +276,8 @@ $(function() {
       });
 
       $('.group-toggle-all input').click(function(){
-        $(this).parents('.sentence-option').find('.sentence-group input').prop('checked', this.checked).trigger('change');
+        var check_var = ((this.checked) ? 'check' : 'uncheck')
+        $(this).parents('.sentence-option').find('.sentence-group input').prop('checked', this.checked).trigger('change', check_var);
       });
 
       /* The checkboxes and input textboxes need different listeners because .on('change') only detects changes for textfields after the box loses mouse focus (i.e. the user clicks away) */
@@ -399,6 +400,14 @@ $(function() {
 
       toggleChecked: function(){
         this.set('checked', !this.get('checked'));
+      },
+
+      check: function(){
+        this.set('checked', true);
+      },
+
+      uncheck: function(){
+        this.set('checked', false);
       },
 
       toggleQueryable: function(){
@@ -541,8 +550,8 @@ $(function() {
       template: _.template($('#Checkbox-view-templ').html()),
 
       events: {
-        'change': function(e) {
-            this.toggleChecked(e);
+        'change': function(e, setState) {
+            this.toggleChecked(e, setState);
             this.limitPotentialChildren(e);
         },
         'mouseover .help-text-flag': 'showHelpText',
@@ -584,9 +593,15 @@ $(function() {
         return this;
       },
 
-      toggleChecked: function(e){
-        this.model.toggleChecked();
-        var this_table_name = this.model.get('table_name');
+      toggleChecked: function(e, setState){
+        if (!setState){
+          this.model.toggleChecked();
+          var this_table_name = this.model.get('table_name');
+        }else if (setState == 'check'){
+          this.model.check();
+        }else if (setState == 'uncheck'){
+          this.model.uncheck();
+        }
       },
 
       limitPotentialChildren: function(e){
