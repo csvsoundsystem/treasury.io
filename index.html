@@ -172,7 +172,7 @@
               <div id="query-viewers-wrapper" class="builder-item" style="display: block;">
                 <div id="query-viewers-buttons">
                   <!-- BUTTON --> 
-                  <button type="button" class="buttn disabled piwik_ignore query-preview-button qp-btn" id="download-browser">Query preview*</button>
+                  <button type="button" class="buttn disabled piwik_ignore query-preview-button qp-btn" id="download-browser">Query preview</button>
                   <div class="query-preview-button-wrapper query-preview-button">
                     <div id="toggle-chart-options" class="disabled toggle-chart-opts">Show options</div>
                     <div id="chart-builder-options" style="display: none;">
@@ -225,9 +225,8 @@
                 <div id="builder-btns-overlay"></div>
                 <!-- <span class="btn disabled piwik_ignore" id="download-browser">Preview query**</span> -->
                 <a class="btn disabled piwik_ignore" id="download-json" target="_blank" href="#">View JSON</a>
-                <span class="btn disabled piwik_ignore download-as-csv-btn" id="download-csv" data-query-link="">Download CSV</span>
+                <span class="btn disabled piwik_ignore download-as-csv-btn" id="download-csv" data-query-link="">Download CSV*</span>
                 <div class="clearfix"></div>
-                
 <!--                 <div id="chart-builder-options" class="disabled">
                   <div class="chart-builder-title">Chart options</div>
                   <div class="chart-builder-option-box">
@@ -271,6 +270,7 @@
         </div>
       </div> -->
           <div class="section" id="about">
+          <div class="note">*Different browsers have limits to how much data they can crunch into a csv. If you're querying a lot of data, selecting "View JSON" or using one of <a href="#libraries">our libraries</a> might be better.</div>
             <h2><a href="#about"><span class="bullet">$</span> <span class="internal-link">About</span></a></h2>
             <!-- Copied from http://www.bdatafest.computationalreporting.com/projects/fms-symphony -->
             <h3>The data</h3>
