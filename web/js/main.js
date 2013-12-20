@@ -1215,8 +1215,9 @@ $(function() {
   };
 
   function getSchema(){
+    var cachebuster = new Date().getTime();
     return $.ajax({
-      url: '//api.treasury.io/cc7znvq/47d80ae900e04f2/http/db_schema.js',
+      url: '//api.treasury.io/cc7znvq/47d80ae900e04f2/http/db_schema.js?' + cachebuster,
       dataType: 'JSONP',
       jsonpCallback: 'callback'
     })
