@@ -193,7 +193,7 @@
                         <label for="cb-y-axis-label" >Y-axis <input id="cb-y-axis-label" type="text" class="placeholder-textfield chart-builder-input-text" placeholder="i.e. $ (millions)"></label>
                       </div>
                     </div>
-                    <button id="view-chart" type="button" class="buttn disabled qp-btn">Draw chart</button>
+                    <button id="view-chart" type="button" class="buttn disabled qp-btn">Draw chart*</button>
                   </div>
                 </div>
                 <div id="query-preview-wrapper" class="query-viewer">
@@ -225,7 +225,7 @@
                 <div id="builder-btns-overlay"></div>
                 <!-- <span class="btn disabled piwik_ignore" id="download-browser">Preview query**</span> -->
                 <a class="btn disabled piwik_ignore" id="download-json" target="_blank" href="#">View JSON</a>
-                <span class="btn disabled piwik_ignore download-as-csv-btn" id="download-csv" data-query-link="">Download CSV*</span>
+                <span class="btn disabled piwik_ignore download-as-csv-btn" id="download-csv" data-query-link="">Download CSV&dagger;</span>
                 <div class="clearfix"></div>
 <!--                 <div id="chart-builder-options" class="disabled">
                   <div class="chart-builder-title">Chart options</div>
@@ -270,7 +270,8 @@
         </div>
       </div> -->
           <div class="section" id="about">
-          <div class="note">*Different browsers have limits to how much data they can crunch into a csv. If you're querying a lot of data, selecting "View JSON" or using one of <a href="#libraries">our libraries</a> might be better.</div>
+          <div class="note">*Note: All dollar values are in millions e.g. 1000 equals $1 billion.</div>
+          <div class="note">&dagger;Different browsers have limits to how much data they can crunch into a csv. If you're querying a lot of data, selecting "View JSON" or using one of <a href="#libraries">our libraries</a> might be better.</div>
             <h2><a href="#about"><span class="bullet">$</span> <span class="internal-link">About</span></a></h2>
             <!-- Copied from http://www.bdatafest.computationalreporting.com/projects/fms-symphony -->
             <h3>The data</h3>
@@ -285,7 +286,7 @@
           <div class="section" id="documentation">
             <h2><a href="#documentation"><span class="bullet">$</span> <span class="internal-link">Documentation</span></a></h2>
             <p>We created a <a href="https://github.com/csvsoundsystem/federal-treasury-api/wiki/Treasury.io-Data-Dictionary" target="_blank">fully-documented data dictionary</a> that details the structure of these tables as well as descriptions of many programs and classifications. If you're the kind to prefer your data dictionaries in hard-copies, <a href="https://github.com/csvsoundsystem/federal-treasury-api/blob/master/documentation/treasuryio_data_dictionary.pdf?raw=true" target="_blank">here's the full documentation as a PDF</a>. We also have an <a href="https://github.com/csvsoundsystem/federal-treasury-api/wiki/Frequently-Asked-Questions-(FAQ)" target="_blank">FAQ or any other questions you might have</a>.</p>
-            <p>The data is complicated, however, and we recommend that you reach out to the <a href="http://www.fms.treas.gov/dts/contacts.html" target="_blank">Financial Management Service at the U.S. Treasury</a> directly.
+            <p>The data is complicated, however, and we recommend that you reach out to the <a href="http://www.fms.treas.gov/dts/contacts.html" target="_blank">Financial Management Service at the U.S. Treasury</a> directly. Note that the units of the data are in millions e.g. 1000 equals $1 billion.
             <p><strong>Always query responsibly.</strong></p>
             <p>This API provides eight tables. You can access them with the short names in parentheses.
               Click "preview" to download the first ten rows of the table as CSV, and click "full" to
