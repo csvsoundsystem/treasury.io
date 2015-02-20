@@ -1,7 +1,7 @@
 $(function() {
 
   var encoding                 = 'false',
-    api_endpoint               = 'https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=',
+    api_endpoint               = 'http://api.treasury.io/cc7znvq/47d80ae900e04f2/sql/?q=',
     $query_refresher           = $('#query-refresher'),
     $download_browser_btn      = $('#download-browser'),
     $download_csv_btn          = $('#download-csv'),
@@ -1140,7 +1140,7 @@ $(function() {
     }else{
       var url = $('#sql').val()
     };
-    var sql = url.replace('https://premium.scraperwiki.com/cc7znvq/47d80ae900e04f2/sql/?q=', '')
+    var sql = url.replace(api_endpoint, '')
     _paq.push(['trackSiteSearch', sql, fileFormat, resultCount]);
   }
 
