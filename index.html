@@ -310,7 +310,7 @@
               <p>The eight tables are stored in one SQLite database and the API. To get the data back as JSON, query it from a URL like this:</p>
               <pre><code>http://api.treasury.io/cc7znvq/47d80ae900e04f2/sql/?q=YOUR_QUERY</code></pre>
               <p>where <code class="inline-code">YOUR_QUERY</code> is a URL-encoded SQL command. This query will show the ten most recent withdrawals.</p>
-              <pre><a target="_blank" href="http:////api.treasury.io/cc7znvq/47d80ae900e04f2/sql/?q=SELECT * FROM t2 WHERE transaction_type = 'withdrawal' ORDER BY date DESC LIMIT 10"><code>http://api.treasury.io/cc7znvq/47d80ae900e04f2/sql/?q=SELECT * FROM t2 WHERE transcation_type = 'withdrawal' ORDER BY date DESC LIMIT 10</code></a></pre>
+              <pre><a target="_blank" href="http:////api.treasury.io/cc7znvq/47d80ae900e04f2/sql/?q=SELECT * FROM t2 WHERE transaction_type = 'withdrawal' ORDER BY date DESC LIMIT 10"><code>http://api.treasury.io/cc7znvq/47d80ae900e04f2/sql/?q=SELECT * FROM t2 WHERE transaction_type = 'withdrawal' ORDER BY date DESC LIMIT 10</code></a></pre>
 
               <p>Note: We're submitting a plain-text query string because the browser is doing the <a href="http://www.w3schools.com/tags/ref_urlencode.asp" target="_blank">URL-encoding</a> here. The <a href="#libraries" class="smooth-scroll">libraries</a> we've written either do that for you or expect it a URL-encoded query, as shown in the examples.</p>
               <h3>Host it yourself</h3>
