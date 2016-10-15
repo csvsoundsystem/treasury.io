@@ -399,7 +399,8 @@ treasuryIo('SELECT * FROM t1 LIMIT 10')
                   <p>Send SQL, and get a csv or json representation of the data, depending on what string you pass as the second argument.</p>
                   <div class="code-container">
                     <pre><code data-language="javascript">var treasuryio = require('treasuryio')
-treasuryio('SELECT * FROM t1 LIMIT 10', 'csv', function(response){
+treasuryio('SELECT * FROM t1 LIMIT 10', 'csv', function(err, response){
+    if (err) console.log(err)
     console.log(response);
 });</code></pre>
                   <p>This module lives <a href="https://github.com/csvsoundsystem/treasuryiojs" target="_blank">here</a>.</p>
