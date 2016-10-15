@@ -672,7 +672,7 @@ textarea:focus{
 .sentence-group{
 }
 .sentence-group li{
-padding: 0 6px 0 5px;
+  padding: 0 6px 0 5px;
   list-style: none;
 }
 .ui-widget{
