@@ -119,6 +119,9 @@ nav{
   z-index: 9999;
 
 }
+.nav-item{
+  font-size: 14px;
+}
 #query-encoding-options{
   margin-left:10px;
 }
@@ -171,7 +174,6 @@ h3 {
   margin: 15px 0;
 }
 #builder-table-select{
-  /*margin: 0 0 0 0;*/
   margin: 0 0 10px 9px;
 }
 .btn, .btn-row-el{
@@ -285,10 +287,13 @@ a:hover{
   float: right;
 }
 #download-csv{
-  width:140px;
+  width:160px;
 }
 #download-cancel{
   background-color: #f51;
+}
+#download-browser{
+  margin-bottom:10px;
 }
 #builder-btns{
   position:relative;
@@ -865,6 +870,11 @@ padding: 0 6px 0 5px;
 }
 
 /* end query builder styles*/
+@media screen and (max-width: 887px) {
+  #builder-table-select{
+    width: 98%;
+  }
+}
 @media screen and (max-width: 640px) {
   #container-fluid, #container-solid{
     margin:10px;
