@@ -123,7 +123,7 @@
                   <div class="qb-table-sentence">
                     <p>How much debt did the government <span class='sentence-option t3a-transaction_type'></span> <span class='sentence-option t3a-date-select'></span> <span class='sentence-option t3a-date-value'></span> ?</p>
                   </div>
-                </div> -->                
+                </div> -->
                 <!--  t3c -->
                 <div class="qb-table-builder" id="t3c-builder">
                   <div class="qb-table-name">t3c: Debt Subject to Limit</div>
@@ -147,7 +147,7 @@
                   <div class="qb-table-sentence">
                     <p>How much in <span class='sentence-option t5-classification'></span> revenue did the governent collect <span class='sentence-option t5-date-select'></span> <span class='sentence-option t5-date-value'></span> ?</p>
                   </div>
-                </div> -->                
+                </div> -->
                 <!--  t6 -->
                 <div class="qb-table-builder" id="t6-builder">
                   <div class="qb-table-name">t4: Income Tax Refunds Issued</div>
@@ -162,7 +162,7 @@
                 <fieldset>
 <!--                   <span>SQL Query, view as:* </span>
                   <span id="query-encoding-options">
-                    <input type="radio" name="encoding" value="false" checked> Plain-text 
+                    <input type="radio" name="encoding" value="false" checked> Plain-text
                     <input type="radio" name="encoding" value="true"> URL-Encoded
                  </span>
  -->                  <div id="query-string">
@@ -172,7 +172,7 @@
               </div>
               <div id="query-viewers-wrapper" class="builder-item" style="display: block;">
                 <div id="query-viewers-buttons">
-                  <!-- BUTTON --> 
+                  <!-- BUTTON -->
                   <button type="button" class="buttn disabled piwik_ignore query-preview-button qp-btn" id="download-browser">Query preview</button>
                   <div class="query-preview-button-wrapper query-preview-button">
                     <div id="toggle-chart-options" class="disabled toggle-chart-opts">Show options</div>
@@ -207,7 +207,7 @@
                           <table id="results" cellspacing="5"></table>
                         </div>
                       </div>
-                    </div>                    
+                    </div>
                   </div>
 
                 </div>
@@ -254,7 +254,7 @@
                 <p>* Use these radio buttons as a shortcut when accessing the API programatically or for testing. All queries are URL-encoded when you select "View JSON" or "Download CSV."</p>
                 <p>** This will put <code class="inline-code">LIMIT 10</code> on the end of your query, so best not to add your own <code class="inline-code">LIMIT</code>.</p>
             </div>
- -->        
+ -->
       </div>
 <!--       <div id="chart-container" class="section" style="display: none;">
         <div class="show-hide-chart" data-state="hide">Hide chart</div>
@@ -364,7 +364,7 @@ library('Rtreasuryio')</code></pre>
                   <div class="code-container">
                     <pre><code data-language="javascript">function treasuryIo(query){
   return $.ajax({
-    url: 'http//api.treasury.io/cc7znvq/47d80ae900e04f2/sql/?q='+query
+    url: 'http://api.treasury.io/cc7znvq/47d80ae900e04f2/sql/?q='+query
   })
 }
 treasuryIo('SELECT * FROM t1 LIMIT 10')
