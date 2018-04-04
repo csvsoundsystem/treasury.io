@@ -64,8 +64,8 @@
         <nav id="navmenu">
           <ul id="menu">
             <li class="nav-item" id="logo"><a class="btn" href="#hero"><img src="web/images/flag.png"></a></li>
-            <li class="nav-item active"><a class="btn" href="#query">Query</a></li>
-            <li class="nav-item"><a class="btn" href="#about">About</a></li>
+            <li class="nav-item" style="display: none;"><a class="btn" href="#query">Query</a></li>
+            <li class="nav-item active"><a class="btn" href="#about">About</a></li>
             <li class="nav-item"><a class="btn" href="#documentation">The Docs</a></li>
             <li class="nav-item"><a class="btn" href="#usage">Usage</a></li>
             <li class="nav-item"><a class="btn" href="#libraries">Libraries</a></li>
@@ -77,7 +77,7 @@
     </div>
     <div id="container-solid">
         <div id="section-wrapper">
-          <div id="query" class="section">
+          <div id="query" class="section" style="display: none;">
             <h2><a href="#query"><span class="bullet">$</span> <span class="internal-link">Query builder</span></a></h2>
             <div id="builder">
               <select id="builder-table-select" class="builder-item">
@@ -271,10 +271,12 @@
         </div>
       </div> -->
           <div class="section" id="about">
-          <div class="note">*Note: All dollar values are in millions e.g. 1000 equals $1 billion.</div>
-          <div class="note">&dagger;Different browsers have limits to how much data they can crunch into a csv. If you're querying a lot of data, selecting "View JSON" or using one of <a href="#libraries">our libraries</a> might be better.</div>
+          <div class="note" style="display: none;">*Note: All dollar values are in millions e.g. 1000 equals $1 billion.</div>
+          <div class="note" style="display: none;">&dagger;Different browsers have limits to how much data they can crunch into a csv. If you're querying a lot of data, selecting "View JSON" or using one of <a href="#libraries">our libraries</a> might be better.</div>
             <h2><a href="#about"><span class="bullet">$</span> <span class="internal-link">About</span></a></h2>
             <!-- Copied from http://www.bdatafest.computationalreporting.com/projects/fms-symphony -->
+            <h3>⚠️ Under renovation ⚠️</h3>
+            <p>Hey there! We're in the process of porting this website over to engima.io's instance of this database and revamping our query builder, if possible. In the meantime, you can access the data directly via their query interface here: <a href="https://public.enigma.com/browse/1ee6ce88-f5f8-4a2c-8190-445739beea31" target="_blank" rel="noopener">https://public.enigma.com/browse/1ee6ce88-f5f8-4a2c-8190-445739beea31</a></p>
             <h3>The data</h3>
             <p>Every day at 4pm, the United States Treasury <a href="http://www.fms.treas.gov/dts/index.html" target="_blank">publishes data tables</a> summarizing the cash spending, deposits, and borrowing of the Federal government. These files catalog all the money taken in that day from taxes, the programs, and how much debt the government took out to make it happen. It comes from a section of the U.S. Treasury called the <a href="https://www.fiscal.treasury.gov/" target="_blank">Bureau of the Fiscal Service</a></p>
             <p>At a time of record fiscal deficits and continual debates over spending, taxation, and the debt, this daily accounting of our government's main checking account is an essential data point that the public should have ready access to.</p>
